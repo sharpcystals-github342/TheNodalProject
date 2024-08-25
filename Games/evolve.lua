@@ -1275,11 +1275,11 @@ do
                                         RandomChoice.Name = "hookedFood"
                                         while (RandomChoice and foodhax_enabled) do
                                             local Randomer = GrazerMouthJaw[math.random(1, #GrazerMouthJaw)]
-                                            while ((Randomer == nil) or (Randomer.Name ~= "Grazer") or (Randomer.Name ~= "Mouth")) and foodhax_enabled do
+                                            while ((Randomer == nil) or ((Randomer.Name ~= "Grazer") and (Randomer.Name ~= "Mouth"))) and foodhax_enabled do
                                                 Randomer = GrazerMouthJaw[math.random(1, #GrazerMouthJaw)]
                                                 if (Randomer.Name == "Grazer") or (Randomer.Name == "Mouth") then
-                                                    if Randomer:FindFirstChild("Jaw") then
-                                                        Randomer = Randomer:FindFirstChild("Jaw")
+                                                    if Randomer:FindFirstChild("Grazer") then
+                                                        Randomer = Randomer:FindFirstChild("Mouth")
                                                     end
                                                     if Randomer:FindFirstChild("Mouth") then
                                                         Randomer = Randomer:FindFirstChild("Mouth")
@@ -1311,11 +1311,16 @@ do
                                         RandomChoice.Name = "hookedFood"
                                         while (RandomChoice and foodhax_enabled) do
                                             local Randomer = GrazerMouthJaw[math.random(1, #GrazerMouthJaw)]
-                                            while ((Randomer == nil) or (Randomer.Name ~= "Jaw")) and foodhax_enabled do
+                                            while ((Randomer == nil) or ((Randomer.Name ~= "Jaw") and (Randomer.Name ~= "Mouth"))) and foodhax_enabled do
                                                 Randomer = GrazerMouthJaw[math.random(1, #GrazerMouthJaw)]
                                                 if (Randomer.Name == "Jaw") then
                                                     if Randomer:FindFirstChild("Jaw") then
                                                         Randomer = Randomer:FindFirstChild("Jaw")
+                                                    end
+                                                end
+                                                if (Randomer.Name == "Mouth") then
+                                                    if Randomer:FindFirstChild("Mouth") then
+                                                        Randomer = Randomer:FindFirstChild("Mouth")
                                                     end
                                                 end
                                                 task.wait(0)
