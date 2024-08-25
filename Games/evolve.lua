@@ -825,6 +825,7 @@ function UI.createCommand(commandName, description)
 
     return newCommand
 end
+local espTransparency = 0.3
 local ESPenabled
 function ESP(plr)
 	task.spawn(function()
