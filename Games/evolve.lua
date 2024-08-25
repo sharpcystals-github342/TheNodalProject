@@ -949,7 +949,7 @@ UI.TextBox:GetPropertyChangedSignal("Text"):Connect(function()
     filterAndDisplayCommands(UI.TextBox.Text)
 end)
 function execCmd(cmdName, eventType, arg)
-    local args = arg
+    local args = arg or {}
     for _, cmd in ipairs(UI.CMDS) do
         if string.split(cmd.CommandName, " ")[1] == cmdName and cmd.Events[eventType] then
             SafeCall()(function()
