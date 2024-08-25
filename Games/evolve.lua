@@ -1,3 +1,4 @@
+
 local cloneref = cloneref or function(a) return a end
 local Players = cloneref(game:GetService"Players")
 IYMouse = Players.LocalPlayer:GetMouse()
@@ -1310,14 +1311,11 @@ do
                                         RandomChoice.Name = "hookedFood"
                                         while (RandomChoice and foodhax_enabled) do
                                             local Randomer = GrazerMouthJaw[math.random(1, #GrazerMouthJaw)]
-                                            while ((Randomer == nil) or (Randomer.Name ~= "Grazer") or (Randomer.Name ~= "Mouth")) and foodhax_enabled do
+                                            while ((Randomer == nil) or (Randomer.Name ~= "Jaw")) and foodhax_enabled do
                                                 Randomer = GrazerMouthJaw[math.random(1, #GrazerMouthJaw)]
-                                                if (Randomer.Name == "Grazer") or (Randomer.Name == "Mouth") then
+                                                if (Randomer.Name == "Jaw") then
                                                     if Randomer:FindFirstChild("Jaw") then
                                                         Randomer = Randomer:FindFirstChild("Jaw")
-                                                    end
-                                                    if Randomer:FindFirstChild("Mouth") then
-                                                        Randomer = Randomer:FindFirstChild("Mouth")
                                                     end
                                                 end
                                                 task.wait(0)
