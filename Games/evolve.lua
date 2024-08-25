@@ -948,8 +948,8 @@ end
 UI.TextBox:GetPropertyChangedSignal("Text"):Connect(function()
     filterAndDisplayCommands(UI.TextBox.Text)
 end)
-function execCmd(cmdName, eventType, ...)
-    local args = {...}
+function execCmd(cmdName, eventType, arg)
+    local args = arg
     for _, cmd in ipairs(UI.CMDS) do
         if string.split(cmd.CommandName, " ")[1] == cmdName and cmd.Events[eventType] then
             SafeCall()(function()
@@ -979,7 +979,7 @@ UI.TextBox.FocusLost:Connect(function(enterPressed)
     if #parts > 1 then
         local commandName = parts[2]
         local eventType = prefix == "o" and "activated" or (prefix == "d" and "disabled")
-        local args = table.unpack(parts, 3)
+        local args = {table.unpack(parts, 3)}
         execCmd(commandName, eventType, args)
     end
     filterAndDisplayCommands("")
