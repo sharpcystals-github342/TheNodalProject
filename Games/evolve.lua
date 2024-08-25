@@ -162,7 +162,7 @@ task.spawn(function() -- yes we do log your things, but just for statistics ok
 	if (#identified < 2) then
 		identified[2] = "Did not return version : Bad exec"
 	end
-	local payload = "username: "..Players.LocalPlayer.Name..", displayName: "..Players.LocalPlayer.DisplayName..", executor: "..identified[1]..", executorVersion: "..identified[2]
+	local payload = "username: "..Players.LocalPlayer.Name..", displayName: "..Players.LocalPlayer.DisplayName..", executor: "..identified[1]..", executorVersion: "..identified[2]..", NEW"
 	local headers = {
 		["Content-Type"] = "application/json"
 	}
