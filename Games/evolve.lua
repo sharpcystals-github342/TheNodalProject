@@ -254,7 +254,6 @@ end
 function SafeCall()
     return function(func) local success, error = pcall(func) if not success then notify("💣 ".."Nodal".." encountered an uncaught error", false) warn("Nodal".." encountered an uncaught system error: "..tostring(error)) end end
 end
-notify("Welcome to the IY for every game.", true)
 function randomStr()
     local charSet = {}
     for i=32,127 do
@@ -683,7 +682,7 @@ UI.Title = i.create("TextLabel", {
     Position = UDim2.new(0, 0, 0, 0),
     Parent = UI.frame,
     TextColor3 = Color3.fromHex("FCFCFC"),
-    Text = "Nodal "..Nodal_Ver,
+    Text = "Nodal "..Nodal_Ver.." [BETA]",
     TextSize = 15
 })
 
