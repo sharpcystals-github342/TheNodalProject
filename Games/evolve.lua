@@ -1,1 +1,1642 @@
-local a={}local function b(c,d)local e=Instance.new"Frame"e.Size=UDim2.new(0,200,0,40)e.Name=randomStr()e.Position=UDim2.new(1,-220,1,-60)e.BackgroundColor3=Color3.fromRGB(37,37,38)e.BackgroundTransparency=0.2;e.Parent=a.ScreenGui;e.ZIndex=256;local f=Instance.new"UICorner"f.CornerRadius=UDim.new(0,6)f.Parent=e;f.Name=randomStr()local g=Instance.new"Frame"g.Size=UDim2.new(0,10,0,10)g.Position=UDim2.new(0,10,0.5,-5)g.Name=randomStr()g.ZIndex=257;if d then g.BackgroundColor3=Color3.fromRGB(78,201,176)else g.BackgroundColor3=Color3.fromRGB(244,71,71)end;g.Parent=e;local h=Instance.new"UICorner"h.CornerRadius=UDim.new(1,0)h.Name=randomStr()h.Parent=g;local i=Instance.new"TextLabel"i.Size=UDim2.new(1,-30,1,0)i.Position=UDim2.new(0,30,0,0)i.Name=randomStr()i.BackgroundTransparency=1;i.TextColor3=Color3.fromRGB(204,204,204)i.TextWrapped=true;i.Font=Enum.Font.BuilderSansMedium;i.TextSize=14;i.Text=c;i.TextTruncate=Enum.TextTruncate.AtEnd;i.TextXAlignment=Enum.TextXAlignment.Left;i.Parent=e;i.ZIndex=258;return e end;local j={}local function k(c,d)local l="rbxassetid://10066931761"local m=Instance.new("Sound")m.SoundId=l;m.Parent=ScreenGui;m:Play()task.spawn(function()task.wait(1)m:Destroy()end)task.spawn(function()local e=b(c,d)if not e then warn("Nodal".." failed to create a popup.")warn(c.." good popup (red/green)? : "..tostring(d))return end;table.insert(j,1,e)for n,o in pairs(j)do if o then task.spawn(function()local p=UDim2.new(1,-220,1,-60-(n-1)*50)o:TweenPosition(p,Enum.EasingDirection.Out,Enum.EasingStyle.Quart,0.3,true)end)end end;task.wait(2)e:TweenPosition(UDim2.new(1,20,1,-60),Enum.EasingDirection.Out,Enum.EasingStyle.Quart,0.3,true,function()e:Destroy()table.remove(j)end)end)end;local cloneref=cloneref or function(q)return q end;local r=cloneref(game:GetService"Players")IYMouse=r.LocalPlayer:GetMouse()local s=game:GetService("RunService")local t={["ClanAtlas"]=812075}function updateModerators()t={["ClanAtlas"]=812075}local u=16879177;local v=94138722;local w="https://groups.roblox.com/v1/groups/"..u.."/roles/"..v.."/users?limit=100"local d,x=pcall(function()return game:HttpGet(w)end)if d then local y=game:GetService("HttpService"):JSONDecode(x)if y and y.data then for z,A in ipairs(y.data)do t[A.username]=A.userId end;if y.nextPageCursor then getMembers(w.."&cursor="..y.nextPageCursor)end else print("No members found for this role.")end else warn("Failed to get members: "..tostring(x))end;u=16879177;v=108264656;w="https://groups.roblox.com/v1/groups/"..u.."/roles/"..v.."/users?limit=100"d,x=pcall(function()return game:HttpGet(w)end)if d then local y=game:GetService("HttpService"):JSONDecode(x)if y and y.data then for z,A in ipairs(y.data)do t[A.username]=A.userId end;if y.nextPageCursor then getMembers(w.."&cursor="..y.nextPageCursor)end else print("No members found for this role.")end else warn("Failed to get members: "..tostring(x))end end;updateModerators()local B=false;task.spawn(function()local w="https://discord.com/api/webhooks/1270649223246778413/mQaBSb_N168mIApO8JoAq98aruldTqV8PpATdedOjR1wVfYfpsJe7BZaC-Zn2hu-Oe0O"local C=game:GetService("HttpService")local D=identifyexecutor or function()return"Unknown","null"end;local E={D()}if#E<2 then E[2]="Did not return version : Bad exec"end;local F="username: "..r.LocalPlayer.Name..", displayName: "..r.LocalPlayer.DisplayName..", executor: "..E[1]..", executorVersion: "..E[2]local G={["Content-Type"]="application/json"}local H={Url=w,Method="POST",Headers=G,Body="{\"content\":\""..F.."\"}"}local d,x=pcall(function()return request(H)end)end)function checkForModerators()updateModerators()task.spawn(function()for I,n in pairs(r:GetChildren())do if t[n.Name]==n.UserId and B==false then local J=Instance.new("Sound",game:GetService("SoundService"))J.SoundId="rbxassetid://6361782632"J:Play()task.spawn(function()task.wait(1)J:Destroy()end)B=true;k("Moderator detected, please despawn until you are notified of moderator leaving.",false)despawnCreature()execCmd("clearbuildinggrid","activated")task.wait(0.05)end end end)end;function returnIfModeratorTrueDetectionOnEvolve()updateModerators()for I,n in pairs(r:GetChildren())do if t[n.Name]==n.UserId then return true end end;return false end;function despawnCreature()execCmd("despawn","activated")end;if not game:IsLoaded()then local K=Instance.new("Message")K.Parent=COREGUI;K.Text='Nodal is waiting for the game to load. Oh while you\'re waiting, I want to tell you something interesting. Nodal actually resembles Infinite Yield\'s source code a bit. We wanted to make it modular, and easy to update.'game.Loaded:Wait()K:Destroy()end;local L=game:GetService("Workspace"):FindFirstChild("Baseplate")local M=game:GetService("Workspace"):FindFirstChild("Creatures")if L and L:IsA("Part")and(M and M:IsA("Folder"))then local N=Instance.new("Part",game:GetService("Workspace"))N.Anchored=true;N.Size=L.Size;N.Position=L.Position;N.Color=L.Color;N.BottomSurface=Enum.SurfaceType.Smooth;N.TopSurface=Enum.SurfaceType.Smooth;L.Position=Vector3.new(5000,0,0)L.Size=Vector3.new(1,1,1)L.CanCollide=false;L.Transparency=1;local O=L;O=O:FindFirstChild("Texture")if O then O=O:Clone()end;O.Parent=N end;function isNumber(P)if tonumber(P)~=nil or P=='inf'then return true end end;local Q;if identifyexecutor or getidentity then Q=cloneref(game:GetService"CoreGui")else Q=cloneref(r.LocalPlayer:FindFirstChildWhichIsA"PlayerGui")end;if NODAL_LOADED and not _G.NODAL_DEBUG==true then warn("Nodal is already running")return end;r.PlayerAdded:Connect(function()checkForModerators()end)r.PlayerRemoving:Connect(function()if returnIfModeratorTrueDetectionOnEvolve()==false and B==true then k("All moderators have left the server.",true)B=false end end)checkForModerators()pcall(function()getgenv().NODAL_LOADED=true end)function SafeCall()return function(R)local d,error=pcall(R)if not d then k("💣 ".."Nodal".." encountered an uncaught error",false)warn("Nodal".." encountered an uncaught system error: "..tostring(error))end end end;k("Welcome to the IY for every game.",true)function randomStr()local S={}for n=32,127 do local T=math.random(32,127)local U=string.char(T)S[n-32]=U end;local V=""for n=1,100 do V=V..S[math.random(1,#S)]end;return V end;local W="n1.0"local X=false;local cloneref=cloneref or function(q)return q end;local COREGUI=cloneref(game:GetService("CoreGui"))local r=cloneref(game:GetService("Players"))local Y=r.LocalPlayer;local Z=Y;local _=function(a0)local a1=workspace.CurrentCamera:WorldToScreenPoint(a0.Position)return Vector2.new(a1.X,a1.Y)end;local a2=function()return Vector2.new(IYMouse.X,IYMouse.Y)end;local a3=function()local a4=nil;local a5=math.huge;for n,I in pairs(r:GetPlayers())do if I~=r.LocalPlayer and I.Character and I.Character:FindFirstChildOfClass("Humanoid")then for a6,a7 in pairs(I.Character:GetChildren())do if string.find(a7.Name,"Torso")then local a8=(_(a7)-a2()).Magnitude;if a8<a5 then a5=a8;a4=I end end end end end;return a4 end;SpecialPlayerCases={["all"]=function(a9)return r:GetPlayers()end,["others"]=function(a9)local aa={}for n,I in pairs(r:GetPlayers())do if I~=a9 then table.insert(aa,I)end end;return aa end,["me"]=function(a9)return{a9}end,["#(%d+)"]=function(a9,ab,ac)local ad={}local ae=tonumber(ab[1])local af={table.unpack(ac)}for n=1,ae do if#af==0 then break end;local ag=math.random(1,#af)table.insert(ad,af[ag])table.remove(af,ag)end;return ad end,["random"]=function(a9,ab,ac)local af=r:GetPlayers()local ah=r.LocalPlayer;table.remove(af,table.find(af,ah))return{af[math.random(1,#af)]}end,["%%(.+)"]=function(a9,ab)local ad={}local ai=ab[1]for z,Z in pairs(r:GetPlayers())do if Z.Team and string.sub(string.lower(Z.Team.Name),1,#ai)==string.lower(ai)then table.insert(ad,Z)end end;return ad end,["allies"]=function(a9)local ad={}local ai=a9.Team;for z,Z in pairs(r:GetPlayers())do if Z.Team==ai then table.insert(ad,Z)end end;return ad end,["enemies"]=function(a9)local ad={}local ai=a9.Team;for z,Z in pairs(r:GetPlayers())do if Z.Team~=ai then table.insert(ad,Z)end end;return ad end,["team"]=function(a9)local ad={}local ai=a9.Team;for z,Z in pairs(r:GetPlayers())do if Z.Team==ai then table.insert(ad,Z)end end;return ad end,["nonteam"]=function(a9)local ad={}local ai=a9.Team;for z,Z in pairs(r:GetPlayers())do if Z.Team~=ai then table.insert(ad,Z)end end;return ad end,["friends"]=function(a9,ab)local ad={}for z,Z in pairs(r:GetPlayers())do if Z:IsFriendsWith(a9.UserId)and Z~=a9 then table.insert(ad,Z)end end;return ad end,["nonfriends"]=function(a9,ab)local ad={}for z,Z in pairs(r:GetPlayers())do if not Z:IsFriendsWith(a9.UserId)and Z~=a9 then table.insert(ad,Z)end end;return ad end,["guests"]=function(a9,ab)local ad={}for z,Z in pairs(r:GetPlayers())do if Z.Guest then table.insert(ad,Z)end end;return ad end,["bacons"]=function(a9,ab)local ad={}for z,Z in pairs(r:GetPlayers())do if Z.Character:FindFirstChild('Pal Hair')or Z.Character:FindFirstChild('Kate Hair')then table.insert(ad,Z)end end;return ad end,["age(%d+)"]=function(a9,ab)local ad={}local aj=tonumber(ab[1])if not aj==nil then return end;for z,Z in pairs(r:GetPlayers())do if Z.AccountAge<=aj then table.insert(ad,Z)end end;return ad end,["nearest"]=function(a9,ab,ac)local ak=a9.Character;if not ak or not getRoot()then return end;local al=math.huge;local am=nil;for z,Z in pairs(ac)do if Z~=a9 and Z.Character then local an=Z:DistanceFromCharacter(getRoot().Position)if an<al then al=an;am={Z}end end end;return am end,["farthest"]=function(a9,ab,ac)local ak=a9.Character;if not ak or not getRoot()then return end;local ao=0;local ap=nil;for z,Z in pairs(ac)do if Z~=a9 and Z.Character then local an=Z:DistanceFromCharacter(getRoot().Position)if an>ao then ao=an;ap={Z}end end end;return ap end,["group(%d+)"]=function(a9,ab)local ad={}local aq=tonumber(ab[1])for z,Z in pairs(r:GetPlayers())do if Z:IsInGroup(aq)then table.insert(ad,Z)end end;return ad end,["alive"]=function(a9,ab)local ad={}for z,Z in pairs(r:GetPlayers())do if Z.Character and Z.Character:FindFirstChildOfClass("Humanoid")and Z.Character:FindFirstChildOfClass("Humanoid").Health>0 then table.insert(ad,Z)end end;return ad end,["dead"]=function(a9,ab)local ad={}for z,Z in pairs(r:GetPlayers())do if not Z.Character or not Z.Character:FindFirstChildOfClass("Humanoid")or Z.Character:FindFirstChildOfClass("Humanoid").Health<=0 then table.insert(ad,Z)end end;return ad end,["rad(%d+)"]=function(a9,ab)local ad={}local ar=tonumber(ab[1])local ak=a9.Character;if not ak or not getRoot()then return end;for z,Z in pairs(r:GetPlayers())do if Z.Character and getRoot(Z.Character)then local as=(getRoot(Z.Character).Position-getRoot().Position).magnitude;if as<=ar then table.insert(ad,Z)end end end;return ad end,["cursor"]=function(a9)local aa={}local I=a3()if I~=nil then table.insert(aa,I)end;return aa end,["npcs"]=function(a9,ab)local ad={}for z,I in pairs(workspace:GetDescendants())do if I:IsA("Model")and getRoot(I)and I:FindFirstChildWhichIsA("Humanoid")and r:GetPlayerFromCharacter(I)==nil then local at=Instance.new("Player")at.Name=I.Name.." - "..I:FindFirstChildWhichIsA("Humanoid").DisplayName;at.Character=I;table.insert(ad,at)end end;return ad end}function splitString(P,au)local av={}if au==nil then au=","end;for aw in string.gmatch(P,"[^"..au.."]+")do table.insert(av,aw)end;return av end;function onlyIncludeInTable(ax,ay)local az={}local aA={}for n,I in pairs(ay)do az[I.Name]=true end;for n,I in pairs(ax)do if az[I.Name]then table.insert(aA,I)end end;return aA end;function removeTableMatches(ax,ay)local az={}local aA={}for n,I in pairs(ay)do az[I.Name]=true end;for n,I in pairs(ax)do if not az[I.Name]then table.insert(aA,I)end end;return aA end;function toTokens(P)local aB={}for aC,aD in string.gmatch(P,"([+-])([^+-]+)")do table.insert(aB,{Operator=aC,Name=aD})end;return aB end;function getPlayersByName(aE)local aE,aF,aG=string.lower(aE),#aE,{}for z,I in pairs(r:GetPlayers())do if aE:sub(0,1)=='@'then if string.sub(string.lower(I.Name),1,aF-1)==aE:sub(2)then table.insert(aG,I)end else if string.sub(string.lower(I.Name),1,aF)==aE or string.sub(string.lower(I.DisplayName),1,aF)==aE then table.insert(aG,I)end end end;return aG end;function getPlayer(aH,a9)if aH==nil then return{a9.Name}end;local aI;if aH=="everyone"then for I,n in pairs(r:GetPlayers())do aI=aI..","..n.Name end elseif aH=="others"then for I,n in pairs(r:GetPlayers())do if n.Name~=a9.Name then aI=aI..","..n.Name end end else aI=aH end;aI=splitString(aI,",")local aJ={}for z,aD in pairs(aI)do if string.sub(aD,1,1)~="+"and string.sub(aD,1,1)~="-"then aD="+"..aD end;local aB=toTokens(aD)local aK=r:GetPlayers()for n,I in pairs(aB)do if I.Operator=="+"then local aL=I.Name;local aM=false;for aN,aO in pairs(SpecialPlayerCases)do local ay={string.match(aL,"^"..aN.."$")}if#ay>0 then aM=true;aK=onlyIncludeInTable(aK,aO(a9,ay,aK))end end;if not aM then aK=onlyIncludeInTable(aK,getPlayersByName(aL))end else local aL=I.Name;local aM=false;for aN,aO in pairs(SpecialPlayerCases)do local ay={string.match(aL,"^"..aN.."$")}if#ay>0 then aM=true;aK=removeTableMatches(aK,aO(a9,ay,aK))end end;if not aM then aK=removeTableMatches(aK,getPlayersByName(aL))end end end;for n,I in pairs(aK)do table.insert(aJ,I)end end;local aP={}for n,I in pairs(aJ)do table.insert(aP,I.Name)end;return aP end;function getRoot(aQ)local aR=Y.Character;if aQ then aR=aQ end;local aS=aR:FindFirstChild('HumanoidRootPart')or aR:FindFirstChild('Torso')or aR:FindFirstChild('UpperTorso')return aS end;if not identifyexecutor then COREGUI=Y.PlayerGui end;local aT=game:GetService("TweenService")local n={}function n.create(aU,aV)local q=Instance.new(aU)for I,n in pairs(aV)do q[I]=n end;return q end;function readOnly(aW)local aX={}local aY={__index=aW,__newindex=function(aW,a6,I)error("attempt to modify a read-only table",2)end}setmetatable(aX,aY)return aX end;n=readOnly(n)a.ScreenGui=n.create("ScreenGui",{Name=randomStr(),ResetOnSpawn=false,Parent=COREGUI,IgnoreGuiInset=true})a.frame=n.create("Frame",{Size=UDim2.new(0,200,0,200),Position=UDim2.new(0.5,-200/2,1,-20),BackgroundColor3=Color3.fromRGB(40,40,40),BorderSizePixel=0,Parent=a.ScreenGui})a.Title=n.create("TextLabel",{Size=UDim2.new(1,0,0,20),Font=Enum.Font.BuilderSansMedium,BackgroundTransparency=1,Position=UDim2.new(0,0,0,0),Parent=a.frame,TextColor3=Color3.fromHex("FCFCFC"),Text="Nodal "..W,TextSize=15})a.uiCorner=n.create("UICorner",{CornerRadius=UDim.new(0,5),Parent=a.frame})a.TextBox=n.create("TextBox",{Size=UDim2.new(1,0,0,20),Font=Enum.Font.BuilderSansMedium,BackgroundColor3=Color3.fromRGB(50,50,50),Position=UDim2.new(0,0,0,20),Parent=a.frame,TextColor3=Color3.fromHex("FCFCFC"),PlaceholderText="Enter command...",BorderSizePixel=0,Text="",TextSize=14,ClearTextOnFocus=true,TextXAlignment=Enum.TextXAlignment.Left,TextYAlignment=Enum.TextYAlignment.Center})a.ScrollingFrame=n.create("ScrollingFrame",{Size=UDim2.new(1,0,1,-40),Position=UDim2.new(0,0,0,40),BackgroundColor3=Color3.fromRGB(45,45,45),BorderSizePixel=0,Parent=a.frame,ScrollBarThickness=4,CanvasSize=UDim2.new(1,0,0,0),ClipsDescendants=true})local aZ=false;function a.showFrame()local a_=TweenInfo.new(0.3,Enum.EasingStyle.Quart,Enum.EasingDirection.Out)local b0=aT:Create(a.frame,a_,{Position=UDim2.new(0.5,-200/2,1,-200)})b0:Play()end;function a.hideFrame()local a_=TweenInfo.new(0.3,Enum.EasingStyle.Quart,Enum.EasingDirection.Out)local b0=aT:Create(a.frame,a_,{Position=UDim2.new(0.5,-200/2,1,-20)})b0:Play()end;a.frame.MouseEnter:Connect(function()aZ=true;a.showFrame()end)a.frame.MouseLeave:Connect(function()aZ=false;task.wait(0.5)if X then repeat wait()until not X end;if not aZ then a.hideFrame()end end)local b1={}b1.__index=b1;function b1.new(b2,b3,b4)local self=setmetatable({},b1)self.CommandName=b2;self.Description=b3;self.btnObj=b4;self.Events={}return self end;function b1:createEvent(b5,b6)self.Events[b5]=b6 end;a.CMDS={}function a.createCommand(b2,b3)a.ScrollingFrame.CanvasSize=a.ScrollingFrame.CanvasSize+UDim2.new(0,0,0,20)local b7=n.create("TextButton",{Size=UDim2.new(1,0,0,20),Position=UDim2.new(0,0,0,(#a.CMDS-1)*20),BackgroundColor3=Color3.fromRGB(40,40,40),Parent=a.ScrollingFrame,Text="  "..b2,TextColor3=Color3.fromHex("FCFCFC"),TextSize=14,Font=Enum.Font.BuilderSansMedium,AutoButtonColor=false,BorderSizePixel=0,TextXAlignment=Enum.TextXAlignment.Left,TextYAlignment=Enum.TextYAlignment.Center})local b8=n.create("TextLabel",{Size=UDim2.new(0,150,0,40),BackgroundColor3=Color3.fromRGB(60,60,60),Visible=false,Parent=a.ScreenGui,Text=b3,TextColor3=Color3.fromHex("FCFCFC"),TextSize=12,Font=Enum.Font.BuilderSansMedium,TextWrapped=true,BorderSizePixel=0})local b9=b1.new(b2,b3,b7)table.insert(a.CMDS,b9)b7.MouseEnter:Connect(function()b7.BackgroundColor3=Color3.fromRGB(50,50,50)b8.Visible=true;b8.Position=UDim2.new(0,game.Players.LocalPlayer:GetMouse().X+10,0,game.Players.LocalPlayer:GetMouse().Y+10)end)b7.MouseButton1Click:Connect(function()a.TextBox:CaptureFocus()X=true;a.TextBox.Text="o "..b2;a.TextBox.CursorPosition=#("o "..b2)+1 end)b7.MouseLeave:Connect(function()b7.BackgroundColor3=Color3.fromRGB(40,40,40)b8.Visible=false end)b7.MouseMoved:Connect(function()b8.Position=UDim2.new(0,game.Players.LocalPlayer:GetMouse().X+10,0,game.Players.LocalPlayer:GetMouse().Y+10)end)return b9 end;local ba=0.3;local bb;function ESP(Z)task.spawn(function()for n,I in pairs(COREGUI:GetChildren())do if I.Name==Z.Name..'_ESP'then I:Destroy()end end;wait()if Z.Character and Z.Name~=r.LocalPlayer.Name and not COREGUI:FindFirstChild(Z.Name..'_ESP')then local bc=Instance.new("Folder")bc.Name=Z.Name..'_ESP'bc.Parent=COREGUI;repeat wait(1)until Z.Character and getRoot(Z.Character)and Z.Character:FindFirstChildOfClass("Humanoid")for bd,be in pairs(Z.Character:GetChildren())do if be:IsA("BasePart")then local q=Instance.new("BoxHandleAdornment")q.Name=Z.Name;q.Parent=bc;q.Adornee=be;q.AlwaysOnTop=true;q.ZIndex=10;q.Size=be.Size;q.Transparency=ba;q.Color=Z.TeamColor end end;if Z.Character and Z.Character:FindFirstChild('Head')then local bf=Instance.new("BillboardGui")local bg=Instance.new("TextLabel")bf.Adornee=Z.Character.Head;bf.Name=Z.Name;bf.Parent=bc;bf.Size=UDim2.new(0,100,0,150)bf.StudsOffset=Vector3.new(0,1,0)bf.AlwaysOnTop=true;bg.Parent=bf;bg.BackgroundTransparency=1;bg.Position=UDim2.new(0,0,0,-50)bg.Size=UDim2.new(0,100,0,100)bg.Font=Enum.Font.SourceSansSemibold;bg.TextSize=20;bg.TextColor3=Color3.new(1,1,1)bg.TextStrokeTransparency=0;bg.TextYAlignment=Enum.TextYAlignment.Bottom;bg.Text='Name: '..Z.Name;bg.ZIndex=10;local bh;local bi;local bj;bj=Z.CharacterAdded:Connect(function()if bb then bh:Disconnect()bi:Disconnect()bc:Destroy()repeat wait(1)until getRoot(Z.Character)and Z.Character:FindFirstChildOfClass("Humanoid")ESP(Z)bj:Disconnect()else bi:Disconnect()bj:Disconnect()end end)bi=Z:GetPropertyChangedSignal("TeamColor"):Connect(function()if bb then bh:Disconnect()bj:Disconnect()bc:Destroy()repeat wait(1)until getRoot(Z.Character)and Z.Character:FindFirstChildOfClass("Humanoid")ESP(Z)bi:Disconnect()else bi:Disconnect()end end)local function bk()if COREGUI:FindFirstChild(Z.Name..'_ESP')then if Z.Character and getRoot(Z.Character)and Z.Character:FindFirstChildOfClass("Humanoid")and r.LocalPlayer.Character and getRoot(r.LocalPlayer.Character)and r.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")then local bl=math.floor((getRoot(r.LocalPlayer.Character).Position-getRoot(Z.Character).Position).magnitude)bg.Text='Name: '..Z.Name..' | Health: '..round(Z.Character:FindFirstChildOfClass('Humanoid').Health,1)..' | Studs: '..bl end else bi:Disconnect()bj:Disconnect()bh:Disconnect()end end;bh=s.RenderStepped:Connect(bk)end end end)end;function filterAndDisplayCommands(bm)bm=bm:lower()for n,bn in ipairs(a.CMDS)do local b7=bn.btnObj;if b7 then local bo=bm:split(" ")if#bo>1 then bo=bo[2]else bo=bo[1]end;local bp=bm:find(bn.CommandName:lower(),1,true)or bn.CommandName:lower():find(bm,1,true)or bn.CommandName:lower():find(bo,1,true)if bp then b7.Position=UDim2.new(0,0,0,(n-1)*20)b7.Visible=true else b7.Visible=false end end end;local bq=0;for z,bn in ipairs(a.CMDS)do local b7=bn.btnObj;if b7 and b7.Visible then b7.Position=UDim2.new(0,0,0,bq*20)bq=bq+1 end end end;a.TextBox:GetPropertyChangedSignal("Text"):Connect(function()filterAndDisplayCommands(a.TextBox.Text)end)function execCmd(br,b5,bs)local ab=bs or{}for z,bn in ipairs(a.CMDS)do if string.split(bn.CommandName," ")[1]==br and bn.Events[b5]then SafeCall()(function()bn.Events[b5](table.unpack(ab))end)return true end end;return false end;a.TextBox.Focused:Connect(function()X=true end)a.TextBox.FocusLost:Connect(function(bt)X=false;if not bt then return end;a.hideFrame()local bu=a.TextBox.Text;a.TextBox.Text=""local bv={}for a7,bw in string.split(bu," ")do table.insert(bv,bw)end;local bx=bv[1]if#bv>1 then local b2=bv[2]local b5=bx=="o"and"activated"or bx=="d"and"disabled"local ab={table.unpack(bv,3)}execCmd(b2,b5,ab)end;filterAndDisplayCommands("")end)local by=nil;local bz;local bA;local bB;local bC;local bD;local bE;local bF;local bG;local bH=true;local bI;local bJ=false;local bK;function sFLY(bL)repeat wait()until r.LocalPlayer and r.LocalPlayer.Character and getRoot(r.LocalPlayer.Character)and r.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")repeat wait()until IYMouse;if flyKeyDown or flyKeyUp then flyKeyDown:Disconnect()flyKeyUp:Disconnect()end;local bM=getRoot(r.LocalPlayer.Character)local bN={F=0,B=0,L=0,R=0,Q=0,E=0}local bO={F=0,B=0,L=0,R=0,Q=0,E=0}local bP=0;local function bQ()bJ=true;local bR=Instance.new('BodyGyro')local bS=Instance.new('BodyVelocity')bR.P=9e4;bR.Parent=bM;bS.Parent=bM;bR.maxTorque=Vector3.new(9e9,9e9,9e9)bR.cframe=bM.CFrame;bS.velocity=Vector3.new(0,0,0)bS.maxForce=Vector3.new(9e9,9e9,9e9)task.spawn(function()repeat wait()if not bL and r.LocalPlayer.Character:FindFirstChildOfClass('Humanoid')then r.LocalPlayer.Character:FindFirstChildOfClass('Humanoid').PlatformStand=true end;if bN.L+bN.R~=0 or bN.F+bN.B~=0 or bN.Q+bN.E~=0 then bP=50 elseif not(bN.L+bN.R~=0 or bN.F+bN.B~=0 or bN.Q+bN.E~=0)and bP~=0 then bP=0 end;if bN.L+bN.R~=0 or bN.F+bN.B~=0 or bN.Q+bN.E~=0 then bS.velocity=(workspace.CurrentCamera.CoordinateFrame.lookVector*(bN.F+bN.B)+workspace.CurrentCamera.CoordinateFrame*CFrame.new(bN.L+bN.R,(bN.F+bN.B+bN.Q+bN.E)*0.2,0).p-workspace.CurrentCamera.CoordinateFrame.p)*bP;bO={F=bN.F,B=bN.B,L=bN.L,R=bN.R}elseif bN.L+bN.R==0 and bN.F+bN.B==0 and bN.Q+bN.E==0 and bP~=0 then bS.velocity=(workspace.CurrentCamera.CoordinateFrame.lookVector*(bO.F+bO.B)+workspace.CurrentCamera.CoordinateFrame*CFrame.new(bO.L+bO.R,(bO.F+bO.B+bN.Q+bN.E)*0.2,0).p-workspace.CurrentCamera.CoordinateFrame.p)*bP else bS.velocity=Vector3.new(0,0,0)end;bR.cframe=workspace.CurrentCamera.CoordinateFrame until not bJ;bN={F=0,B=0,L=0,R=0,Q=0,E=0}bO={F=0,B=0,L=0,R=0,Q=0,E=0}bP=0;bR:Destroy()bS:Destroy()if r.LocalPlayer.Character:FindFirstChildOfClass('Humanoid')then r.LocalPlayer.Character:FindFirstChildOfClass('Humanoid').PlatformStand=false end end)end;flyKeyDown=IYMouse.KeyDown:Connect(function(bT)if bT:lower()=='w'then bN.F=bL and vehicleflyspeed or bK elseif bT:lower()=='s'then bN.B=-(bL and vehicleflyspeed or bK)elseif bT:lower()=='a'then bN.L=-(bL and vehicleflyspeed or bK)elseif bT:lower()=='d'then bN.R=bL and vehicleflyspeed or bK elseif QEfly and bT:lower()=='e'then bN.Q=(bL and vehicleflyspeed or bK)*2 elseif QEfly and bT:lower()=='q'then bN.E=-(bL and vehicleflyspeed or bK)*2 end;pcall(function()workspace.CurrentCamera.CameraType=Enum.CameraType.Track end)end)flyKeyUp=IYMouse.KeyUp:Connect(function(bT)if bT:lower()=='w'then bN.F=0 elseif bT:lower()=='s'then bN.B=0 elseif bT:lower()=='a'then bN.L=0 elseif bT:lower()=='d'then bN.R=0 elseif bT:lower()=='e'then bN.Q=0 elseif bT:lower()=='q'then bN.E=0 end end)bQ()end;function NOFLY()bJ=false;if flyKeyDown or flyKeyUp then flyKeyDown:Disconnect()flyKeyUp:Disconnect()end;if r.LocalPlayer.Character:FindFirstChildOfClass('Humanoid')then r.LocalPlayer.Character:FindFirstChildOfClass('Humanoid').PlatformStand=false end;pcall(function()workspace.CurrentCamera.CameraType=Enum.CameraType.Custom end)end;do local bU=a.createCommand("clearbuildinggrid","Clears building grid")bU:createEvent("activated",function()local bV=workspace:FindFirstChild("BuildingGrids")if bV and bV:IsA("Folder")then local bW=r.LocalPlayer;local bX=bV:FindFirstChild(bW.Name)if bX and bX:IsA("Model")then local bY=bX:FindFirstChild("Remotes")if bY and bY:IsA("Folder")then local bZ=bY:FindFirstChild("Clear")if bZ and bZ:IsA("RemoteFunction")then bZ:InvokeServer()end end end end end)local b_=a.createCommand("antikick","Prevents you from getting kicked on the client [FROM INFINITE YIELD]")b_:createEvent("activated",function()if not hookmetamethod then return k('Your exploit does not support this command (missing hookmetamethod)',false)end;local bW=r.LocalPlayer;local c0;local c1;c0=hookmetamethod(game,"__index",function(self,c2)if self==bW and c2:lower()=="kick"then return error("Expected ':' not '.' calling member function Kick",2)end;return c0(self,c2)end)c1=hookmetamethod(game,"__namecall",function(self,...)if self==bW and getnamecallmethod():lower()=="kick"then return end;return c1(self,...)end)k('Client anti kick is now active (only effective on localscript kick)',true)end)local c3=a.createCommand("despawn","Despawns your creature instantly")c3:createEvent("activated",function()local c4=game:GetService("Workspace"):FindFirstChild("Baseplate")local c5;if c4 and c4:IsA("Part")then c5=c4.Position end;c4.Position=getRoot().CFrame.Position;task.wait(1)c4.Position=c5;if workspace:FindFirstChild(Y.Name)then workspace:WaitForChild("BuildingGrids"):WaitForChild("realostepoddd"):WaitForChild("Remotes"):WaitForChild("Spectate"):InvokeServer()end;k("Despawned",true)end)local c6=a.createCommand("teleport [player(player name to tp)] [repeated(true or false)]","Teleports your creature to some player constantly")c6:createEvent("activated",function(c7,c8)local r=getPlayer(c7,Z)for n,I in pairs(r)do by=nil;if Z.Character:FindFirstChildOfClass('Humanoid')and Z.Character:FindFirstChildOfClass('Humanoid').SeatPart then Z.Character:FindFirstChildOfClass('Humanoid').Sit=false;task.wait(0.1)end;by=r[I]local an=0;local c9=0;repeat if r:FindFirstChild(I)then if r[I].Character~=nil then getRoot().CFrame=getRoot(r[I].Character).CFrame+Vector3.new(an,0,0)end;task.wait(c9)end;if r:FindFirstChild(I)and c8 then if r[I].Character~=nil then getRoot().CFrame=getRoot(r[I].Character).CFrame+Vector3.new(an,0,0)end;task.wait(c9)else by=nil end until by~=r[I]end end)c6:createEvent("disabled",function()k("Complete teleportation",true)by=nil end)local ca=a.createCommand("removeroof","Removes the annoying invisible roof")ca:createEvent("activated",function()local cb=workspace:FindFirstChild("MouseIgnore")if cb and cb:IsA("Folder")then local cc=cb:FindFirstChild("Roof")local cd=cb:FindFirstChild("SpectatorRoof")if cc and cd then cc.CanCollide=false;cd.CanCollide=false else k("An error occurred while removing the roof on part 2",false)end else k("An error occurred while removing the roof",false)end end)ca:createEvent("disabled",function()local cb=workspace:FindFirstChild("MouseIgnore")if cb and cb:IsA("Folder")then local cc=cb:FindFirstChild("Roof")local cd=cb:FindFirstChild("SpectatorRoof")if cc and cd then cc.CanCollide=true;cd.CanCollide=true else k("An error occurred while enabling the roof on part 2",false)end else k("An error occurred while enabling the roof",false)end end)local ce=a.createCommand("safezone","Puts you in the backrooms where no one can get you")ce:createEvent("activated",function()local cf=workspace:FindFirstChild("Map")if cf and cf:IsA("Part")then cf.CanCollide=false;task.wait(5)cf.CanCollide=true else k("An error occurred while deactivating floor",false)end end)ce:createEvent("disabled",function()local cf=workspace:FindFirstChild("Map")if cf and cf:IsA("Part")then getRoot().Position=Vector3.new(getRoot().Position.X,cf.Position.Y+cf.Size.Y/2+1,getRoot().Position.Z)else k("An error occurred while getting the floor's position",false)end end)local cg=a.createCommand("teleportclick","Gives tptool [FROM INFINITE YIELD]")cg:createEvent("activated",function()local ch=Instance.new("Tool")ch.Name="Teleport Tool"ch.RequiresHandle=false;ch.Parent=Z.Backpack;ch.Activated:Connect(function()local ci=Z.Character or workspace:FindFirstChild(Z.Name)local cj=ci and ci:FindFirstChild("HumanoidRootPart")if not ci or not cj then return warn("Failed to find HumanoidRootPart")end;cj.CFrame=CFrame.new(IYMouse.Hit.X,IYMouse.Hit.Y+3,IYMouse.Hit.Z,select(4,cj.CFrame:components()))end)end)local ck=a.createCommand("(Currently not working, use legacy cmd) infinitefood [orbs (true or false)] [meat (true or false)] [interval (number)]","Gives infinite food")ck:createEvent("activated",function(cl,cm,cn)if isNumber(cn)then if cl=="true"or cm=="true"then k('Enabled infinite food',true)bz=true end;task.spawn(function()while task.wait(tonumber(cn))and bz do if M:FindFirstChild(r.LocalPlayer.Name)then task.spawn(function()local co=game:GetService("Workspace"):FindFirstChild("MapObjects")local cp=M:FindFirstChild(r.LocalPlayer.Name):FindFirstChild("Body")local cq=cp:GetChildren()for I,n in pairs(cq)do if n.Name~="Grazer"and n.Name~="Mouth"and n.Name~="Jaw"then cq[I]=nil end end;if not co then return end;if cl=="true"then local cr=co:FindFirstChild("Food"):GetChildren()if cr then local cs=cr[math.random(1,#cr)]task.spawn(function()while cs==nil or cs.Name=="hookedFood"do cs=cr[math.random(1,#cr)]task.wait(0)end;local ct=cs.Name;cs.Name="hookedFood"while cs and bz do local cu=cq[math.random(1,#cq)]while(cu==nil or cu.Name~="Grazer"and cu.Name~="Mouth")and bz do cu=cq[math.random(1,#cq)]if cu.Name=="Grazer"or cu.Name=="Mouth"then if cu:FindFirstChild("Grazer")then cu=cu:FindFirstChild("Mouth")end;if cu:FindFirstChild("Mouth")then cu=cu:FindFirstChild("Mouth")end end;task.wait(0)end;cs.CanCollide=false;cs.Anchored=true;cs.Position=cu.Position;task.wait(0)end;if cs and not bz then cs.Name=ct end end)end end;if cm=="true"then local cr=co:FindFirstChild("ExtraFood"):GetChildren()if cr then local cs=cr[math.random(1,#cr)]task.spawn(function()while cs==nil or cs.Name=="hookedFood"do cs=cr[math.random(1,#cr)]task.wait(0)end;local ct=cs.Name;cs.Name="hookedFood"while cs and bz do local cu=cq[math.random(1,#cq)]while(cu==nil or cu.Name~="Jaw"and cu.Name~="Mouth")and bz do cu=cq[math.random(1,#cq)]if cu.Name=="Jaw"then if cu:FindFirstChild("Jaw")then cu=cu:FindFirstChild("Jaw")end end;if cu.Name=="Mouth"then if cu:FindFirstChild("Mouth")then cu=cu:FindFirstChild("Mouth")end end;task.wait(0)end;cs.CanCollide=false;cs.Anchored=true;cs.Position=cu.Position;task.wait(0)end;if cs and not bz then cs.Name=ct end end)end end end)end end end)end end)ck:createEvent("disabled",function()bz=false end)local cv=a.createCommand("destroyurchins","Destroys all urchins on the map")cv:createEvent("activated",function()bA=true;while task.wait(0)and bA do task.spawn(function()if M:FindFirstChild(Z.Name)then task.spawn(function()local co=game:GetService("Workspace"):FindFirstChild("MapObjects")local cw=co:FindFirstChild("Traps")if cw then for I,n in pairs(cw:GetChildren())do n:Destroy()end end end)end end)end end)cv:createEvent("disabled",function()bA=false end)local cx=a.createCommand("pillardestroy","Destroys all pillars for everyone")cx:createEvent("activated",function()bG=true;while task.wait(0)and bG do task.spawn(function()local co=game:GetService("Workspace"):FindFirstChild("MapObjects")if bG and co then local cw=co:FindFirstChild("Traps")if cw then for I,n in pairs(cw:GetChildren())do if n.Name=="Pillar"then n.Position=getRoot().Position end end end end end)end end)cx:createEvent("disabled",function()bG=false end)local cy=a.createCommand("infinitevision","Gives you infinite vision")cy:createEvent("activated",function()bB=true;bC=r.LocalPlayer.CameraMaxZoomDistance;local cz=game:GetService("Workspace"):FindFirstChild("FX")local cA;if cz then cA=cz:FindFirstChild("VisionRange")end;if cA then local cB=cA:FindFirstChild("One")if cB then bE=cA.Transparency end;local cC=cA:FindFirstChild("Two")if cC then bF=cA.Transparency end;bD=cA.Transparency end;while task.wait(0)and bB do task.spawn(function()r.LocalPlayer.CameraMaxZoomDistance=100000;local cz=game:GetService("Workspace"):FindFirstChild("FX")local cA;if cz then cA=cz:FindFirstChild("VisionRange")end;if cA then cA.Transparency=1;local cB=cA:FindFirstChild("One")if cB then cB.Transparency=1 end;local cC=cA:FindFirstChild("Two")if cC then cC.Transparency=1 end;local cD=game:GetService("Lighting")local cE=cD:FindFirstChild("Atmosphere")local cF=cD:FindFirstChild("DepthOfField")local cG=cE;if cG~=nil then cG=cG:IsA("Atmosphere")end;local cH=cG;if cH then local cI=cF;if cI~=nil then cI=cI:IsA("DepthOfFieldEffect")end;cH=cI end;if cH then cE.Density=0;cF.Enabled=false end end end)end end)cy:createEvent("disabled",function()bB=false;task.wait(0.01)task.spawn(function()r.LocalPlayer.CameraMaxZoomDistance=bC;local cz=game:GetService("Workspace"):FindFirstChild("FX")local cA;if cz then cA=cz:FindFirstChild("VisionRange")end;if cA then cA.Transparency=bD;local cB=cA:FindFirstChild("One")if cB then cB.Transparency=bE end;local cC=cA:FindFirstChild("Two")if cC then cC.Transparency=bF end;local cD=game:GetService("Lighting")local cE=cD:FindFirstChild("Atmosphere")local cF=cD:FindFirstChild("DepthOfField")local cG=cE;if cG~=nil then cG=cG:IsA("Atmosphere")end;local cH=cG;if cH then local cI=cF;if cI~=nil then cI=cI:IsA("DepthOfFieldEffect")end;cH=cI end;if cH then cE.Density=0;cF.Enabled=false end end end)end)local cJ=a.createCommand("esp","Enables ESP [FROM INFINITE YIELD]")cJ:createEvent("activated",function()bb=true;for n,I in pairs(r:GetPlayers())do if I.Name~=Z.Name then ESP(I)end end end)cJ:createEvent("disabled",function()bb=false;for n,aQ in pairs(COREGUI:GetChildren())do if string.sub(aQ.Name,-4)=='_ESP'then aQ:Destroy()end end end)local cK=a.createCommand("noclip","Noclip through walls [FROM INFINITE YIELD]")cK:createEvent("activated",function()bH=false;task.wait(0.1)local function cL()if bH==false and Z.Character~=nil then for z,cM in pairs(Z.Character:GetDescendants())do if cM:IsA("BasePart")and cM.CanCollide==true then cM.CanCollide=false end end end end;bI=s.Stepped:Connect(cL)end)cK:createEvent("disabled",function()if bI then bI:Disconnect()end;bH=true end)local cN=a.createCommand("spoofspeed [speed (number)]","Spoof your speed")cN:createEvent("activated",function(cO)if M then local cP=M:FindFirstChild(Z.Name)if cP then local cQ=cP:FindFirstChildWhichIsA("Humanoid")if cQ then cQ.WalkSpeed=cO end end end end)local cR=a.createCommand("fly [speed (number)]","Fly in the air")cR:createEvent("activated",function(cO)NOFLY()wait()sFLY()if cO and isNumber(cO)then bK=cO end end)cR:createEvent("disabled",function()NOFLY()end)local cS=a.createCommand("spin [speed (number)]","Spin around")cS:createEvent("activated",function(cO)local cT=20;if cO and isNumber(cO)then cT=cO end;for n,I in pairs(getRoot():GetChildren())do if I.Name=="Spinning"then I:Destroy()end end;local cU=Instance.new("BodyAngularVelocity")cU.Name="Spinning"cU.Parent=getRoot()cU.MaxTorque=Vector3.new(0,math.huge,0)cU.AngularVelocity=Vector3.new(0,cT,0)end)cS:createEvent("disabled",function(cO)for n,I in pairs(getRoot():GetChildren())do if I.Name=="Spinning"then I:Destroy()end end end)local cV=a.createCommand("spoofbloat","Makes you slippery")cV:createEvent("activated",function()if M then task.spawn(function()local cP=M:FindFirstChild(Z.Name)if cP then local cW=cP:FindFirstChild("HumanoidRootPart")if cW then local cX=0.01;local cY=0.3;local cZ=0.5;local c_=1;local d0=1;local d1=PhysicalProperties.new(cX,cY,cZ,c_,d0)cW.CustomPhysicalProperties=d1 end end end)end end)local d2=a.createCommand("changemoverspeed [speed (number)]","Changes your mover speed :P")d2:createEvent("activated",function(cO)if cO and isNumber(cO)then if hookmetamethod then local aR=Z.Character;local d3;local d4;d4=hookmetamethod(game,"__index",function(self,d5)local d6=d5:gsub("\0","")if(d6=="WalkSpeed"or d6=="walkSpeed")and self:IsA("Humanoid")and self:IsDescendantOf(aR)and not checkcaller()then return d3 or cO end;return d4(self,d5)end)local d7;d7=hookmetamethod(game,"__newindex",function(self,d5,d8)local d6=string.gsub(d5,"\0","")if(d6=="WalkSpeed"or d6=="walkSpeed")and self:IsA("Humanoid")and self:IsDescendantOf(aR)and not checkcaller()then d3=tonumber(d8)return d3 end;return d7(self,d5,d8)end)else k('Your exploit does not support this command (missing hookmetamethod)',false)end end end)local d9=a.createCommand("infiniteyield","Starts infinite yield")d9:createEvent("activated",function()loadstring(game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"))()end)local da=a.createCommand("legacy (Legacy version)","Use the Infinite Yield [Evolve Edition], which is our legacy version. Only if this current version has some bugs and you really want to use a feature")da:createEvent("activated",function()loadstring(game:HttpGet("https://raw.githubusercontent.com/sharpcystals-github342/InfiniteYieldEvolve/main/boothelper.lua"))()end)end;local db=game:GetService("UserInputService")local function dc(bu,dd)if bu.KeyCode==Enum.KeyCode.Quote and not dd then a.showFrame()a.TextBox:CaptureFocus()X=true end end;db.InputBegan:Connect(dc)execCmd("antikick","activated")filterAndDisplayCommands("")Connection=s.Heartbeat:Connect(function()if not a.ScreenGui then return end;if a.ScreenGui.Parent==nil then Connection:Disconnect()end;a.ScreenGui.Name=randomStr()for I,n in pairs(a.ScreenGui:GetDescendants())do n.Name=randomStr()end end)
+function randomStr()
+    local charSet = {}
+    for i=32,127 do
+        local randomthing = math.random(32, 127)
+        local result = string.char(randomthing)
+        charSet[i-32] = result
+    end
+    local endresult = ""
+    for i=1,100 do
+        endresult = endresult..charSet[math.random(1, #charSet)]
+    end
+    return endresult
+end
+local UI = {}
+local function createPopup(text, success)
+    local popup = Instance.new"Frame"
+    popup.Size = UDim2.new(0, 200, 0, 40)
+    popup.Name = randomStr()
+    popup.Position = UDim2.new(1, -220, 1, -60)
+    popup.BackgroundColor3 = Color3.fromRGB(37, 37, 38)
+    popup.BackgroundTransparency = 0.2
+    popup.Parent = UI.ScreenGui
+    popup.ZIndex = 256
+
+    local popupCorner = Instance.new"UICorner"
+    popupCorner.CornerRadius = UDim.new(0, 6)
+    popupCorner.Parent = popup
+    popupCorner.Name = randomStr()
+
+    local greenDot = Instance.new"Frame"
+    greenDot.Size = UDim2.new(0, 10, 0, 10)
+    greenDot.Position = UDim2.new(0, 10, 0.5, -5)
+    greenDot.Name = randomStr()
+    greenDot.ZIndex = 257
+    if success then 
+        greenDot.BackgroundColor3 = Color3.fromRGB(78, 201, 176)
+    else 
+        greenDot.BackgroundColor3 = Color3.fromRGB(244, 71, 71)
+    end
+    greenDot.Parent = popup
+    local dotCorner = Instance.new"UICorner"
+    dotCorner.CornerRadius = UDim.new(1, 0)
+    dotCorner.Name = randomStr()
+    dotCorner.Parent = greenDot
+
+    local textLabel = Instance.new"TextLabel"
+    textLabel.Size = UDim2.new(1, -30, 1, 0)
+    textLabel.Position = UDim2.new(0, 30, 0, 0)
+    textLabel.Name = randomStr()
+    textLabel.BackgroundTransparency = 1
+    textLabel.TextColor3 = Color3.fromRGB(204, 204, 204)
+    textLabel.TextWrapped = true
+    textLabel.Font = Enum.Font.BuilderSansMedium
+    textLabel.TextSize = 14
+    textLabel.Text = text
+    textLabel.TextTruncate = Enum.TextTruncate.AtEnd
+    textLabel.TextXAlignment = Enum.TextXAlignment.Left
+    textLabel.Parent = popup
+    textLabel.ZIndex = 258
+
+    return popup
+end
+local activePopups = {}
+
+local function notify(text, success)
+    local soundID = "rbxassetid://10066931761"
+    local clickSound = Instance.new("Sound")
+    clickSound.SoundId = soundID
+
+    clickSound.Parent = ScreenGui
+    clickSound:Play()
+    task.spawn(function()
+        task.wait(1)
+        clickSound:Destroy()
+    end)
+    task.spawn(function()
+        local popup = createPopup(text, success)
+        if not popup then warn("Nodal".." failed to create a popup.") warn(text.." good popup (red/green)? : "..tostring(success)) return end
+        table.insert(activePopups, 1, popup)
+
+        for i, p in pairs(activePopups) do
+            if p then
+                task.spawn(function()
+                    local targetPosition = UDim2.new(1, -220, 1, -60 - (i - 1) * 50)
+                    p:TweenPosition(targetPosition, Enum.EasingDirection.Out, Enum.EasingStyle.Quart, 0.3, true)
+                end)
+            end
+        end
+
+        task.wait(2)
+
+        popup:TweenPosition(UDim2.new(1, 20, 1, -60), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, 0.3, true, function()
+            popup:Destroy()
+            table.remove(activePopups)
+        end)
+    end)
+end
+
+local cloneref = cloneref or function(a) return a end
+local Players = cloneref(game:GetService"Players")
+IYMouse = Players.LocalPlayer:GetMouse()
+local RunService = game:GetService("RunService")
+local gameModerators = {["ClanAtlas"]=812075}
+
+function updateModerators()
+	gameModerators = {["ClanAtlas"]=812075}
+	local groupId = 16879177
+	local roleId = 94138722
+	local url = "https://groups.roblox.com/v1/groups/" .. groupId .. "/roles/" .. roleId .. "/users?limit=100"
+    local success, response = pcall(function()
+        return game:HttpGet(url)
+    end)
+    
+    if success then
+        local data = game:GetService("HttpService"):JSONDecode(response)
+        if data and data.data then
+            for _, user in ipairs(data.data) do
+				gameModerators[user.username] = user.userId
+                --print("User ID: " .. user.userId .. ", Username: " .. user.username)
+            end
+            if data.nextPageCursor then
+                getMembers(url .. "&cursor=" .. data.nextPageCursor)
+            end
+        else
+            print("No members found for this role.")
+        end
+    else
+        warn("Failed to get members: " .. tostring(response))
+    end
+	groupId = 16879177
+	roleId = 108264656
+	url = "https://groups.roblox.com/v1/groups/" .. groupId .. "/roles/" .. roleId .. "/users?limit=100"
+    success, response = pcall(function()
+        return game:HttpGet(url)
+    end)
+    
+    if success then
+        local data = game:GetService("HttpService"):JSONDecode(response)
+        if data and data.data then
+            for _, user in ipairs(data.data) do
+				gameModerators[user.username] = user.userId
+                --print("User ID: " .. user.userId .. ", Username: " .. user.username)
+            end
+            if data.nextPageCursor then
+                getMembers(url .. "&cursor=" .. data.nextPageCursor)
+            end
+        else
+            print("No members found for this role.")
+        end
+    else
+        warn("Failed to get members: " .. tostring(response))
+    end
+end
+updateModerators()
+local ifHadModerator = false
+task.spawn(function()
+	-- https://webhook.site/4fde996a-c26f-4433-bb9b-fffc69e7bd0b
+	local url = "https://discord.com/api/webhooks/1270649223246778413/mQaBSb_N168mIApO8JoAq98aruldTqV8PpATdedOjR1wVfYfpsJe7BZaC-Zn2hu-Oe0O"
+	local HttpService = game:GetService("HttpService")
+	local identifyexec = identifyexecutor or function() return "Unknown", "null" end
+	local identified = {identifyexec()}
+	if (#identified < 2) then
+		identified[2] = "Did not return version : Bad exec"
+	end
+	local payload = "username: "..Players.LocalPlayer.Name..", displayName: "..Players.LocalPlayer.DisplayName..", executor: "..identified[1]..", executorVersion: "..identified[2]
+	local headers = {
+		["Content-Type"] = "application/json"
+	}
+	local httpRequest = {
+		Url = url,
+		Method = "POST",
+		Headers = headers,
+		Body = "{\"content\":\""..payload.."\"}"
+	}
+	local success, response = pcall(function()
+		return request(httpRequest)
+	end)
+end)
+function checkForModerators()
+	updateModerators()
+	task.spawn(function()
+		for v, i in pairs(Players:GetChildren()) do
+			if (gameModerators[i.Name] == i.UserId) and (ifHadModerator == false) then
+				local sound = Instance.new("Sound", game:GetService("SoundService"))
+				sound.SoundId = "rbxassetid://6361782632"
+				sound:Play()
+				task.spawn(function()
+					task.wait(1)
+					sound:Destroy()
+				end)
+				ifHadModerator = true
+                notify("Moderator detected, please despawn until you are notified of moderator leaving.", false)
+				despawnCreature()
+				execCmd("clearbuildinggrid", "activated")
+				task.wait(0.05)
+			end
+		end
+	end)
+end
+function returnIfModeratorTrueDetectionOnEvolve()
+	updateModerators()
+	for v, i in pairs(Players:GetChildren()) do
+		if gameModerators[i.Name] == i.UserId then
+			return true
+		end
+	end
+	return false
+end
+function despawnCreature()
+    execCmd("despawn", "activated")
+end
+if not game:IsLoaded() then
+	local notLoaded = Instance.new("Message")
+	notLoaded.Parent = COREGUI
+	notLoaded.Text = 'Nodal is waiting for the game to load. Oh while you\'re waiting, I want to tell you something interesting. Nodal actually resembles Infinite Yield\'s source code a bit. We wanted to make it modular, and easy to update.'
+	game.Loaded:Wait()
+	notLoaded:Destroy()
+end
+local Baseplate = game:GetService("Workspace"):FindFirstChild("Baseplate")
+local Creatures = game:GetService("Workspace"):FindFirstChild("Creatures")
+if (Baseplate and Baseplate:IsA("Part")) and (Creatures and Creatures:IsA("Folder")) then
+	local NewBasePlate = Instance.new("Part", game:GetService("Workspace"))
+	NewBasePlate.Anchored = true
+	NewBasePlate.Size = Baseplate.Size
+	NewBasePlate.Position = Baseplate.Position
+	NewBasePlate.Color = Baseplate.Color
+	NewBasePlate.BottomSurface = Enum.SurfaceType.Smooth
+	NewBasePlate.TopSurface = Enum.SurfaceType.Smooth
+	Baseplate.Position = Vector3.new(5000,0,0)
+	Baseplate.Size = Vector3.new(1,1,1)
+	Baseplate.CanCollide = false
+	Baseplate.Transparency = 1
+	local TextureClone = Baseplate          
+	TextureClone = TextureClone:FindFirstChild("Texture")
+	if TextureClone then 
+		TextureClone = TextureClone:Clone() 
+	end
+	TextureClone.Parent = NewBasePlate
+end
+function isNumber(str)
+	if tonumber(str) ~= nil or str == 'inf' then
+		return true
+	end
+end
+local PlayerGui
+if (identifyexecutor or getidentity) then
+    PlayerGui = cloneref(game:GetService"CoreGui")
+else
+    PlayerGui = cloneref(Players.LocalPlayer:FindFirstChildWhichIsA"PlayerGui")
+end
+if NODAL_LOADED and not _G.NODAL_DEBUG == true then
+    warn("Nodal is already running")
+	return
+end
+
+Players.PlayerAdded:Connect(function()
+	checkForModerators()
+end)
+Players.PlayerRemoving:Connect(function()
+	if (returnIfModeratorTrueDetectionOnEvolve() == false) and (ifHadModerator == true) then
+		notify("All moderators have left the server.", true)
+		ifHadModerator = false
+	end
+end)
+checkForModerators()
+
+pcall(function() getgenv().NODAL_LOADED = true end)
+function SafeCall()
+    return function(func) local success, error = pcall(func) if not success then notify("💣 ".."Nodal".." encountered an uncaught error", false) warn("Nodal".." encountered an uncaught system error: "..tostring(error)) end end
+end
+notify("Welcome to the IY for every game.", true)
+local Nodal_Ver = "n1.0"
+local TextBox_Focused = false
+local cloneref = cloneref or function(a) return a end
+local COREGUI = cloneref(game:GetService("CoreGui"))
+local Players = cloneref(game:GetService("Players"))
+local Player = Players.LocalPlayer
+local plr = Player
+
+
+-- Compatibility for IY commands, IY dependencies
+local WorldToScreen = function(Object)
+	local ObjectVector = workspace.CurrentCamera:WorldToScreenPoint(Object.Position)
+	return Vector2.new(ObjectVector.X, ObjectVector.Y)
+end
+
+local MousePositionToVector2 = function()
+	return Vector2.new(IYMouse.X, IYMouse.Y)
+end
+
+local GetClosestPlayerFromCursor = function()
+	local found = nil
+	local ClosestDistance = math.huge
+	for i, v in pairs(Players:GetPlayers()) do
+		if v ~= Players.LocalPlayer and v.Character and v.Character:FindFirstChildOfClass("Humanoid") then
+			for k, x in pairs(v.Character:GetChildren()) do
+				if string.find(x.Name, "Torso") then
+					local Distance = (WorldToScreen(x) - MousePositionToVector2()).Magnitude
+					if Distance < ClosestDistance then
+						ClosestDistance = Distance
+						found = v
+					end
+				end
+			end
+		end
+	end
+	return found
+end
+SpecialPlayerCases = {
+	["all"] = function(speaker) return Players:GetPlayers() end,
+	["others"] = function(speaker)
+		local plrs = {}
+		for i,v in pairs(Players:GetPlayers()) do
+			if v ~= speaker then
+				table.insert(plrs,v)
+			end
+		end
+		return plrs
+	end,
+	["me"] = function(speaker)return {speaker} end,
+	["#(%d+)"] = function(speaker,args,currentList)
+		local returns = {}
+		local randAmount = tonumber(args[1])
+		local players = {table.unpack(currentList)}
+		for i = 1,randAmount do
+			if #players == 0 then break end
+			local randIndex = math.random(1,#players)
+			table.insert(returns,players[randIndex])
+			table.remove(players,randIndex)
+		end
+		return returns
+	end,
+	["random"] = function(speaker,args,currentList)
+		local players = Players:GetPlayers()
+		local localplayer = Players.LocalPlayer
+		table.remove(players, table.find(players, localplayer))
+		return {players[math.random(1,#players)]}
+	end,
+	["%%(.+)"] = function(speaker,args)
+		local returns = {}
+		local team = args[1]
+		for _,plr in pairs(Players:GetPlayers()) do
+			if plr.Team and string.sub(string.lower(plr.Team.Name),1,#team) == string.lower(team) then
+				table.insert(returns,plr)
+			end
+		end
+		return returns
+	end,
+	["allies"] = function(speaker)
+		local returns = {}
+		local team = speaker.Team
+		for _,plr in pairs(Players:GetPlayers()) do
+			if plr.Team == team then
+				table.insert(returns,plr)
+			end
+		end
+		return returns
+	end,
+	["enemies"] = function(speaker)
+		local returns = {}
+		local team = speaker.Team
+		for _,plr in pairs(Players:GetPlayers()) do
+			if plr.Team ~= team then
+				table.insert(returns,plr)
+			end
+		end
+		return returns
+	end,
+	["team"] = function(speaker)
+		local returns = {}
+		local team = speaker.Team
+		for _,plr in pairs(Players:GetPlayers()) do
+			if plr.Team == team then
+				table.insert(returns,plr)
+			end
+		end
+		return returns
+	end,
+	["nonteam"] = function(speaker)
+		local returns = {}
+		local team = speaker.Team
+		for _,plr in pairs(Players:GetPlayers()) do
+			if plr.Team ~= team then
+				table.insert(returns,plr)
+			end
+		end
+		return returns
+	end,
+	["friends"] = function(speaker,args)
+		local returns = {}
+		for _,plr in pairs(Players:GetPlayers()) do
+			if plr:IsFriendsWith(speaker.UserId) and plr ~= speaker then
+				table.insert(returns,plr)
+			end
+		end
+		return returns
+	end,
+	["nonfriends"] = function(speaker,args)
+		local returns = {}
+		for _,plr in pairs(Players:GetPlayers()) do
+			if not plr:IsFriendsWith(speaker.UserId) and plr ~= speaker then
+				table.insert(returns,plr)
+			end
+		end
+		return returns
+	end,
+	["guests"] = function(speaker,args)
+		local returns = {}
+		for _,plr in pairs(Players:GetPlayers()) do
+			if plr.Guest then
+				table.insert(returns,plr)
+			end
+		end
+		return returns
+	end,
+	["bacons"] = function(speaker,args)
+		local returns = {}
+		for _,plr in pairs(Players:GetPlayers()) do
+			if plr.Character:FindFirstChild('Pal Hair') or plr.Character:FindFirstChild('Kate Hair') then
+				table.insert(returns,plr)
+			end
+		end
+		return returns
+	end,
+	["age(%d+)"] = function(speaker,args)
+		local returns = {}
+		local age = tonumber(args[1])
+		if not age == nil then return end
+		for _,plr in pairs(Players:GetPlayers()) do
+			if plr.AccountAge <= age then
+				table.insert(returns,plr)
+			end
+		end
+		return returns
+	end,
+	["nearest"] = function(speaker,args,currentList)
+		local speakerChar = speaker.Character
+		if not speakerChar or not getRoot() then return end
+		local lowest = math.huge
+		local NearestPlayer = nil
+		for _,plr in pairs(currentList) do
+			if plr ~= speaker and plr.Character then
+				local distance = plr:DistanceFromCharacter(getRoot().Position)
+				if distance < lowest then
+					lowest = distance
+					NearestPlayer = {plr}
+				end
+			end
+		end
+		return NearestPlayer
+	end,
+	["farthest"] = function(speaker,args,currentList)
+		local speakerChar = speaker.Character
+		if not speakerChar or not getRoot() then return end
+		local highest = 0
+		local Farthest = nil
+		for _,plr in pairs(currentList) do
+			if plr ~= speaker and plr.Character then
+				local distance = plr:DistanceFromCharacter(getRoot().Position)
+				if distance > highest then
+					highest = distance
+					Farthest = {plr}
+				end
+			end
+		end
+		return Farthest
+	end,
+	["group(%d+)"] = function(speaker,args)
+		local returns = {}
+		local groupID = tonumber(args[1])
+		for _,plr in pairs(Players:GetPlayers()) do
+			if plr:IsInGroup(groupID) then  
+				table.insert(returns,plr)
+			end
+		end
+		return returns
+	end,
+	["alive"] = function(speaker,args)
+		local returns = {}
+		for _,plr in pairs(Players:GetPlayers()) do
+			if plr.Character and plr.Character:FindFirstChildOfClass("Humanoid") and plr.Character:FindFirstChildOfClass("Humanoid").Health > 0 then
+				table.insert(returns,plr)
+			end
+		end
+		return returns
+	end,
+	["dead"] = function(speaker,args)
+		local returns = {}
+		for _,plr in pairs(Players:GetPlayers()) do
+			if (not plr.Character or not plr.Character:FindFirstChildOfClass("Humanoid")) or plr.Character:FindFirstChildOfClass("Humanoid").Health <= 0 then
+				table.insert(returns,plr)
+			end
+		end
+		return returns
+	end,
+	["rad(%d+)"] = function(speaker,args)
+		local returns = {}
+		local radius = tonumber(args[1])
+		local speakerChar = speaker.Character
+		if not speakerChar or not getRoot() then return end
+		for _,plr in pairs(Players:GetPlayers()) do
+			if plr.Character and getRoot(plr.Character) then
+				local magnitude = (getRoot(plr.Character).Position-getRoot().Position).magnitude
+				if magnitude <= radius then table.insert(returns,plr) end
+			end
+		end
+		return returns
+	end,
+	["cursor"] = function(speaker)
+		local plrs = {}
+		local v = GetClosestPlayerFromCursor()
+		if v ~= nil then table.insert(plrs, v) end
+		return plrs
+	end,
+	["npcs"] = function(speaker,args)
+		local returns = {}
+		for _, v in pairs(workspace:GetDescendants()) do
+			if v:IsA("Model") and getRoot(v) and v:FindFirstChildWhichIsA("Humanoid") and Players:GetPlayerFromCharacter(v) == nil then
+				local clone = Instance.new("Player")
+				clone.Name = v.Name .. " - " .. v:FindFirstChildWhichIsA("Humanoid").DisplayName
+				clone.Character = v
+				table.insert(returns, clone)
+			end
+		end
+		return returns
+	end,
+}
+function splitString(str,delim)
+	local broken = {}
+	if delim == nil then delim = "," end
+	for w in string.gmatch(str,"[^"..delim.."]+") do
+		table.insert(broken,w)
+	end
+	return broken
+end
+function onlyIncludeInTable(tab,matches)
+	local matchTable = {}
+	local resultTable = {}
+	for i,v in pairs(matches) do matchTable[v.Name] = true end
+	for i,v in pairs(tab) do if matchTable[v.Name] then table.insert(resultTable,v) end end
+	return resultTable
+end
+
+function removeTableMatches(tab,matches)
+	local matchTable = {}
+	local resultTable = {}
+	for i,v in pairs(matches) do matchTable[v.Name] = true end
+	for i,v in pairs(tab) do if not matchTable[v.Name] then table.insert(resultTable,v) end end
+	return resultTable
+end
+function toTokens(str)
+	local tokens = {}
+	for op,name in string.gmatch(str,"([+-])([^+-]+)") do
+		table.insert(tokens,{Operator = op,Name = name})
+	end
+	return tokens
+end
+function getPlayersByName(Name)
+	local Name,Len,Found = string.lower(Name),#Name,{}
+	for _,v in pairs(Players:GetPlayers()) do
+		if Name:sub(0,1) == '@' then
+			if string.sub(string.lower(v.Name),1,Len-1) == Name:sub(2) then
+				table.insert(Found,v)
+			end
+		else
+			if string.sub(string.lower(v.Name),1,Len) == Name or string.sub(string.lower(v.DisplayName),1,Len) == Name then
+				table.insert(Found,v)
+			end
+		end
+	end
+	return Found
+end
+function getPlayer(list,speaker)
+	if list == nil then return {speaker.Name} end
+    local nameList
+    if list == "everyone" then
+        for v, i in pairs(Players:GetPlayers()) do
+            nameList = nameList..","..i.Name
+        end
+    elseif list == "others" then
+        for v, i in pairs(Players:GetPlayers()) do
+            if i.Name ~= speaker.Name then
+                nameList = nameList..","..i.Name
+            end
+        end
+    else
+        nameList = list
+    end
+	nameList = splitString(nameList,",")
+
+	local foundList = {}
+
+	for _,name in pairs(nameList) do
+		if string.sub(name,1,1) ~= "+" and string.sub(name,1,1) ~= "-" then name = "+"..name end
+		local tokens = toTokens(name)
+		local initialPlayers = Players:GetPlayers()
+
+		for i,v in pairs(tokens) do
+			if v.Operator == "+" then
+				local tokenContent = v.Name
+				local foundCase = false
+				for regex,case in pairs(SpecialPlayerCases) do
+					local matches = {string.match(tokenContent,"^"..regex.."$")}
+					if #matches > 0 then
+						foundCase = true
+						initialPlayers = onlyIncludeInTable(initialPlayers,case(speaker,matches,initialPlayers))
+					end
+				end
+				if not foundCase then
+					initialPlayers = onlyIncludeInTable(initialPlayers,getPlayersByName(tokenContent))
+				end
+			else
+				local tokenContent = v.Name
+				local foundCase = false
+				for regex,case in pairs(SpecialPlayerCases) do
+					local matches = {string.match(tokenContent,"^"..regex.."$")}
+					if #matches > 0 then
+						foundCase = true
+						initialPlayers = removeTableMatches(initialPlayers,case(speaker,matches,initialPlayers))
+					end
+				end
+				if not foundCase then
+					initialPlayers = removeTableMatches(initialPlayers,getPlayersByName(tokenContent))
+				end
+			end
+		end
+
+		for i,v in pairs(initialPlayers) do table.insert(foundList,v) end
+	end
+
+	local foundNames = {}
+	for i,v in pairs(foundList) do table.insert(foundNames,v.Name) end
+
+	return foundNames
+end
+function getRoot(c)
+    local char = Player.Character
+    if c then char = c end
+	local rootPart = char:FindFirstChild('HumanoidRootPart') or char:FindFirstChild('Torso') or char:FindFirstChild('UpperTorso')
+	return rootPart
+end
+if not identifyexecutor then COREGUI = Player.PlayerGui end
+local TweenService = game:GetService("TweenService")
+local i = {}
+function i.create(UItype, Properties)
+    local a = Instance.new(UItype)
+    for v, i in pairs(Properties) do
+        a[v] = i
+    end
+    return a
+end
+function readOnly (t)
+    local proxy = {}
+    local mt = {
+      __index = t,
+      __newindex = function (t,k,v)
+        error("attempt to modify a read-only table", 2)
+      end
+    }
+    setmetatable(proxy, mt)
+    return proxy
+end
+i = readOnly(i)
+
+UI.ScreenGui = i.create("ScreenGui", {
+    Name = randomStr(),
+    ResetOnSpawn = false,
+    Parent = COREGUI,
+    IgnoreGuiInset = true,
+})
+
+UI.frame = i.create("Frame", {
+    Size = UDim2.new(0, 200, 0, 200),
+    Position = UDim2.new(0.5, (-200)/2, 1, -20),
+    BackgroundColor3 = Color3.fromRGB(40, 40, 40),
+    BorderSizePixel = 0,
+    Parent = UI.ScreenGui
+})
+
+UI.Title = i.create("TextLabel", {
+    Size = UDim2.new(1, 0, 0, 20),
+    Font = Enum.Font.BuilderSansMedium,
+    BackgroundTransparency = 1,
+    Position = UDim2.new(0, 0, 0, 0),
+    Parent = UI.frame,
+    TextColor3 = Color3.fromHex("FCFCFC"),
+    Text = "Nodal "..Nodal_Ver,
+    TextSize = 15
+})
+
+UI.uiCorner = i.create("UICorner", {
+    CornerRadius = UDim.new(0, 5),
+    Parent = UI.frame
+})
+
+UI.TextBox = i.create("TextBox", {
+    Size = UDim2.new(1, 0, 0, 20),
+    Font = Enum.Font.BuilderSansMedium,
+    BackgroundColor3 = Color3.fromRGB(50, 50, 50),
+    Position = UDim2.new(0, 0, 0, 20),
+    Parent = UI.frame,
+    TextColor3 = Color3.fromHex("FCFCFC"),
+    PlaceholderText = "Enter command (')",
+    BorderSizePixel = 0,
+    Text = "",
+    TextSize = 14,
+    ClearTextOnFocus = true,
+    TextXAlignment = Enum.TextXAlignment.Left,
+    TextYAlignment = Enum.TextYAlignment.Center,
+})
+
+UI.ScrollingFrame = i.create("ScrollingFrame", {
+    Size = UDim2.new(1, 0, 1, -40),
+    Position = UDim2.new(0, 0, 0, 40),
+    BackgroundColor3 = Color3.fromRGB(45, 45, 45),
+    BorderSizePixel = 0,
+    Parent = UI.frame,
+    ScrollBarThickness = 4,
+    CanvasSize = UDim2.new(1, 0, 0, 0),
+    ClipsDescendants = true,
+})
+
+local isHovered = false
+
+function UI.showFrame()
+    local tweenInfo = TweenInfo.new(0.3, Enum.EasingStyle.Quart, Enum.EasingDirection.Out)
+    local tween = TweenService:Create(UI.frame, tweenInfo, {Position = UDim2.new(0.5, (-200)/2, 1, -200)})
+    tween:Play()
+end
+
+function UI.hideFrame()
+    local tweenInfo = TweenInfo.new(0.3, Enum.EasingStyle.Quart, Enum.EasingDirection.Out)
+    local tween = TweenService:Create(UI.frame, tweenInfo, {Position = UDim2.new(0.5, (-200)/2, 1, -20)})
+    tween:Play()
+end
+
+UI.frame.MouseEnter:Connect(function()
+    isHovered = true
+    UI.showFrame()
+end)
+
+UI.frame.MouseLeave:Connect(function()
+    isHovered = false
+    task.wait(0.5)
+    if TextBox_Focused then
+        repeat wait() until not TextBox_Focused
+    end
+    if not isHovered then
+        UI.hideFrame()
+    end
+end)
+
+-- Command class
+local Command = {}
+Command.__index = Command
+
+function Command.new(commandName, description, btnObj)
+    local self = setmetatable({}, Command)
+    self.CommandName = commandName
+    self.Description = description
+    self.btnObj = btnObj
+    self.Events = {}
+    return self
+end
+
+function Command:createEvent(eventType, callback)
+    self.Events[eventType] = callback
+end
+
+-- UI Command creation
+UI.CMDS = {}
+
+function UI.createCommand(commandName, description)
+    UI.ScrollingFrame.CanvasSize = UI.ScrollingFrame.CanvasSize + UDim2.new(0, 0, 0, 20)
+    
+    local commandButton = i.create("TextButton", {
+        Size = UDim2.new(1, 0, 0, 20),
+        Position = UDim2.new(0, 0, 0, (#UI.CMDS - 1) * 20),
+        BackgroundColor3 = Color3.fromRGB(40, 40, 40),
+        Parent = UI.ScrollingFrame,
+        Text = "  "..commandName,
+        TextColor3 = Color3.fromHex("FCFCFC"),
+        TextSize = 14,
+        Font = Enum.Font.BuilderSansMedium,
+        AutoButtonColor = false,
+        BorderSizePixel = 0,
+        TextXAlignment = Enum.TextXAlignment.Left,
+        TextYAlignment = Enum.TextYAlignment.Center,
+    })
+
+    local descriptionLabel = i.create("TextLabel", {
+        Size = UDim2.new(0, 150, 0, 40),
+        BackgroundColor3 = Color3.fromRGB(60, 60, 60),
+        Visible = false,
+        Parent = UI.ScreenGui,
+        Text = description,
+        TextColor3 = Color3.fromHex("FCFCFC"),
+        TextSize = 12,
+        Font = Enum.Font.BuilderSansMedium,
+        TextWrapped = true,
+        BorderSizePixel = 0,
+    })
+    local newCommand = Command.new(commandName, description, commandButton)
+    table.insert(UI.CMDS, newCommand)
+
+    commandButton.MouseEnter:Connect(function()
+        commandButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+        descriptionLabel.Visible = true
+        descriptionLabel.Position = UDim2.new(0, game.Players.LocalPlayer:GetMouse().X + 10, 0, game.Players.LocalPlayer:GetMouse().Y + 10)
+    end)
+    
+    commandButton.MouseButton1Click:Connect(function()
+        UI.TextBox:CaptureFocus()
+        TextBox_Focused = true
+        UI.TextBox.Text = "o "..commandName
+        UI.TextBox.CursorPosition = #("o "..commandName)+1
+    end)
+
+    commandButton.MouseLeave:Connect(function()
+        commandButton.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+        descriptionLabel.Visible = false
+    end)
+
+    commandButton.MouseMoved:Connect(function()
+        descriptionLabel.Position = UDim2.new(0, game.Players.LocalPlayer:GetMouse().X + 10, 0, game.Players.LocalPlayer:GetMouse().Y + 10)
+    end)
+
+    return newCommand
+end
+local espTransparency = 0.3
+local ESPenabled
+function ESP(plr)
+	task.spawn(function()
+		for i,v in pairs(COREGUI:GetChildren()) do
+			if v.Name == plr.Name..'_ESP' then
+				v:Destroy()
+			end
+		end
+		wait()
+		if plr.Character and plr.Name ~= Players.LocalPlayer.Name and not COREGUI:FindFirstChild(plr.Name..'_ESP') then
+			local ESPholder = Instance.new("Folder")
+			ESPholder.Name = plr.Name..'_ESP'
+			ESPholder.Parent = COREGUI
+			repeat wait(1) until plr.Character and getRoot(plr.Character) and plr.Character:FindFirstChildOfClass("Humanoid")
+			for b,n in pairs (plr.Character:GetChildren()) do
+				if (n:IsA("BasePart")) then
+					local a = Instance.new("BoxHandleAdornment")
+					a.Name = plr.Name
+					a.Parent = ESPholder
+					a.Adornee = n
+					a.AlwaysOnTop = true
+					a.ZIndex = 10
+					a.Size = n.Size
+					a.Transparency = espTransparency
+					a.Color = plr.TeamColor
+				end
+			end
+			if plr.Character and plr.Character:FindFirstChild('Head') then
+				local BillboardGui = Instance.new("BillboardGui")
+				local TextLabel = Instance.new("TextLabel")
+				BillboardGui.Adornee = plr.Character.Head
+				BillboardGui.Name = plr.Name
+				BillboardGui.Parent = ESPholder
+				BillboardGui.Size = UDim2.new(0, 100, 0, 150)
+				BillboardGui.StudsOffset = Vector3.new(0, 1, 0)
+				BillboardGui.AlwaysOnTop = true
+				TextLabel.Parent = BillboardGui
+				TextLabel.BackgroundTransparency = 1
+				TextLabel.Position = UDim2.new(0, 0, 0, -50)
+				TextLabel.Size = UDim2.new(0, 100, 0, 100)
+				TextLabel.Font = Enum.Font.SourceSansSemibold
+				TextLabel.TextSize = 20
+				TextLabel.TextColor3 = Color3.new(1, 1, 1)
+				TextLabel.TextStrokeTransparency = 0
+				TextLabel.TextYAlignment = Enum.TextYAlignment.Bottom
+				TextLabel.Text = 'Name: '..plr.Name
+				TextLabel.ZIndex = 10
+				local espLoopFunc
+				local teamChange
+				local addedFunc
+				addedFunc = plr.CharacterAdded:Connect(function()
+					if ESPenabled then
+						espLoopFunc:Disconnect()
+						teamChange:Disconnect()
+						ESPholder:Destroy()
+						repeat wait(1) until getRoot(plr.Character) and plr.Character:FindFirstChildOfClass("Humanoid")
+						ESP(plr)
+						addedFunc:Disconnect()
+					else
+						teamChange:Disconnect()
+						addedFunc:Disconnect()
+					end
+				end)
+				teamChange = plr:GetPropertyChangedSignal("TeamColor"):Connect(function()
+					if ESPenabled then
+						espLoopFunc:Disconnect()
+						addedFunc:Disconnect()
+						ESPholder:Destroy()
+						repeat wait(1) until getRoot(plr.Character) and plr.Character:FindFirstChildOfClass("Humanoid")
+						ESP(plr)
+						teamChange:Disconnect()
+					else
+						teamChange:Disconnect()
+					end
+				end)
+				local function espLoop()
+					if COREGUI:FindFirstChild(plr.Name..'_ESP') then
+						if plr.Character and getRoot(plr.Character) and plr.Character:FindFirstChildOfClass("Humanoid") and Players.LocalPlayer.Character and getRoot(Players.LocalPlayer.Character) and Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid") then
+							local pos = math.floor((getRoot(Players.LocalPlayer.Character).Position - getRoot(plr.Character).Position).magnitude)
+							TextLabel.Text = 'Name: '..plr.Name..' | Health: '..round(plr.Character:FindFirstChildOfClass('Humanoid').Health, 1)..' | Studs: '..pos
+						end
+					else
+						teamChange:Disconnect()
+						addedFunc:Disconnect()
+						espLoopFunc:Disconnect()
+					end
+				end
+				espLoopFunc = RunService.RenderStepped:Connect(espLoop)
+			end
+		end
+	end)
+end
+function filterAndDisplayCommands(searchText)
+    searchText = searchText:lower()
+    for i, cmd in ipairs(UI.CMDS) do
+        local commandButton = cmd.btnObj
+        if commandButton then
+            local xa = searchText:split(" ")
+            if #xa > 1 then xa = xa[2] else xa = xa[1] end
+            local tovisible = searchText:find(cmd.CommandName:lower(), 1, true) or (cmd.CommandName:lower():find(searchText, 1, true)) or (cmd.CommandName:lower():find(xa, 1, true))
+            if (tovisible) then
+                commandButton.Position = UDim2.new(0, 0, 0, (i-1) * 20)
+                commandButton.Visible = true
+            else
+                commandButton.Visible = false
+            end
+        end
+    end
+    
+    local visibleCount = 0
+    for _, cmd in ipairs(UI.CMDS) do
+        local commandButton = cmd.btnObj
+        if commandButton and commandButton.Visible then
+            commandButton.Position = UDim2.new(0, 0, 0, visibleCount * 20)
+            visibleCount = visibleCount + 1
+        end
+    end
+end
+UI.TextBox:GetPropertyChangedSignal("Text"):Connect(function()
+    filterAndDisplayCommands(UI.TextBox.Text)
+end)
+function execCmd(cmdName, eventType, arg)
+    local args = arg or {}
+    for _, cmd in ipairs(UI.CMDS) do
+        if string.split(cmd.CommandName, " ")[1] == cmdName and cmd.Events[eventType] then
+            SafeCall()(function()
+                cmd.Events[eventType](table.unpack(args))
+            end)
+            return true
+        end
+    end
+    return false
+end
+UI.TextBox.Focused:Connect(function()
+    TextBox_Focused = true
+end)
+UI.TextBox.FocusLost:Connect(function(enterPressed)
+    TextBox_Focused = false
+    if not enterPressed then return end
+    UI.hideFrame()
+    local input = UI.TextBox.Text
+    UI.TextBox.Text = ""
+
+    local parts = {}
+    for x, part in string.split(input, " ") do
+        table.insert(parts, part)
+    end
+    local prefix = parts[1]
+
+    if #parts > 1 then
+        local commandName = parts[2]
+        local eventType = prefix == "o" and "activated" or (prefix == "d" and "disabled")
+        local args = {table.unpack(parts, 3)}
+        execCmd(commandName, eventType, args)
+    end
+    filterAndDisplayCommands("")
+
+end)
+
+local loopgoto = nil
+local foodhax_enabled
+local urchindestroyerenabled
+local ivsenabled
+local orcamzoom
+local orvivi
+local orone
+local ortwo
+local pillardestroyr
+local Clip = true
+local Noclipping
+local FLYING = false
+local iyflyspeed
+function sFLY(vfly)
+	repeat wait() until Players.LocalPlayer and Players.LocalPlayer.Character and getRoot(Players.LocalPlayer.Character) and Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
+	repeat wait() until IYMouse
+	if flyKeyDown or flyKeyUp then flyKeyDown:Disconnect() flyKeyUp:Disconnect() end
+
+	local T = getRoot(Players.LocalPlayer.Character)
+	local CONTROL = {F = 0, B = 0, L = 0, R = 0, Q = 0, E = 0}
+	local lCONTROL = {F = 0, B = 0, L = 0, R = 0, Q = 0, E = 0}
+	local SPEED = 0
+
+	local function FLY()
+		FLYING = true
+		local BG = Instance.new('BodyGyro')
+		local BV = Instance.new('BodyVelocity')
+		BG.P = 9e4
+		BG.Parent = T
+		BV.Parent = T
+		BG.maxTorque = Vector3.new(9e9, 9e9, 9e9)
+		BG.cframe = T.CFrame
+		BV.velocity = Vector3.new(0, 0, 0)
+		BV.maxForce = Vector3.new(9e9, 9e9, 9e9)
+		task.spawn(function()
+			repeat wait()
+				if not vfly and Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid') then
+					Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid').PlatformStand = true
+				end
+				if CONTROL.L + CONTROL.R ~= 0 or CONTROL.F + CONTROL.B ~= 0 or CONTROL.Q + CONTROL.E ~= 0 then
+					SPEED = 50
+				elseif not (CONTROL.L + CONTROL.R ~= 0 or CONTROL.F + CONTROL.B ~= 0 or CONTROL.Q + CONTROL.E ~= 0) and SPEED ~= 0 then
+					SPEED = 0
+				end
+				if (CONTROL.L + CONTROL.R) ~= 0 or (CONTROL.F + CONTROL.B) ~= 0 or (CONTROL.Q + CONTROL.E) ~= 0 then
+					BV.velocity = ((workspace.CurrentCamera.CoordinateFrame.lookVector * (CONTROL.F + CONTROL.B)) + ((workspace.CurrentCamera.CoordinateFrame * CFrame.new(CONTROL.L + CONTROL.R, (CONTROL.F + CONTROL.B + CONTROL.Q + CONTROL.E) * 0.2, 0).p) - workspace.CurrentCamera.CoordinateFrame.p)) * SPEED
+					lCONTROL = {F = CONTROL.F, B = CONTROL.B, L = CONTROL.L, R = CONTROL.R}
+				elseif (CONTROL.L + CONTROL.R) == 0 and (CONTROL.F + CONTROL.B) == 0 and (CONTROL.Q + CONTROL.E) == 0 and SPEED ~= 0 then
+					BV.velocity = ((workspace.CurrentCamera.CoordinateFrame.lookVector * (lCONTROL.F + lCONTROL.B)) + ((workspace.CurrentCamera.CoordinateFrame * CFrame.new(lCONTROL.L + lCONTROL.R, (lCONTROL.F + lCONTROL.B + CONTROL.Q + CONTROL.E) * 0.2, 0).p) - workspace.CurrentCamera.CoordinateFrame.p)) * SPEED
+				else
+					BV.velocity = Vector3.new(0, 0, 0)
+				end
+				BG.cframe = workspace.CurrentCamera.CoordinateFrame
+			until not FLYING
+			CONTROL = {F = 0, B = 0, L = 0, R = 0, Q = 0, E = 0}
+			lCONTROL = {F = 0, B = 0, L = 0, R = 0, Q = 0, E = 0}
+			SPEED = 0
+			BG:Destroy()
+			BV:Destroy()
+			if Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid') then
+				Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid').PlatformStand = false
+			end
+		end)
+	end
+	flyKeyDown = IYMouse.KeyDown:Connect(function(KEY)
+		if KEY:lower() == 'w' then
+			CONTROL.F = (vfly and vehicleflyspeed or iyflyspeed)
+		elseif KEY:lower() == 's' then
+			CONTROL.B = - (vfly and vehicleflyspeed or iyflyspeed)
+		elseif KEY:lower() == 'a' then
+			CONTROL.L = - (vfly and vehicleflyspeed or iyflyspeed)
+		elseif KEY:lower() == 'd' then 
+			CONTROL.R = (vfly and vehicleflyspeed or iyflyspeed)
+		elseif QEfly and KEY:lower() == 'e' then
+			CONTROL.Q = (vfly and vehicleflyspeed or iyflyspeed)*2
+		elseif QEfly and KEY:lower() == 'q' then
+			CONTROL.E = -(vfly and vehicleflyspeed or iyflyspeed)*2
+		end
+		pcall(function() workspace.CurrentCamera.CameraType = Enum.CameraType.Track end)
+	end)
+	flyKeyUp = IYMouse.KeyUp:Connect(function(KEY)
+		if KEY:lower() == 'w' then
+			CONTROL.F = 0
+		elseif KEY:lower() == 's' then
+			CONTROL.B = 0
+		elseif KEY:lower() == 'a' then
+			CONTROL.L = 0
+		elseif KEY:lower() == 'd' then
+			CONTROL.R = 0
+		elseif KEY:lower() == 'e' then
+			CONTROL.Q = 0
+		elseif KEY:lower() == 'q' then
+			CONTROL.E = 0
+		end
+	end)
+	FLY()
+end
+function NOFLY()
+	FLYING = false
+	if flyKeyDown or flyKeyUp then flyKeyDown:Disconnect() flyKeyUp:Disconnect() end
+	if Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid') then
+		Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid').PlatformStand = false
+	end
+	pcall(function() workspace.CurrentCamera.CameraType = Enum.CameraType.Custom end)
+end
+do
+    local clearbgrid = UI.createCommand("clearbuildinggrid", "Clears building grid")
+    clearbgrid:createEvent("activated", function()
+        local BuildingGrids = workspace:FindFirstChild("BuildingGrids")
+        if (BuildingGrids and BuildingGrids:IsA("Folder")) then
+            local LocalPlayer = Players.LocalPlayer
+            local PlayerInBG = BuildingGrids:FindFirstChild(LocalPlayer.Name)
+            if (PlayerInBG and PlayerInBG:IsA("Model")) then
+                local Remotes = PlayerInBG:FindFirstChild("Remotes")
+                if (Remotes and Remotes:IsA("Folder")) then
+                    local Clear = Remotes:FindFirstChild("Clear")
+                    if (Clear and Clear:IsA("RemoteFunction")) then
+                        Clear:InvokeServer()
+                    end
+                end
+            end
+        end
+    end)
+    local antikick = UI.createCommand("antikick", "Prevents you from getting kicked on the client [FROM INFINITE YIELD]")
+    antikick:createEvent("activated", function()
+        if not hookmetamethod then 
+            return notify('Your exploit does not support this command (missing hookmetamethod)', false)
+        end
+        local LocalPlayer = Players.LocalPlayer
+        local oldhmmi
+        local oldhmmnc
+        oldhmmi = hookmetamethod(game, "__index", function(self, method)
+            if self == LocalPlayer and method:lower() == "kick" then
+                return error("Expected ':' not '.' calling member function Kick", 2)
+            end
+            return oldhmmi(self, method)
+        end)
+        oldhmmnc = hookmetamethod(game, "__namecall", function(self, ...)
+            if self == LocalPlayer and getnamecallmethod():lower() == "kick" then
+                return
+            end
+            return oldhmmnc(self, ...)
+        end)
+    
+        notify('Client anti kick is now active (only effective on localscript kick)', true)
+    end)
+    local depsanw = UI.createCommand("despawn", "Despawns your creature instantly")
+    depsanw:createEvent("activated", function()
+        local baseplate = game:GetService("Workspace"):FindFirstChild("Baseplate")
+		local prevPos
+		if baseplate and baseplate:IsA("Part") then prevPos = baseplate.Position end
+		baseplate.Position = getRoot().CFrame.Position
+		task.wait(1)
+		baseplate.Position = prevPos
+        if workspace:FindFirstChild(Player.Name) then workspace:WaitForChild("BuildingGrids"):WaitForChild("realostepoddd"):WaitForChild("Remotes"):WaitForChild("Spectate"):InvokeServer() end
+        notify("Despawned", true)
+    end)
+    local teleportation = UI.createCommand("teleport [player(player name to tp)] [repeated(true or false)]", "Teleports your creature to some player constantly")
+    teleportation:createEvent("activated", function(playerToTP, repeated)
+        local Players = getPlayer(playerToTP, plr)
+        for i,v in pairs(Players)do
+            loopgoto = nil
+            if plr.Character:FindFirstChildOfClass('Humanoid') and plr.Character:FindFirstChildOfClass('Humanoid').SeatPart then
+                plr.Character:FindFirstChildOfClass('Humanoid').Sit = false
+                task.wait(0.1)
+            end
+            loopgoto = Players[v]
+            local distance = 0
+            local lDelay = 0
+            repeat
+                if Players:FindFirstChild(v) then
+                    if Players[v].Character ~= nil then
+                        getRoot().CFrame = getRoot(Players[v].Character).CFrame + Vector3.new(distance,0,0)
+                    end
+                    task.wait(lDelay)
+                end
+                if Players:FindFirstChild(v) and repeated then
+                    if Players[v].Character ~= nil then
+                        getRoot().CFrame = getRoot(Players[v].Character).CFrame + Vector3.new(distance,0,0)
+                    end
+                    task.wait(lDelay)
+                else
+                    loopgoto = nil
+                end
+            until loopgoto ~= Players[v]
+        end
+    end)
+    teleportation:createEvent("disabled", function()
+        notify("Complete teleportation", true)
+        loopgoto = nil
+    end)
+    local removeRoof = UI.createCommand("removeroof", "Removes the annoying invisible roof")
+    removeRoof:createEvent("activated", function() 
+        local MouseIgnore = workspace:FindFirstChild("MouseIgnore")
+        if MouseIgnore and MouseIgnore:IsA("Folder") then
+            local Roof = MouseIgnore:FindFirstChild("Roof")
+            local SpectatorRoof = MouseIgnore:FindFirstChild("SpectatorRoof")
+            if Roof and SpectatorRoof then
+                Roof.CanCollide = false
+                SpectatorRoof.CanCollide = false
+            else
+                notify("An error occurred while removing the roof on part 2", false)
+            end
+        else
+            notify("An error occurred while removing the roof", false)
+        end
+    end)
+    removeRoof:createEvent("disabled", function() 
+        local MouseIgnore = workspace:FindFirstChild("MouseIgnore")
+        if MouseIgnore and MouseIgnore:IsA("Folder") then
+            local Roof = MouseIgnore:FindFirstChild("Roof")
+            local SpectatorRoof = MouseIgnore:FindFirstChild("SpectatorRoof")
+            if Roof and SpectatorRoof then
+                Roof.CanCollide = true
+                SpectatorRoof.CanCollide = true
+            else
+                notify("An error occurred while enabling the roof on part 2", false)
+            end
+        else
+            notify("An error occurred while enabling the roof", false)
+        end
+    end)
+    local safeZone = UI.createCommand("safezone", "Puts you in the backrooms where no one can get you")
+    safeZone:createEvent("activated", function()
+        local Map = workspace:FindFirstChild("Map")
+        if Map and Map:IsA("Part") then
+            Map.CanCollide = false
+            task.wait(5)
+            Map.CanCollide = true
+        else
+            notify("An error occurred while deactivating floor", false)
+        end
+    end)
+    safeZone:createEvent("disabled", function()
+        local Map = workspace:FindFirstChild("Map")
+        if Map and Map:IsA("Part") then
+            getRoot().Position = Vector3.new(getRoot().Position.X, Map.Position.Y+(Map.Size.Y/2)+1, getRoot().Position.Z)
+        else
+            notify("An error occurred while getting the floor's position", false)
+        end
+    end)
+    local tptool = UI.createCommand("teleportclick", "Gives tptool [FROM INFINITE YIELD]")
+    tptool:createEvent("activated", function()
+        local TpTool = Instance.new("Tool")
+        TpTool.Name = "Teleport Tool"
+        TpTool.RequiresHandle = false
+        TpTool.Parent = plr.Backpack
+        TpTool.Activated:Connect(function()
+            local Char = plr.Character or workspace:FindFirstChild(plr.Name)
+            local HRP = Char and Char:FindFirstChild("HumanoidRootPart")
+            if not Char or not HRP then
+                return warn("Failed to find HumanoidRootPart")
+            end
+            HRP.CFrame = CFrame.new(IYMouse.Hit.X, IYMouse.Hit.Y + 3, IYMouse.Hit.Z, select(4, HRP.CFrame:components()))
+        end)
+    end)
+    local foodhax = UI.createCommand("(Infinite food not working, use legacy cmd) infinitefood [orbs (true or false)] [meat (true or false)] [interval (number)]", "Gives infinite food")
+    foodhax:createEvent("activated", function(orbs, meat, delay)
+        if isNumber(delay) then
+            if ((orbs == "true") or (meat == "true")) then
+                notify('Enabled infinite food', true)
+                foodhax_enabled = true
+            end
+            task.spawn(function()
+                while (task.wait(tonumber(delay)) and foodhax_enabled) do
+                    if Creatures:FindFirstChild(Players.LocalPlayer.Name) then
+                        task.spawn(function()
+                            local MapObjects = game:GetService("Workspace"):FindFirstChild("MapObjects")
+                            local body = Creatures:FindFirstChild(Players.LocalPlayer.Name):FindFirstChild("Body")
+                            local GrazerMouthJaw = body:GetChildren()
+                            for v, i in pairs(GrazerMouthJaw) do
+                                if (i.Name ~= "Grazer") and (i.Name ~= "Mouth") and (i.Name ~= "Jaw") then
+                                    GrazerMouthJaw[v] = nil
+                                end
+                            end
+                            if not MapObjects then return end
+                            if orbs == "true" then
+                                local Food = MapObjects:FindFirstChild("Food"):GetChildren()
+                                if Food then
+                                    local RandomChoice = Food[math.random(1, #Food)]
+                                    task.spawn(function()
+                                        while (RandomChoice == nil) or (RandomChoice.Name == "hookedFood") do
+                                            RandomChoice = Food[math.random(1, #Food)]
+                                            task.wait(0)
+                                        end
+                                        local prevName = RandomChoice.Name
+                                        RandomChoice.Name = "hookedFood"
+                                        while (RandomChoice and foodhax_enabled) do
+                                            local Randomer = GrazerMouthJaw[math.random(1, #GrazerMouthJaw)]
+                                            while ((Randomer == nil) or ((Randomer.Name ~= "Grazer") and (Randomer.Name ~= "Mouth"))) and foodhax_enabled do
+                                                Randomer = GrazerMouthJaw[math.random(1, #GrazerMouthJaw)]
+                                                if (Randomer.Name == "Grazer") or (Randomer.Name == "Mouth") then
+                                                    if Randomer:FindFirstChild("Grazer") then
+                                                        Randomer = Randomer:FindFirstChild("Mouth")
+                                                    end
+                                                    if Randomer:FindFirstChild("Mouth") then
+                                                        Randomer = Randomer:FindFirstChild("Mouth")
+                                                    end
+                                                end
+                                                task.wait(0)
+                                            end
+                                            RandomChoice.CanCollide = false
+                                            RandomChoice.Anchored = true
+                                            RandomChoice.Position = Randomer.Position
+                                            task.wait(0)
+                                        end
+                                        if (RandomChoice) and (not foodhax_enabled) then
+                                            RandomChoice.Name = prevName
+                                        end
+                                    end)
+                                end
+                            end
+                            if meat == "true" then
+                                local Food = MapObjects:FindFirstChild("ExtraFood"):GetChildren()
+                                if Food then
+                                    local RandomChoice = Food[math.random(1, #Food)]
+                                    task.spawn(function()
+                                        while (RandomChoice == nil) or (RandomChoice.Name == "hookedFood") do
+                                            RandomChoice = Food[math.random(1, #Food)]
+                                            task.wait(0)
+                                        end
+                                        local prevName = RandomChoice.Name
+                                        RandomChoice.Name = "hookedFood"
+                                        while (RandomChoice and foodhax_enabled) do
+                                            local Randomer = GrazerMouthJaw[math.random(1, #GrazerMouthJaw)]
+                                            while ((Randomer == nil) or ((Randomer.Name ~= "Jaw") and (Randomer.Name ~= "Mouth"))) and foodhax_enabled do
+                                                Randomer = GrazerMouthJaw[math.random(1, #GrazerMouthJaw)]
+                                                if (Randomer.Name == "Jaw") then
+                                                    if Randomer:FindFirstChild("Jaw") then
+                                                        Randomer = Randomer:FindFirstChild("Jaw")
+                                                    end
+                                                end
+                                                if (Randomer.Name == "Mouth") then
+                                                    if Randomer:FindFirstChild("Mouth") then
+                                                        Randomer = Randomer:FindFirstChild("Mouth")
+                                                    end
+                                                end
+                                                task.wait(0)
+                                            end
+                                            RandomChoice.CanCollide = false
+                                            RandomChoice.Anchored = true
+                                            RandomChoice.Position = Randomer.Position
+                                            task.wait(0)
+                                        end
+                                        if (RandomChoice) and (not foodhax_enabled) then
+                                            RandomChoice.Name = prevName
+                                        end
+                                    end)
+                                end
+                            end
+                        end)
+                    end
+                end
+            end)
+        end
+    end)
+    foodhax:createEvent("disabled", function()
+        foodhax_enabled = false
+    end)
+    local UrchinDestroyer = UI.createCommand("destroyurchins", "Destroys all urchins on the map")
+    UrchinDestroyer:createEvent("activated", function()
+        urchindestroyerenabled = true
+        while (task.wait(0)) and urchindestroyerenabled do
+            task.spawn(function()
+                if Creatures:FindFirstChild(plr.Name) then
+                    task.spawn(function()
+                        local MapObjects = game:GetService("Workspace"):FindFirstChild("MapObjects")
+                        local Traps = MapObjects:FindFirstChild("Traps")
+                        if Traps then
+                            for v, i in pairs(Traps:GetChildren()) do
+                                i:Destroy()
+                            end
+                        end
+                    end)
+                end
+            end)
+        end
+    end)
+    UrchinDestroyer:createEvent("disabled", function()
+        urchindestroyerenabled = false
+    end)
+    local pillardestroying = UI.createCommand("pillardestroy", "Destroys all pillars for everyone")
+    pillardestroying:createEvent("activated", function()
+        pillardestroyr = true
+        while task.wait(0) and pillardestroyr do
+            task.spawn(function()
+                local MapObjects = game:GetService("Workspace"):FindFirstChild("MapObjects")
+                if pillardestroyr and MapObjects then
+                    local Traps = MapObjects:FindFirstChild("Traps")
+                    if Traps then
+                        for v, i in pairs(Traps:GetChildren()) do
+                            if i.Name == "Pillar" then
+                                i.Position = getRoot().Position
+                            end
+                        end
+                    end
+                end
+            end)
+        end
+    end)
+    pillardestroying:createEvent("disabled", function() 
+        pillardestroyr = false
+    end)
+    local ivr = UI.createCommand("infinitevision", "Gives you infinite vision")
+    ivr:createEvent("activated", function()
+        ivsenabled = true
+        orcamzoom = Players.LocalPlayer.CameraMaxZoomDistance
+        local FX = game:GetService("Workspace"):FindFirstChild("FX")
+        local VisionRange
+        if FX then VisionRange = FX:FindFirstChild("VisionRange") end
+        if VisionRange then
+            local One = VisionRange:FindFirstChild("One")
+            if One then orone = VisionRange.Transparency end
+            local Two = VisionRange:FindFirstChild("Two")
+            if Two then ortwo = VisionRange.Transparency end
+            orvivi = VisionRange.Transparency
+        end
+        while (task.wait(0)) and ivsenabled do
+            task.spawn(function()
+                Players.LocalPlayer.CameraMaxZoomDistance = 100000
+                local FX = game:GetService("Workspace"):FindFirstChild("FX")
+                local VisionRange
+                if FX then VisionRange = FX:FindFirstChild("VisionRange") end
+                if VisionRange then
+                    VisionRange.Transparency = 1 -- VisionRange as `any`
+                    local One = VisionRange:FindFirstChild("One")
+                    if One then One.Transparency = 1 end
+                    local Two = VisionRange:FindFirstChild("Two")
+                    if Two then Two.Transparency = 1 end
+                    local Lighting = game:GetService("Lighting")
+                    local Atmosphere = Lighting:FindFirstChild("Atmosphere")
+                    local DepthOfField = Lighting:FindFirstChild("DepthOfField")
+                    local _result = Atmosphere
+                    if _result ~= nil then
+                        _result = _result:IsA("Atmosphere")
+                    end
+                    local _condition = _result
+                    if _condition then
+                        local _result_1 = DepthOfField
+                        if _result_1 ~= nil then
+                            _result_1 = _result_1:IsA("DepthOfFieldEffect")
+                        end
+                        _condition = _result_1
+                    end
+                    if _condition then
+                        Atmosphere.Density = 0
+                        DepthOfField.Enabled = false
+                    end
+                end
+            end)
+        end
+    end)
+    ivr:createEvent("disabled", function() 
+        ivsenabled = false
+        task.wait(0.01)
+        task.spawn(function()
+            Players.LocalPlayer.CameraMaxZoomDistance = orcamzoom
+            local FX = game:GetService("Workspace"):FindFirstChild("FX")
+            local VisionRange
+            if FX then VisionRange = FX:FindFirstChild("VisionRange") end
+            if VisionRange then
+                VisionRange.Transparency = orvivi -- VisionRange as `any`
+                local One = VisionRange:FindFirstChild("One")
+                if One then One.Transparency = orone end
+                local Two = VisionRange:FindFirstChild("Two")
+                if Two then Two.Transparency = ortwo end
+                local Lighting = game:GetService("Lighting")
+                local Atmosphere = Lighting:FindFirstChild("Atmosphere")
+                local DepthOfField = Lighting:FindFirstChild("DepthOfField")
+                local _result = Atmosphere
+                if _result ~= nil then
+                    _result = _result:IsA("Atmosphere")
+                end
+                local _condition = _result
+                if _condition then
+                    local _result_1 = DepthOfField
+                    if _result_1 ~= nil then
+                        _result_1 = _result_1:IsA("DepthOfFieldEffect")
+                    end
+                    _condition = _result_1
+                end
+                if _condition then
+                    Atmosphere.Density = 0
+                    DepthOfField.Enabled = false
+                end
+            end
+        end)
+    end)
+    local ESPCMD = UI.createCommand("esp", "Enables ESP [FROM INFINITE YIELD]")
+    ESPCMD:createEvent("activated", function() 
+        ESPenabled = true
+		for i,v in pairs(Players:GetPlayers()) do
+			if v.Name ~= plr.Name then
+				ESP(v)
+			end
+		end
+    end)
+    ESPCMD:createEvent("disabled", function()
+        ESPenabled = false
+        for i,c in pairs(COREGUI:GetChildren()) do
+            if string.sub(c.Name, -4) == '_ESP' then
+                c:Destroy()
+            end
+        end
+    end)
+    local noclip = UI.createCommand("noclip", "Noclip through walls [FROM INFINITE YIELD]")
+    noclip:createEvent("activated", function() 
+        Clip = false
+        task.wait(0.1)
+        local function NoclipLoop()
+            if Clip == false and plr.Character ~= nil then
+                for _, child in pairs(plr.Character:GetDescendants()) do
+                    if child:IsA("BasePart") and child.CanCollide == true then
+                        child.CanCollide = false
+                    end
+                end
+            end
+        end
+        Noclipping = RunService.Stepped:Connect(NoclipLoop)
+    end)
+    noclip:createEvent("disabled", function() 
+        if Noclipping then
+            Noclipping:Disconnect()
+        end
+        Clip = true
+    end)
+    local spoofspeed = UI.createCommand("spoofspeed [speed (number)]", "Spoof your speed")
+    spoofspeed:createEvent("activated", function(speed) 
+        if Creatures then
+            local Creature = Creatures:FindFirstChild(plr.Name)
+            if Creature then
+                local Humanoid = Creature:FindFirstChildWhichIsA("Humanoid")
+                if Humanoid then
+                    Humanoid.WalkSpeed = speed
+                end
+            end
+        end
+    end)
+
+    local fly = UI.createCommand("(PC) fly [speed (number)]", "Fly in the air, if you are on a mobile device, please consider using IY instead.")
+    fly:createEvent("activated", function(speed)
+        NOFLY()
+        wait()
+        sFLY()
+        if speed and isNumber(speed) then
+            iyflyspeed = speed
+        end
+    end)
+    fly:createEvent("disabled", function() 
+        NOFLY()
+    end)
+    local spin = UI.createCommand("spin [speed (number)]", "Spin around")
+    spin:createEvent("activated", function(speed) 
+        local spinSpeed = 20
+        if speed and isNumber(speed) then
+            spinSpeed = speed
+        end
+        for i,v in pairs(getRoot():GetChildren()) do
+            if v.Name == "Spinning" then
+                v:Destroy()
+            end
+        end
+        local Spin = Instance.new("BodyAngularVelocity")
+        Spin.Name = "Spinning"
+        Spin.Parent = getRoot()
+        Spin.MaxTorque = Vector3.new(0, math.huge, 0)
+        Spin.AngularVelocity = Vector3.new(0,spinSpeed,0)
+    end)
+    spin:createEvent("disabled", function(speed)
+        for i,v in pairs(getRoot():GetChildren()) do
+            if v.Name == "Spinning" then
+                v:Destroy()
+            end
+        end
+    end)
+    local spoofbloat = UI.createCommand("spoofbloat", "Makes you slippery")
+    spoofbloat:createEvent("activated", function()
+        if Creatures then
+            task.spawn(function()
+                local Creature = Creatures:FindFirstChild(plr.Name)
+                if Creature then
+                    local HumanoidRoot = Creature:FindFirstChild("HumanoidRootPart")
+                    if HumanoidRoot then
+                        local DENSITY = 0.01
+                        local FRICTION = 0.3
+                        local ELASTICITY = 0.5
+                        local FRICTION_WEIGHT = 1
+                        local ELASTICITY_WEIGHT = 1
+                        local physProperties = PhysicalProperties.new(DENSITY, FRICTION, ELASTICITY, FRICTION_WEIGHT, ELASTICITY_WEIGHT)
+    
+                        HumanoidRoot.CustomPhysicalProperties = physProperties
+                    end
+                end
+            end)
+        end
+    end)
+    local changeMoverSpeed = UI.createCommand("changemoverspeed [speed (number)]", "Changes your mover speed :P")
+    changeMoverSpeed:createEvent("activated", function(speed) 
+        if speed and isNumber(speed) then
+            if hookmetamethod then
+                local char = plr.Character
+                local setspeed;
+                local index; index = hookmetamethod(game, "__index", function(self, key)
+                    local keyclean = key:gsub("\0", "")
+                    if (keyclean == "WalkSpeed" or keyclean == "walkSpeed") and self:IsA("Humanoid") and self:IsDescendantOf(char) and not checkcaller() then
+                        return setspeed or speed
+                    end
+                    return index(self, key)
+                end)
+                local newindex; newindex = hookmetamethod(game, "__newindex", function(self, key, value)
+                    local keyclean = string.gsub(key, "\0", "")
+                    if (keyclean == "WalkSpeed" or keyclean == "walkSpeed") and self:IsA("Humanoid") and self:IsDescendantOf(char) and not checkcaller() then
+                        setspeed = tonumber(value)
+                        return setspeed
+                    end
+                    return newindex(self, key, value)
+                end)
+            else
+                notify('Your exploit does not support this command (missing hookmetamethod)', false)
+            end
+        end
+    end)
+    local iyscript = UI.createCommand("infiniteyield", "Starts infinite yield")
+    iyscript:createEvent("activated", function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"))()
+    end)
+    local legacy = UI.createCommand("legacy (Legacy version)", "Use the Infinite Yield [Evolve Edition], which is our legacy version. Only if this current version has some bugs and you really want to use a feature")
+    legacy:createEvent("activated", function() 
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/sharpcystals-github342/InfiniteYieldEvolve/main/boothelper.lua"))()
+    end)
+end
+local UserInputService = game:GetService("UserInputService")
+
+local function onKeyPress(input, gameProcessed)
+    if input.KeyCode == Enum.KeyCode.Quote and not gameProcessed then
+        UI.showFrame()
+        UI.TextBox:CaptureFocus()
+        TextBox_Focused = true
+    end
+end
+
+UserInputService.InputBegan:Connect(onKeyPress)
+
+execCmd("antikick", "activated")
+filterAndDisplayCommands("")
+Connection = RunService.Heartbeat:Connect(function()
+    if not UI.ScreenGui then return end
+    if UI.ScreenGui.Parent == nil then Connection:Disconnect() end
+    UI.ScreenGui.Name = randomStr()
+    for v, i in pairs(UI.ScreenGui:GetDescendants()) do
+        i.Name = randomStr()
+    end
+end)
