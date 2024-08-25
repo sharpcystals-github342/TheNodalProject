@@ -741,7 +741,7 @@ UI.frame.MouseLeave:Connect(function()
     isHovered = false
     task.wait(0.5)
     if TextBox_Focused then
-        repeat task.wait() until not TextBox_Focused
+        repeat wait() until not TextBox_Focused
     end
     if not isHovered then
         UI.hideFrame()
@@ -965,6 +965,7 @@ end)
 UI.TextBox.FocusLost:Connect(function(enterPressed)
     TextBox_Focused = false
     if not enterPressed then return end
+    UI.hideFrame()
     local input = UI.TextBox.Text
     UI.TextBox.Text = ""
 
