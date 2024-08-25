@@ -1,3 +1,86 @@
+local function createPopup(text, success)
+    local popup = Instance.new"Frame"
+    popup.Size = UDim2.new(0, 200, 0, 40)
+    popup.Name = randomStr()
+    popup.Position = UDim2.new(1, -220, 1, -60)
+    popup.BackgroundColor3 = Color3.fromRGB(37, 37, 38)
+    popup.BackgroundTransparency = 0.2
+    popup.Parent = UI.ScreenGui
+    popup.ZIndex = 256
+
+    local popupCorner = Instance.new"UICorner"
+    popupCorner.CornerRadius = UDim.new(0, 6)
+    popupCorner.Parent = popup
+    popupCorner.Name = randomStr()
+
+    local greenDot = Instance.new"Frame"
+    greenDot.Size = UDim2.new(0, 10, 0, 10)
+    greenDot.Position = UDim2.new(0, 10, 0.5, -5)
+    greenDot.Name = randomStr()
+    greenDot.ZIndex = 257
+    if success then 
+        greenDot.BackgroundColor3 = Color3.fromRGB(78, 201, 176)
+    else 
+        greenDot.BackgroundColor3 = Color3.fromRGB(244, 71, 71)
+    end
+    greenDot.Parent = popup
+    local dotCorner = Instance.new"UICorner"
+    dotCorner.CornerRadius = UDim.new(1, 0)
+    dotCorner.Name = randomStr()
+    dotCorner.Parent = greenDot
+
+    local textLabel = Instance.new"TextLabel"
+    textLabel.Size = UDim2.new(1, -30, 1, 0)
+    textLabel.Position = UDim2.new(0, 30, 0, 0)
+    textLabel.Name = randomStr()
+    textLabel.BackgroundTransparency = 1
+    textLabel.TextColor3 = Color3.fromRGB(204, 204, 204)
+    textLabel.TextWrapped = true
+    textLabel.Font = Enum.Font.BuilderSansMedium
+    textLabel.TextSize = 14
+    textLabel.Text = text
+    textLabel.TextTruncate = Enum.TextTruncate.AtEnd
+    textLabel.TextXAlignment = Enum.TextXAlignment.Left
+    textLabel.Parent = popup
+    textLabel.ZIndex = 258
+
+    return popup
+end
+local activePopups = {}
+
+local function notify(text, success)
+    local soundID = "rbxassetid://10066931761"
+    local clickSound = Instance.new("Sound")
+    clickSound.SoundId = soundID
+
+    clickSound.Parent = ScreenGui
+    clickSound:Play()
+    task.spawn(function()
+        task.wait(1)
+        clickSound:Destroy()
+    end)
+    task.spawn(function()
+        local popup = createPopup(text, success)
+        if not popup then warn("Nodal".." failed to create a popup.") warn(text.." good popup (red/green)? : "..tostring(success)) return end
+        table.insert(activePopups, 1, popup)
+
+        for i, p in pairs(activePopups) do
+            if p then
+                task.spawn(function()
+                    local targetPosition = UDim2.new(1, -220, 1, -60 - (i - 1) * 50)
+                    p:TweenPosition(targetPosition, Enum.EasingDirection.Out, Enum.EasingStyle.Quart, 0.3, true)
+                end)
+            end
+        end
+
+        task.wait(2)
+
+        popup:TweenPosition(UDim2.new(1, 20, 1, -60), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, 0.3, true, function()
+            popup:Destroy()
+            table.remove(activePopups)
+        end)
+    end)
+end
 
 local cloneref = cloneref or function(a) return a end
 local Players = cloneref(game:GetService"Players")
@@ -169,91 +252,10 @@ checkForModerators()
 
 pcall(function() getgenv().NODAL_LOADED = true end)
 local UI = {}
-local function createPopup(text, success)
-    local popup = Instance.new"Frame"
-    popup.Size = UDim2.new(0, 200, 0, 40)
-    popup.Name = randomStr()
-    popup.Position = UDim2.new(1, -220, 1, -60)
-    popup.BackgroundColor3 = Color3.fromRGB(37, 37, 38)
-    popup.BackgroundTransparency = 0.2
-    popup.Parent = UI.ScreenGui
-    popup.ZIndex = 256
-
-    local popupCorner = Instance.new"UICorner"
-    popupCorner.CornerRadius = UDim.new(0, 6)
-    popupCorner.Parent = popup
-    popupCorner.Name = randomStr()
-
-    local greenDot = Instance.new"Frame"
-    greenDot.Size = UDim2.new(0, 10, 0, 10)
-    greenDot.Position = UDim2.new(0, 10, 0.5, -5)
-    greenDot.Name = randomStr()
-    greenDot.ZIndex = 257
-    if success then 
-        greenDot.BackgroundColor3 = Color3.fromRGB(78, 201, 176)
-    else 
-        greenDot.BackgroundColor3 = Color3.fromRGB(244, 71, 71)
-    end
-    greenDot.Parent = popup
-    local dotCorner = Instance.new"UICorner"
-    dotCorner.CornerRadius = UDim.new(1, 0)
-    dotCorner.Name = randomStr()
-    dotCorner.Parent = greenDot
-
-    local textLabel = Instance.new"TextLabel"
-    textLabel.Size = UDim2.new(1, -30, 1, 0)
-    textLabel.Position = UDim2.new(0, 30, 0, 0)
-    textLabel.Name = randomStr()
-    textLabel.BackgroundTransparency = 1
-    textLabel.TextColor3 = Color3.fromRGB(204, 204, 204)
-    textLabel.TextWrapped = true
-    textLabel.Font = Enum.Font.BuilderSansMedium
-    textLabel.TextSize = 14
-    textLabel.Text = text
-    textLabel.TextTruncate = Enum.TextTruncate.AtEnd
-    textLabel.TextXAlignment = Enum.TextXAlignment.Left
-    textLabel.Parent = popup
-    textLabel.ZIndex = 258
-
-    return popup
-end
-
-local activePopups = {}
-
-notify = function(text, success)
-    local soundID = "rbxassetid://10066931761"
-    local clickSound = Instance.new("Sound")
-    clickSound.SoundId = soundID
-
-    clickSound.Parent = ScreenGui
-    clickSound:Play()
-    task.spawn(function()
-        task.wait(1)
-        clickSound:Destroy()
-    end)
-    task.spawn(function()
-        local popup = createPopup(text, success)
-        if not popup then warn("Nodal".." failed to create a popup.") warn(text.." good popup (red/green)? : "..tostring(success)) return end
-        table.insert(activePopups, 1, popup)
-
-        for i, p in ipairs(activePopups) do
-            if p then
-                local targetPosition = UDim2.new(1, -220, 1, -60 - (i - 1) * 50)
-                p:TweenPosition(targetPosition, Enum.EasingDirection.Out, Enum.EasingStyle.Quart, 0.3, true)
-            end
-        end
-
-        task.wait(2)
-
-        popup:TweenPosition(UDim2.new(1, 20, 1, -60), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, 0.3, true, function()
-            popup:Destroy()
-            table.remove(activePopups)
-        end)
-    end)
-end
 function SafeCall()
     return function(func) local success, error = pcall(func) if not success then notify("💣 ".."Nodal".." encountered an uncaught error", false) warn("Nodal".." encountered an uncaught system error: "..tostring(error)) end end
 end
+notify("Welcome to the IY for every game.", true)
 function randomStr()
     local charSet = {}
     for i=32,127 do
@@ -682,7 +684,7 @@ UI.Title = i.create("TextLabel", {
     Position = UDim2.new(0, 0, 0, 0),
     Parent = UI.frame,
     TextColor3 = Color3.fromHex("FCFCFC"),
-    Text = "Nodal "..Nodal_Ver.." [BETA]",
+    Text = "Nodal "..Nodal_Ver,
     TextSize = 15
 })
 
@@ -1241,7 +1243,7 @@ do
             HRP.CFrame = CFrame.new(IYMouse.Hit.X, IYMouse.Hit.Y + 3, IYMouse.Hit.Z, select(4, HRP.CFrame:components()))
         end)
     end)
-    local foodhax = UI.createCommand("infinitefood [orbs (true or false)] [meat (true or false)] [interval (number)]", "Gives infinite food")
+    local foodhax = UI.createCommand("(Currently not working, use legacy cmd) infinitefood [orbs (true or false)] [meat (true or false)] [interval (number)]", "Gives infinite food")
     foodhax:createEvent("activated", function(orbs, meat, delay)
         if isNumber(delay) then
             if ((orbs == "true") or (meat == "true")) then
@@ -1610,6 +1612,10 @@ do
     local iyscript = UI.createCommand("infiniteyield", "Starts infinite yield")
     iyscript:createEvent("activated", function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"))()
+    end)
+    local legacy = UI.createCommand("legacy (Legacy version)", "Use the Infinite Yield [Evolve Edition], which is our legacy version. Only if this current version has some bugs and you really want to use a feature")
+    legacy:createEvent("activated", function() 
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/sharpcystals-github342/InfiniteYieldEvolve/main/boothelper.lua"))()
     end)
 end
 local UserInputService = game:GetService("UserInputService")
