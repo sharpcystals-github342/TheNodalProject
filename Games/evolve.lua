@@ -1301,7 +1301,6 @@ do
                             if meat == "true" then
                                 local Food = MapObjects:FindFirstChild("ExtraFood"):GetChildren()
                                 if Food then
-                                    print(#Food)
                                     local RandomChoice = Food[math.random(1, #Food)]
                                     task.spawn(function()
                                         while (RandomChoice == nil) or (RandomChoice.Name == "hookedFood") do
@@ -1323,7 +1322,7 @@ do
                                             end
                                             RandomChoice.CanCollide = false
                                             RandomChoice.Anchored = true
-                                            RandomChoice.Position = getRoot(Players.LocalPlayer.Character).Position
+                                            RandomChoice.Position = Randomer.Position
                                             task.wait(0)
                                         end
                                         if (RandomChoice) and (not foodhax_enabled) then
