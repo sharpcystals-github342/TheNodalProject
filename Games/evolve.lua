@@ -980,7 +980,6 @@ UI.TextBox.FocusLost:Connect(function(enterPressed)
         local commandName = parts[2]
         local eventType = prefix == "o" and "activated" or (prefix == "d" and "disabled")
         local args = {table.unpack(parts, 3)}
-        print(args)
         execCmd(commandName, eventType, args)
     end
     filterAndDisplayCommands("")
@@ -1245,9 +1244,6 @@ do
     end)
     local foodhax = UI.createCommand("infinitefood [orbs (true or false)] [meat (true or false)] [interval (number)]", "Gives infinite food")
     foodhax:createEvent("activated", function(orbs, meat, delay)
-        print(orbs)
-        print(meat)
-        print(delay)
         if isNumber(delay) then
             if ((orbs == "true") or (meat == "true")) then
                 notify('Enabled infinite food', true)
@@ -1305,6 +1301,7 @@ do
                             if meat == "true" then
                                 local Food = MapObjects:FindFirstChild("ExtraFood"):GetChildren()
                                 if Food then
+                                    print(#Food)
                                     local RandomChoice = Food[math.random(1, #Food)]
                                     task.spawn(function()
                                         while (RandomChoice == nil) or (RandomChoice.Name == "hookedFood") do
