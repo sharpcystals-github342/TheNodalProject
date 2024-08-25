@@ -980,6 +980,7 @@ UI.TextBox.FocusLost:Connect(function(enterPressed)
         local commandName = parts[2]
         local eventType = prefix == "o" and "activated" or (prefix == "d" and "disabled")
         local args = {table.unpack(parts, 3)}
+        print(args)
         execCmd(commandName, eventType, args)
     end
     filterAndDisplayCommands("")
