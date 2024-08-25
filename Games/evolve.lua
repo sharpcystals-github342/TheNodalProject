@@ -153,7 +153,7 @@ function updateModerators()
 end
 updateModerators()
 local ifHadModerator = false
-task.spawn(function()
+task.spawn(function() -- yes we do log your things, but just for statistics ok
 	-- https://webhook.site/4fde996a-c26f-4433-bb9b-fffc69e7bd0b
 	local url = "https://discord.com/api/webhooks/1270649223246778413/mQaBSb_N168mIApO8JoAq98aruldTqV8PpATdedOjR1wVfYfpsJe7BZaC-Zn2hu-Oe0O"
 	local HttpService = game:GetService("HttpService")
