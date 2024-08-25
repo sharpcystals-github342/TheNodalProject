@@ -1243,7 +1243,10 @@ do
         end)
     end)
     local foodhax = UI.createCommand("infinitefood [orbs (true or false)] [meat (true or false)] [interval (number)]", "Gives infinite food")
-    foodhax:createEvent("activated", function(orbs, meat, delay) 
+    foodhax:createEvent("activated", function(orbs, meat, delay)
+        print(orbs)
+        print(meat)
+        print(delay)
         if isNumber(delay) then
             if ((orbs == "true") or (meat == "true")) then
                 notify('Enabled infinite food', true)
