@@ -7,3 +7,6 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/sharpcystals-github34
 
 
 nodal is buggy as shit rn and i ain't gonna work on it because it literally is unfixable on my executor
+
+
+To do: Create an actual UI library instead of using Infinite Yield command like but centered
