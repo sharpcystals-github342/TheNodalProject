@@ -6,4 +6,4 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/sharpcystals-github34
 ```
 
 
-nodal is buggy as shit rn and i ain't gonna work on it because it literally is unfixable
+nodal is buggy as shit rn and i ain't gonna work on it because it literally is unfixable on my executor
