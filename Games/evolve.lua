@@ -1,3 +1,10 @@
+local sound = Instance.new("Sound", game:GetService("SoundService"))
+sound.SoundId = "rbxassetid://6361782632"
+sound:Play()
+task.spawn(function()
+    task.wait(1)
+    sound:Destroy()
+end)
 local TweenService = game:GetService("TweenService")
 function randomStr()
     local charSet = {}
