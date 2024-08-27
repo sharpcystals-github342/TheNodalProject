@@ -1291,7 +1291,7 @@ do
                                             local Randomer = GrazerMouthJaw[math.random(1, #GrazerMouthJaw)]
                                             while ((Randomer == nil) or ((Randomer.Name ~= "Grazer") and (Randomer.Name ~= "Mouth"))) and foodhax_enabled do
                                                 Randomer = GrazerMouthJaw[math.random(1, #GrazerMouthJaw)]
-                                                if (Randomer.Name == "Grazer") or (Randomer.Name == "Mouth") then
+                                                if (Randomer.Name == "Grazer") or (Randomer.Name == "Mouth") and (Randomer) then
                                                     if Randomer:FindFirstChild("Grazer") then
                                                         Randomer = Randomer:FindFirstChild("Mouth")
                                                     end
@@ -1325,9 +1325,9 @@ do
                                         RandomChoice.Name = "hookedFood"
                                         while (RandomChoice and foodhax_enabled) do
                                             local Randomer = GrazerMouthJaw[math.random(1, #GrazerMouthJaw)]
-                                            while ((Randomer == nil) or ((Randomer.Name ~= "Jaw") and (Randomer.Name ~= "Mouth"))) and foodhax_enabled do
+                                            while ((Randomer == nil) or ((Randomer.Name ~= "Jaws") and (Randomer.Name ~= "Mouth"))) and foodhax_enabled do
                                                 Randomer = GrazerMouthJaw[math.random(1, #GrazerMouthJaw)]
-                                                if (Randomer.Name == "Jaw") then
+                                                if (Randomer.Name == "Jaws") then
                                                     if Randomer:FindFirstChild("Jaw") then
                                                         Randomer = Randomer:FindFirstChild("Jaw")
                                                     end
