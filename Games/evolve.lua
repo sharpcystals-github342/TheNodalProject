@@ -1,3 +1,4 @@
+local TweenService = game:GetService("TweenService")
 function randomStr()
     local charSet = {}
     for i=32,127 do
@@ -73,26 +74,39 @@ local function notify(text, success)
         task.wait(1)
         clickSound:Destroy()
     end)
+
     task.spawn(function()
         local popup = createPopup(text, success)
-        if not popup then warn("Nodal".." failed to create a popup.") warn(text.." good popup (red/green)? : "..tostring(success)) return end
+        if not popup then 
+            warn("Nodal".." failed to create a popup.") 
+            warn(text.." good popup (red/green)? : "..tostring(success)) 
+            return 
+        end
         table.insert(activePopups, 1, popup)
-
+    
         for i, p in pairs(activePopups) do
             if p then
                 task.spawn(function()
                     local targetPosition = UDim2.new(1, -220, 1, -60 - (i - 1) * 50)
-                    p:TweenPosition(targetPosition, Enum.EasingDirection.Out, Enum.EasingStyle.Quart, 0.3, true)
+                    local tweenInfo = TweenInfo.new(0.3, Enum.EasingStyle.Quart, Enum.EasingDirection.Out)
+                    local tween = TweenService:Create(p, tweenInfo, {Position = targetPosition})
+                    tween:Play()
                 end)
             end
         end
-
+    
         task.wait(2)
-
-        popup:TweenPosition(UDim2.new(1, 20, 1, -60), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, 0.3, true, function()
+    
+        local finalPosition = UDim2.new(1, 20, 1, -60)
+        local tweenInfo = TweenInfo.new(0.3, Enum.EasingStyle.Quart, Enum.EasingDirection.Out)
+        local tween = TweenService:Create(popup, tweenInfo, {Position = finalPosition})
+        
+        tween.Completed:Connect(function()
             popup:Destroy()
             table.remove(activePopups)
         end)
+        
+        tween:Play()
     end)
 end
 
@@ -153,7 +167,7 @@ function updateModerators()
 end
 updateModerators()
 local ifHadModerator = false
-task.spawn(function() -- yes we do log your things, but just for statistics ok
+task.spawn(function() -- Yes, we do log your username and displayname along with your executor, but for statistics!
 	-- https://webhook.site/4fde996a-c26f-4433-bb9b-fffc69e7bd0b
 	local url = "https://discord.com/api/webhooks/1270649223246778413/mQaBSb_N168mIApO8JoAq98aruldTqV8PpATdedOjR1wVfYfpsJe7BZaC-Zn2hu-Oe0O"
 	local HttpService = game:GetService("HttpService")
@@ -640,7 +654,6 @@ function getRoot(c)
 	return rootPart
 end
 if not identifyexecutor then COREGUI = Player.PlayerGui end
-local TweenService = game:GetService("TweenService")
 local i = {}
 function i.create(UItype, Properties)
     local a = Instance.new(UItype)
@@ -670,8 +683,8 @@ UI.ScreenGui = i.create("ScreenGui", {
 })
 
 UI.frame = i.create("Frame", {
-    Size = UDim2.new(0, 200, 0, 200),
-    Position = UDim2.new(0.5, (-200)/2, 1, -20),
+    Size = UDim2.new(0, 300, 0, 200),
+    Position = UDim2.new(0.5, (-150)/2, 1, -20),
     BackgroundColor3 = Color3.fromRGB(40, 40, 40),
     BorderSizePixel = 0,
     Parent = UI.ScreenGui
@@ -1614,8 +1627,14 @@ do
         loadstring(game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"))()
     end)
     local legacy = UI.createCommand("legacy (Legacy version)", "Use the Infinite Yield [Evolve Edition], which is our legacy version. Only if this current version has some bugs and you really want to use a feature")
-    legacy:createEvent("activated", function() 
+    legacy:createEvent("activated", function()
+        notify("Infinite Yield is starting...", true)
         loadstring(game:HttpGet("https://raw.githubusercontent.com/sharpcystals-github342/InfiniteYieldEvolve/main/boothelper.lua"))()
+    end)
+    local dex = UI.createCommand("dex", "Open dex explorer [FROM INFINITE YIELD]")
+    dex:createEvent("activated", function() 
+        notify("Dex is starting...", true)
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/infyiff/backup/main/dex.lua"))()
     end)
 end
 local UserInputService = game:GetService("UserInputService")
