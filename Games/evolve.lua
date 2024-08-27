@@ -684,7 +684,7 @@ UI.ScreenGui = i.create("ScreenGui", {
 
 UI.frame = i.create("Frame", {
     Size = UDim2.new(0, 300, 0, 200),
-    Position = UDim2.new(0.5, (-150)/2, 1, -20),
+    Position = UDim2.new(0.5, (300)/2, 1, -20),
     BackgroundColor3 = Color3.fromRGB(40, 40, 40),
     BorderSizePixel = 0,
     Parent = UI.ScreenGui
@@ -737,13 +737,13 @@ local isHovered = false
 
 function UI.showFrame()
     local tweenInfo = TweenInfo.new(0.3, Enum.EasingStyle.Quart, Enum.EasingDirection.Out)
-    local tween = TweenService:Create(UI.frame, tweenInfo, {Position = UDim2.new(0.5, (-200)/2, 1, -200)})
+    local tween = TweenService:Create(UI.frame, tweenInfo, {Position = UDim2.new(0.5, (-300)/2, 1, -200)})
     tween:Play()
 end
 
 function UI.hideFrame()
     local tweenInfo = TweenInfo.new(0.3, Enum.EasingStyle.Quart, Enum.EasingDirection.Out)
-    local tween = TweenService:Create(UI.frame, tweenInfo, {Position = UDim2.new(0.5, (-200)/2, 1, -20)})
+    local tween = TweenService:Create(UI.frame, tweenInfo, {Position = UDim2.new(0.5, (-300)/2, 1, -20)})
     tween:Play()
 end
 
