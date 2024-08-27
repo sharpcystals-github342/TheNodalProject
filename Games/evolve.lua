@@ -1164,7 +1164,7 @@ do
         if workspace:FindFirstChild(Player.Name) then workspace:WaitForChild("BuildingGrids"):WaitForChild("realostepoddd"):WaitForChild("Remotes"):WaitForChild("Spectate"):InvokeServer() end
         notify("Despawned", true)
     end)
-    local teleportation = UI.createCommand("teleport [player(player name to tp)] [repeated(true or false)]", "Teleports your creature to some player constantly")
+    local teleportation = UI.createCommand("teleport [player(name)] [repeated(bool)]", "Teleports your creature to some player constantly")
     teleportation:createEvent("activated", function(playerToTP, repeated)
         local Players = getPlayer(playerToTP, plr)
         for i,v in pairs(Players)do
@@ -1263,7 +1263,7 @@ do
             HRP.CFrame = CFrame.new(IYMouse.Hit.X, IYMouse.Hit.Y + 3, IYMouse.Hit.Z, select(4, HRP.CFrame:components()))
         end)
     end)
-    local foodhax = UI.createCommand("(Infinite food not working, use legacy cmd) infinitefood [orbs (true or false)] [meat (true or false)] [interval (number)]", "Gives infinite food")
+    local foodhax = UI.createCommand("infinitefood [orbs (bool)] [meat (bool)] [interval (number)]", "Gives infinite food")
     foodhax:createEvent("activated", function(orbs, meat, delay)
         if isNumber(delay) then
             if ((orbs == "true") or (meat == "true")) then
