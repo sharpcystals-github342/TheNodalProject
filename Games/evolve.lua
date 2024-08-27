@@ -1263,6 +1263,13 @@ do
             HRP.CFrame = CFrame.new(IYMouse.Hit.X, IYMouse.Hit.Y + 3, IYMouse.Hit.Z, select(4, HRP.CFrame:components()))
         end)
     end)
+    function getT(t)
+        local count = 0
+        for v, i in pairs(t) do
+            count = count + 1
+        end
+        return count
+    end
     local foodhax = UI.createCommand("infinitefood [orbs (bool)] [meat (bool)] [interval (number)]", "Gives infinite food")
     foodhax:createEvent("activated", function(orbs, meat, delay)
         if isNumber(delay) then
@@ -1295,9 +1302,9 @@ do
                                         local prevName = RandomChoice.Name
                                         RandomChoice.Name = "hookedFood"
                                         while (RandomChoice and foodhax_enabled) do
-                                            local Randomer = GrazerMouthJaw[math.random(1, #GrazerMouthJaw)]
+                                            local Randomer = GrazerMouthJaw[math.random(1, getT(GrazerMouthJaw))]
                                             while ((Randomer == nil) or ((Randomer.Name ~= "Grazer") and (Randomer.Name ~= "Mouth"))) and foodhax_enabled do
-                                                Randomer = GrazerMouthJaw[math.random(1, #GrazerMouthJaw)]
+                                                Randomer = GrazerMouthJaw[math.random(1, getT(GrazerMouthJaw))]
                                                 if (Randomer.Name == "Grazer") or (Randomer.Name == "Mouth") and (Randomer) then
                                                     if Randomer:FindFirstChild("Grazer") then
                                                         Randomer = Randomer:FindFirstChild("Mouth")
@@ -1331,9 +1338,9 @@ do
                                         local prevName = RandomChoice.Name
                                         RandomChoice.Name = "hookedFood"
                                         while (RandomChoice and foodhax_enabled) do
-                                            local Randomer = GrazerMouthJaw[math.random(1, #GrazerMouthJaw)]
+                                            local Randomer = GrazerMouthJaw[math.random(1, getT(GrazerMouthJaw))]
                                             while ((Randomer == nil) or ((Randomer.Name ~= "Jaws") and (Randomer.Name ~= "Mouth"))) and foodhax_enabled do
-                                                Randomer = GrazerMouthJaw[math.random(1, #GrazerMouthJaw)]
+                                                Randomer = GrazerMouthJaw[math.random(1, getT(GrazerMouthJaw))]
                                                 if (Randomer.Name == "Jaws") then
                                                     if Randomer:FindFirstChild("Jaw") then
                                                         Randomer = Randomer:FindFirstChild("Jaw")
