@@ -684,7 +684,7 @@ UI.ScreenGui = i.create("ScreenGui", {
 
 UI.frame = i.create("Frame", {
     Size = UDim2.new(0, 300, 0, 200),
-    Position = UDim2.new(0.5, (300)/2, 1, -20),
+    Position = UDim2.new(0.5, (-300)/2, 1, -20),
     BackgroundColor3 = Color3.fromRGB(40, 40, 40),
     BorderSizePixel = 0,
     Parent = UI.ScreenGui
