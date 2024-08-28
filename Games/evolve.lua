@@ -1271,6 +1271,7 @@ do
         return count
     end
     local foodhax = UI.createCommand("infinitefood [orbs (bool)] [meat (bool)] [interval (number)]", "Gives infinite food")
+    -- too many indents here but i don't want to optimise :sob:
     foodhax:createEvent("activated", function(orbs, meat, delay)
         if isNumber(delay) then
             if ((orbs == "true") or (meat == "true")) then
@@ -1294,10 +1295,10 @@ do
                             if orbs == "true" then
                                 local Food = MapObjects:FindFirstChild("Food"):GetChildren()
                                 if Food then
-                                    local RandomChoice = Food[math.random(1, #Food)]
+                                    local RandomChoice = Food[math.random(1, math.max(1, #Food))]
                                     task.spawn(function()
-                                        while (RandomChoice == nil) or (RandomChoice.Name == "hookedFood") do
-                                            RandomChoice = Food[math.random(1, #Food)]
+                                        while (RandomChoice == nil) or (RandomChoice and (RandomChoice.Name == "hookedFood")) do
+                                            RandomChoice = Food[math.random(1, math.max(1, #Food))]
                                             task.wait(0)
                                         end
                                         local prevName = RandomChoice.Name
@@ -1306,14 +1307,7 @@ do
                                             local Randomer = GrazerMouthJaw[math.random(1, getT(GrazerMouthJaw))]
                                             while ((Randomer == nil) or ((Randomer.Name ~= "Grazer") and (Randomer.Name ~= "Mouth"))) and foodhax_enabled do
                                                 Randomer = GrazerMouthJaw[math.random(1, getT(GrazerMouthJaw))]
-                                                if ((Randomer.Name == "Grazer") or (Randomer.Name == "Mouth")) and (Randomer) then
-                                                    if Randomer:FindFirstChild("Grazer") then
-                                                        Randomer = Randomer:FindFirstChild("Mouth")
-                                                    end
-                                                    if Randomer:FindFirstChild("Mouth") then
-                                                        Randomer = Randomer:FindFirstChild("Mouth")
-                                                    end
-                                                end
+                                                Randomer = Randomer:FindFirstChild("HumanoidRootPart")
                                                 task.wait(0)
                                             end
                                             RandomChoice.CanCollide = false
@@ -1330,10 +1324,10 @@ do
                             if meat == "true" then
                                 local Food = MapObjects:FindFirstChild("ExtraFood"):GetChildren()
                                 if Food then
-                                    local RandomChoice = Food[math.random(1, #Food)]
+                                    local RandomChoice = Food[math.random(1, math.max(1, #Food))]
                                     task.spawn(function()
-                                        while (RandomChoice == nil) or (RandomChoice.Name == "hookedFood") do
-                                            RandomChoice = Food[math.random(1, #Food)]
+                                        while (RandomChoice == nil) or (RandomChoice and (RandomChoice.Name == "hookedFood")) do
+                                            RandomChoice = Food[math.random(1, math.max(1, #Food))]
                                             task.wait(0)
                                         end
                                         local prevName = RandomChoice.Name
@@ -1341,17 +1335,8 @@ do
                                         while (RandomChoice and foodhax_enabled) do
                                             local Randomer = GrazerMouthJaw[math.random(1, getT(GrazerMouthJaw))]
                                             while ((Randomer == nil) or ((Randomer.Name ~= "Jaws") and (Randomer.Name ~= "Mouth"))) and foodhax_enabled do
-                                                Randomer = GrazerMouthJaw[math.random(1, getT(GrazerMouthJaw))]
-                                                if (Randomer.Name == "Jaws") then
-                                                    if Randomer:FindFirstChild("Jaw") then
-                                                        Randomer = Randomer:FindFirstChild("Jaw")
-                                                    end
-                                                end
-                                                if (Randomer.Name == "Mouth") then
-                                                    if Randomer:FindFirstChild("Mouth") then
-                                                        Randomer = Randomer:FindFirstChild("Mouth")
-                                                    end
-                                                end
+                                                Randomer = GrazerMouthJaw[math.random(1, getT(GrazerMouthJaw))]     
+                                                Randomer = Randomer:FindFirstChild("HumanoidRootPart")
                                                 task.wait(0)
                                             end
                                             RandomChoice.CanCollide = false
@@ -1664,7 +1649,7 @@ local function onKeyPress(input, gameProcessed)
 end
 
 UserInputService.InputBegan:Connect(onKeyPress)
-
+plr.DevEnableMouseLock = true
 execCmd("antikick", "activated")
 filterAndDisplayCommands("")
 Connection = RunService.Heartbeat:Connect(function()
