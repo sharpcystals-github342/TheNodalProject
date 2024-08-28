@@ -1177,13 +1177,13 @@ do
             local distance = 0
             local lDelay = 0
             repeat
-                if Players:FindFirstChild(v) then
+                if Players[v] then
                     if Players[v].Character ~= nil then
                         getRoot().CFrame = getRoot(Players[v].Character).CFrame + Vector3.new(distance,0,0)
                     end
                     task.wait(lDelay)
                 end
-                if Players:FindFirstChild(v) and repeated then
+                if Players[v] and repeated then
                     if Players[v].Character ~= nil then
                         getRoot().CFrame = getRoot(Players[v].Character).CFrame + Vector3.new(distance,0,0)
                     end
