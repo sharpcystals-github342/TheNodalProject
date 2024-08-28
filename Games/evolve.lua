@@ -1268,7 +1268,7 @@ do
         for v, i in pairs(t) do
             count = count + 1
         end
-        return count
+        return math.max(1, count)
     end
     local foodhax = UI.createCommand("infinitefood [orbs (bool)] [meat (bool)] [interval (number)]", "Gives infinite food")
     -- too many indents here but i don't want to optimise :sob:
@@ -1305,7 +1305,7 @@ do
                                         RandomChoice.Name = "hookedFood"
                                         while (RandomChoice and foodhax_enabled) do
                                             local Randomer = GrazerMouthJaw[math.random(1, getT(GrazerMouthJaw))]
-                                            while ((Randomer == nil) or ((Randomer.Name ~= "Grazer") and (Randomer.Name ~= "Mouth"))) and foodhax_enabled do
+                                            while ((Randomer == nil) or (Randomer.Name ~= "HumanoidRootPart")) and foodhax_enabled do
                                                 Randomer = GrazerMouthJaw[math.random(1, getT(GrazerMouthJaw))]
                                                 Randomer = Randomer:FindFirstChild("HumanoidRootPart")
                                                 task.wait(0)
@@ -1334,8 +1334,8 @@ do
                                         RandomChoice.Name = "hookedFood"
                                         while (RandomChoice and foodhax_enabled) do
                                             local Randomer = GrazerMouthJaw[math.random(1, getT(GrazerMouthJaw))]
-                                            while ((Randomer == nil) or ((Randomer.Name ~= "Jaws") and (Randomer.Name ~= "Mouth"))) and foodhax_enabled do
-                                                Randomer = GrazerMouthJaw[math.random(1, getT(GrazerMouthJaw))]     
+                                            while ((Randomer == nil) or (Randomer.Name ~= "HumanoidRootPart")) and foodhax_enabled do
+                                                Randomer = GrazerMouthJaw[math.random(1, getT(GrazerMouthJaw))]
                                                 Randomer = Randomer:FindFirstChild("HumanoidRootPart")
                                                 task.wait(0)
                                             end
