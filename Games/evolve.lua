@@ -1629,7 +1629,7 @@ do
     local iyscript = UI.createCommand("infiniteyield", "Starts infinite yield")
     iyscript:createEvent("activated", function()
         notify("Infinite Yield is starting...", true)
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source".."ReferenceButton.Position = UDim2.new(0, 2, 0, 2)"))()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source").."ReferenceButton.Position = UDim2.new(0, 2, 0, 2)")()
     end)
     local legacy = UI.createCommand("legacy (Legacy version)", "Use the Infinite Yield [Evolve Edition], which is our legacy version. Only if this current version has some bugs and you really want to use a feature")
     legacy:createEvent("activated", function()
