@@ -970,7 +970,7 @@ UI.TextBox:GetPropertyChangedSignal("Text"):Connect(function()
     filterAndDisplayCommands(UI.TextBox.Text)
 end)
 function execCmd(cmdName, eventType, arg)
-    local args = arg or {}
+    local args = arg or {""}
     for _, cmd in ipairs(UI.CMDS) do
         if string.split(cmd.CommandName, " ")[1] == cmdName and cmd.Events[eventType] then
             SafeCall()(function()
@@ -1283,10 +1283,11 @@ do
                         task.spawn(function()
                             local MapObjects = game:GetService("Workspace"):FindFirstChild("MapObjects")
                             local body = Creatures:FindFirstChild(Players.LocalPlayer.Name):FindFirstChild("Body")
-                            local GrazerMouthJaw = body:GetChildren()
-                            for v, i in pairs(GrazerMouthJaw) do
-                                if (i.Name ~= "Grazer") and (i.Name ~= "Mouth") and (i.Name ~= "Jaw") then
-                                    GrazerMouthJaw[v] = nil
+                            local GrazerMouthJaw_ = body:GetChildren()
+                            local GrazerMouthJaw = {}
+                            for v, i in pairs(GrazerMouthJaw_) do
+                                if (i.Name == "Grazer") or (i.Name == "Mouth") or (i.Name == "Jaw") then
+                                    table.insert(GrazerMouthJaw, i)
                                 end
                             end
                             if not MapObjects then return end
@@ -1305,7 +1306,7 @@ do
                                             local Randomer = GrazerMouthJaw[math.random(1, getT(GrazerMouthJaw))]
                                             while ((Randomer == nil) or ((Randomer.Name ~= "Grazer") and (Randomer.Name ~= "Mouth"))) and foodhax_enabled do
                                                 Randomer = GrazerMouthJaw[math.random(1, getT(GrazerMouthJaw))]
-                                                if (Randomer.Name == "Grazer") or (Randomer.Name == "Mouth") and (Randomer) then
+                                                if ((Randomer.Name == "Grazer") or (Randomer.Name == "Mouth")) and (Randomer) then
                                                     if Randomer:FindFirstChild("Grazer") then
                                                         Randomer = Randomer:FindFirstChild("Mouth")
                                                     end
@@ -1406,6 +1407,7 @@ do
                     if Traps then
                         for v, i in pairs(Traps:GetChildren()) do
                             if i.Name == "Pillar" then
+                                i.CanCollide = false
                                 i.Position = getRoot().Position
                             end
                         end
