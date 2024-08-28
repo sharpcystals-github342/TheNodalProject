@@ -1,3 +1,6 @@
+-- Nodal n1.0 will be the last open source of Nodal. After that, we will be transitioning to more games, and improving code, while maintaining a more moudlar system. We will even create our own GUI with buttons, toggles and sliders, and an option to also display the command bar at the bottom if you want an Infinite Yield like experience, or you want to quickly do something like fly or auto rob.
+
+
 local sound = Instance.new("Sound", game:GetService("SoundService"))
 sound.SoundId = "rbxassetid://6361782632"
 sound:Play()
@@ -1540,7 +1543,7 @@ do
         end
     end)
 
-    local fly = UI.createCommand("(PC) fly [speed (number)]", "Fly in the air, if you are on a mobile device, please consider using IY instead.")
+    local fly = UI.createCommand("fly [speed (number)]", "Fly in the air, if you are on a mobile device, please consider using IY instead.")
     fly:createEvent("activated", function(speed)
         NOFLY()
         wait()
@@ -1625,11 +1628,12 @@ do
     end)
     local iyscript = UI.createCommand("infiniteyield", "Starts infinite yield")
     iyscript:createEvent("activated", function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"))()
+        notify("Infinite Yield is starting...", true)
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source".."ReferenceButton.Position = UDim2.new(0, 2, 0, 2)"))()
     end)
     local legacy = UI.createCommand("legacy (Legacy version)", "Use the Infinite Yield [Evolve Edition], which is our legacy version. Only if this current version has some bugs and you really want to use a feature")
     legacy:createEvent("activated", function()
-        notify("Infinite Yield is starting...", true)
+        notify("Infinite Yield Evolve Edition [legacy ver of Nodal] is starting...", true)
         loadstring(game:HttpGet("https://raw.githubusercontent.com/sharpcystals-github342/InfiniteYieldEvolve/main/boothelper.lua"))()
     end)
     local dex = UI.createCommand("dex", "Open dex explorer [FROM INFINITE YIELD]")
