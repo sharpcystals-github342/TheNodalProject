@@ -1,13 +1,4 @@
 -- Nodal n1.0 will be the last open source of Nodal. After that, we will be transitioning to more games, and improving code, while maintaining a more moudlar system. We will even create our own GUI with buttons, toggles and sliders, and an option to also display the command bar at the bottom if you want an Infinite Yield like experience, or you want to quickly do something like fly or auto rob.
-
-
-local sound = Instance.new("Sound", game:GetService("SoundService"))
-sound.SoundId = "rbxassetid://6361782632"
-sound:Play()
-task.spawn(function()
-    task.wait(1)
-    sound:Destroy()
-end)
 local TweenService = game:GetService("TweenService")
 function randomStr()
     local charSet = {}
@@ -213,7 +204,8 @@ function checkForModerators()
 					sound:Destroy()
 				end)
 				ifHadModerator = true
-                notify("Moderator detected, please despawn until you are notified of moderator leaving.", false)
+                notify("Moderator detected, please despawn until you are notified of the moderator leaving.", false)
+                pcall(function()messagebox("Nodal", "Moderator detected, please despawn until you are notified of the moderator leaving.")end)
 				despawnCreature()
 				execCmd("clearbuildinggrid", "activated")
 				task.wait(0.05)
@@ -292,7 +284,6 @@ pcall(function() getgenv().NODAL_LOADED = true end)
 function SafeCall()
     return function(func) local success, error = pcall(func) if not success then notify("💣 ".."Nodal".." encountered an uncaught error", false) warn("Nodal".." encountered an uncaught system error: "..tostring(error)) end end
 end
-notify("Welcome to the IY for every game.", true)
 local Nodal_Ver = "n1.0"
 local TextBox_Focused = false
 local cloneref = cloneref or function(a) return a end
