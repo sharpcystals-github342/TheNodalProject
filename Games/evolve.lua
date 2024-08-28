@@ -826,8 +826,8 @@ function UI.createCommand(commandName, description)
     commandButton.MouseButton1Click:Connect(function()
         UI.TextBox:CaptureFocus()
         TextBox_Focused = true
-        UI.TextBox.Text = "o "..commandName
-        UI.TextBox.CursorPosition = #("o "..commandName)+1
+        UI.TextBox.Text = "o "..string.split(commandName, " ")[1]
+        UI.TextBox.CursorPosition = #("o "..string.split(commandName, " ")[1])+1
     end)
 
     commandButton.MouseLeave:Connect(function()
