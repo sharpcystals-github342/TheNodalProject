@@ -8,3 +8,5 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/sharpcystals-github34
 rahhhgh macsploiit so bugggy and crassshy
 
 To do: Create an actual UI library instead of using Infinite Yield command like but centered
+
+**We are still training our script. It may not listen to everything you tell it to do sometimes**
