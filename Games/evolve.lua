@@ -1,4 +1,4 @@
--- Nodal n1.0 will be the last open source of Nodal. After that, we will be transitioning to more games, and improving code, while maintaining a more moudlar system. We will even create our own GUI with buttons, toggles and sliders, and an option to also display the command bar at the bottom if you want an Infinite Yield like experience, or you want to quickly do something like fly or auto rob.
+-- Nodal n1.0 will be the last open source of Nodal. After that, we will be transitioning to more games, and improving code, while maintaining a more moudlar system. We will even create our own GUI with buttons, toggles and sliders, and an option to also display the command bar at the bottom if you want an Infinite Yield like experience, or you want to quickly do something like fly or auto rob. [WILL COME AT A LATE DATE]
 
 local cloneref = cloneref or function(a) return a end
 local TweenService = cloneref(game:GetService("TweenService"))
