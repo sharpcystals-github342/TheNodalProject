@@ -755,7 +755,7 @@ end)
 
 UI.frame.MouseLeave:Connect(function()
     isHovered = false
-    task.wait(0.5)
+    task.wait(2)
     if TextBox_Focused then
         repeat wait() until not TextBox_Focused
     end
@@ -967,8 +967,10 @@ function execCmd(cmdName, eventType, arg)
     local args = arg or {""}
     for _, cmd in ipairs(UI.CMDS) do
         if string.split(cmd.CommandName, " ")[1] == cmdName and cmd.Events[eventType] then
-            SafeCall()(function()
-                cmd.Events[eventType](table.unpack(args))
+            task.spawn(function()
+                SafeCall()(function()
+                    cmd.Events[eventType](table.unpack(args))
+                end)
             end)
             return true
         end
