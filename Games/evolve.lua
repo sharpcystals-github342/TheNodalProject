@@ -250,7 +250,7 @@ function checkForModerators()
                 notify("Moderator detected, please despawn until you are notified of the moderator leaving.", false)
                 pcall(function()messagebox("Nodal", "Moderator detected, please despawn until you are notified of the moderator leaving.")end)
 				despawnCreature()
-				execCmd("clearbuildinggrid", "activated")
+				execCmd("clearbuildinggrid", "activated", {}, false)
 				task.wait(0.05)
 			end
 		end
@@ -266,7 +266,7 @@ function returnIfModeratorTrueDetectionOnEvolve()
 	return false
 end
 function despawnCreature()
-    execCmd("despawn", "activated")
+    execCmd("despawn", "activated", {}, false)
 end
 if not game:IsLoaded() then
 	local notLoaded = Instance.new("Message")
@@ -983,7 +983,14 @@ end
 UI.TextBox:GetPropertyChangedSignal("Text"):Connect(function()
     filterAndDisplayCommands(UI.TextBox.Text)
 end)
-function execCmd(cmdName, eventType, arg)
+cmdHistory = {}
+lastTextBoxString,lastEnteredString = nil,nil
+local historyCount = 0
+function execCmd(cmdName, eventType, arg, store)
+    if not cmdName then return end
+    if not eventType then return end
+    local rawCmdStr = cmdName:gsub("%s+$","")
+    local store = store or true
     local args = arg or {""}
     for _, cmd in ipairs(UI.CMDS) do
         if string.split(cmd.CommandName, " ")[1] == cmdName and cmd.Events[eventType] then
@@ -991,6 +998,16 @@ function execCmd(cmdName, eventType, arg)
                 SafeCall()(function()
                     cmd.Events[eventType](table.unpack(args))
                 end)
+            end)
+            task.spawn(function()
+                if store then
+                    if plr == Players.LocalPlayer then
+                        if cmdHistory[1] ~= rawCmdStr and rawCmdStr:sub(1,11) ~= 'lastcommand' and rawCmdStr:sub(1,7) ~= 'lastcmd' then
+                            table.insert(cmdHistory,1,rawCmdStr)
+                        end
+                    end
+                    if #cmdHistory > 30 then table.remove(cmdHistory) end
+                end
             end)
             return true
         end
@@ -1017,7 +1034,7 @@ UI.TextBox.FocusLost:Connect(function(enterPressed)
         local commandName = parts[2]
         local eventType = prefix == "o" and "activated" or (prefix == "d" and "disabled")
         local args = {table.unpack(parts, 3)}
-        execCmd(commandName, eventType, args)
+        execCmd(commandName, eventType, args, true)
     end
     filterAndDisplayCommands("")
 
@@ -1745,19 +1762,40 @@ do
         notify("Dex is starting...", true)
         loadstring(game:HttpGet("https://raw.githubusercontent.com/infyiff/backup/main/dex.lua"))()
     end)
+    local fuckcharacter = UI.createCommand("reset", "Resets your character [FROM INFINITE YIELD]")
+    fuckcharacter:createEvent("activated", function()
+        plr.Character:FindFirstChildOfClass("Humanoid"):ChangeState(Enum.HumanoidStateType.Dead)
+    end)
 end
 
-local function onKeyPress(input, gameProcessed)
+UserInputService.InputBegan:Connect(function(input, gameProcessed)
     if input.KeyCode == Enum.KeyCode.Quote and not gameProcessed then
         UI.showFrame()
         UI.TextBox:CaptureFocus()
         TextBox_Focused = true
     end
-end
-
-UserInputService.InputBegan:Connect(onKeyPress)
+end)
+UserInputService.InputBegan:Connect(function(input,gameProcessed)
+	if gameProcessed then
+		if TextBox_Focused then
+			if input.KeyCode == Enum.KeyCode.Up then
+				historyCount = historyCount + 1
+				if historyCount > #cmdHistory then historyCount = #cmdHistory end
+				UI.TextBox.Text = cmdHistory[historyCount] or ""
+				UI.TextBox.CursorPosition = 1020
+			elseif input.KeyCode == Enum.KeyCode.Down then
+				historyCount = historyCount - 1
+				if historyCount < 0 then historyCount = 0 end
+				UI.TextBox.Text = cmdHistory[historyCount] or ""
+				UI.TextBox.CursorPosition = 1020
+			end
+		elseif input.KeyCode == Enum.KeyCode.Return or input.KeyCode == Enum.KeyCode.KeypadEnter then
+			lastEnteredString = lastTextBoxString
+		end
+	end
+end)
 plr.DevEnableMouseLock = true
-execCmd("antikick", "activated")
+execCmd("antikick", "activated", {}, false)
 filterAndDisplayCommands("")
 Connection = RunService.Heartbeat:Connect(function()
     if not UI.ScreenGui then return end
