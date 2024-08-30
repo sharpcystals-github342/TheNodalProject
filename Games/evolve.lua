@@ -60,7 +60,7 @@ local SoundService = cloneref(game:GetService("SoundService"))
 local Nodal_Ver = "n1.0"
 local IsOnMobile = table.find({Enum.Platform.IOS, Enum.Platform.Android}, UserInputService:GetPlatform())
 
-local UI = {}
+UI = {}
 local function createPopup(text, success)
     local popup = Instance.new"Frame"
     popup.Size = UDim2.new(0, 200, 0, 40)
@@ -116,7 +116,7 @@ local function notify(text, success)
     local clickSound = Instance.new("Sound")
     clickSound.SoundId = soundID
 
-    clickSound.Parent = ScreenGui
+    clickSound.Parent = UI.ScreenGui
     clickSound:Play()
     task.spawn(function()
         task.wait(1)
@@ -239,13 +239,15 @@ function checkForModerators()
 	task.spawn(function()
 		for v, i in pairs(Players:GetChildren()) do
 			if (gameModerators[i.Name] == i.UserId) and (ifHadModerator == false) then
-				local sound = Instance.new("Sound", SoundService)
-				sound.SoundId = "rbxassetid://6361782632"
-				sound:Play()
-				task.spawn(function()
-					task.wait(1)
-					sound:Destroy()
-				end)
+                task.spawn(function()
+                    local sound = Instance.new("Sound", SoundService)
+                    sound.SoundId = "rbxassetid://6361782632"
+                    sound:Play()
+                    task.spawn(function()
+                        task.wait(1)
+                        sound:Destroy()
+                    end)
+                end)
 				ifHadModerator = true
                 notify("Moderator detected, please despawn until you are notified of the moderator leaving.", false)
                 pcall(function()messagebox("Nodal", "Moderator detected, please despawn until you are notified of the moderator leaving.")end)
