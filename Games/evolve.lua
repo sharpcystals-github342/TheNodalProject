@@ -704,7 +704,7 @@ UI.Title = i.create("TextLabel", {
     Position = UDim2.new(0, 0, 0, 0),
     Parent = UI.frame,
     TextColor3 = Color3.fromHex("FCFCFC"),
-    Text = "Nodal "..Nodal_Ver,
+    Text = "Nodal [UNSTABLE] "..Nodal_Ver,
     TextSize = 15
 })
 
