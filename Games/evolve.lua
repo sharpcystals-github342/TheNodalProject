@@ -1,9 +1,11 @@
--- Nodal n1.0 will be the last open source of Nodal. After that, we will be transitioning to more games, and improving code, while maintaining a more moudlar system. We will even create our own GUI with buttons, toggles and sliders, and an option to also display the command bar at the bottom if you want an Infinite Yield like experience, or you want to quickly do something like fly or auto rob. [WILL COME AT A LATE DATE]
-
-local cloneref = cloneref or function(a) return a end
-local TweenService = cloneref(game:GetService("TweenService"))
-local Workspace = cloneref(game:GetService("Workspace"))
-local Lighting = cloneref(game:GetService("Lighting"))
+--[[
+    Nodal [EXPERIMENTAL] n1.0 will be the last open source of Nodal. 
+    After that, we will be transitioning to more games, and improving code, while maintaining a more moudlar system. 
+    We will even create our own GUI with buttons, toggles and sliders, and an option to also display the command bar at the bottom 
+    if you want an Infinite Yield like experience, or you want to quickly do something like fly or auto rob.
+    [WILL RELEASE AT A LATER DATE]
+]]
+-- Dependencies
 function randomStr()
     local charSet = {}
     for i=32,127 do
@@ -17,6 +19,47 @@ function randomStr()
     end
     return endresult
 end
+local cloneref = cloneref or function(a) return a end
+local i = {}
+function i.create(UItype, Properties)
+    local a = Instance.new(UItype)
+    for v, i in pairs(Properties) do
+        a[v] = i
+    end
+    return a
+end
+function readOnly (t)
+    local proxy = {}
+    local mt = {
+      __index = t,
+      __newindex = function (t,k,v)
+        error("attempt to modify a read-only table", 2)
+      end
+    }
+    setmetatable(proxy, mt)
+    return proxy
+end
+i = readOnly(i)
+
+
+-- Services
+local TweenService = cloneref(game:GetService("TweenService"))
+local Workspace = cloneref(game:GetService("Workspace"))
+local Lighting = cloneref(game:GetService("Lighting"))
+local COREGUI = cloneref(game:GetService("CoreGui"))
+local Players = cloneref(game:GetService("Players"))
+local UserInputService = cloneref(game:GetService("UserInputService"))
+local Player = Players.LocalPlayer
+local plr = Player
+if not identifyexecutor then COREGUI = Player.PlayerGui end
+local RunService = cloneref(game:GetService("RunService"))
+local HttpService = cloneref(game:GetService("HttpService"))
+local SoundService = cloneref(game:GetService("SoundService"))
+
+-- Constants
+local Nodal_Ver = "n1.0"
+local IsOnMobile = table.find({Enum.Platform.IOS, Enum.Platform.Android}, UserInputService:GetPlatform())
+
 local UI = {}
 local function createPopup(text, success)
     local popup = Instance.new"Frame"
@@ -115,12 +158,7 @@ local function notify(text, success)
     end)
 end
 
-local cloneref = cloneref or function(a) return a end
-local Players = cloneref(game:GetService"Players")
 IYMouse = Players.LocalPlayer:GetMouse()
-local RunService = cloneref(game:GetService("RunService"))
-local HttpService = cloneref(game:GetService("HttpService"))
-local SoundService = cloneref(game:GetService("SoundService"))
 local gameModerators = {["ClanAtlas"]=812075}
 
 function updateModerators()
@@ -263,12 +301,7 @@ function isNumber(str)
 		return true
 	end
 end
-local PlayerGui
-if (identifyexecutor or getidentity) then
-    PlayerGui = cloneref(game:GetService"CoreGui")
-else
-    PlayerGui = cloneref(Players.LocalPlayer:FindFirstChildWhichIsA"PlayerGui")
-end
+
 if NODAL_LOADED and not _G.NODAL_DEBUG == true then
     warn("Nodal is already running")
 	return
@@ -289,14 +322,7 @@ pcall(function() getgenv().NODAL_LOADED = true end)
 function SafeCall()
     return function(func) local success, error = pcall(func) if not success then notify("💣 ".."Nodal".." encountered an uncaught error", false) warn("Nodal".." encountered an uncaught system error: "..tostring(error)) end end
 end
-local Nodal_Ver = "n1.0"
 local TextBox_Focused = false
-local COREGUI = cloneref(game:GetService("CoreGui"))
-local Players = cloneref(game:GetService("Players"))
-local UserInputService = cloneref(game:GetService("UserInputService"))
-local IsOnMobile = table.find({Enum.Platform.IOS, Enum.Platform.Android}, UserInputService:GetPlatform())
-local Player = Players.LocalPlayer
-local plr = Player
 
 
 -- Compatibility for IY commands, IY dependencies
@@ -660,28 +686,6 @@ function getRoot(c)
 	local rootPart = char:FindFirstChild('HumanoidRootPart') or char:FindFirstChild('Torso') or char:FindFirstChild('UpperTorso')
 	return rootPart
 end
-if not identifyexecutor then COREGUI = Player.PlayerGui end
-local i = {}
-function i.create(UItype, Properties)
-    local a = Instance.new(UItype)
-    for v, i in pairs(Properties) do
-        a[v] = i
-    end
-    return a
-end
-function readOnly (t)
-    local proxy = {}
-    local mt = {
-      __index = t,
-      __newindex = function (t,k,v)
-        error("attempt to modify a read-only table", 2)
-      end
-    }
-    setmetatable(proxy, mt)
-    return proxy
-end
-i = readOnly(i)
-
 UI.ScreenGui = i.create("ScreenGui", {
     Name = randomStr(),
     ResetOnSpawn = false,
@@ -704,7 +708,7 @@ UI.Title = i.create("TextLabel", {
     Position = UDim2.new(0, 0, 0, 0),
     Parent = UI.frame,
     TextColor3 = Color3.fromHex("FCFCFC"),
-    Text = "Nodal [UNSTABLE] "..Nodal_Ver,
+    Text = "Nodal [NIGHTLY] "..Nodal_Ver,
     TextSize = 15
 })
 
