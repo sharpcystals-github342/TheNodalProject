@@ -1,5 +1,5 @@
 -- Nodal n1.0 will be the last open source of Nodal. After that, we will be transitioning to more games, and improving code, while maintaining a more moudlar system. We will even create our own GUI with buttons, toggles and sliders, and an option to also display the command bar at the bottom if you want an Infinite Yield like experience, or you want to quickly do something like fly or auto rob.
-local TweenService = game:GetService("TweenService")
+local TweenService = cloneref(game:GetService("TweenService"))
 function randomStr()
     local charSet = {}
     for i=32,127 do
@@ -289,6 +289,8 @@ local TextBox_Focused = false
 local cloneref = cloneref or function(a) return a end
 local COREGUI = cloneref(game:GetService("CoreGui"))
 local Players = cloneref(game:GetService("Players"))
+local UserInputService = cloneref(game:GetService("UserInputService"))
+local IsOnMobile = table.find({Enum.Platform.IOS, Enum.Platform.Android}, UserInputService:GetPlatform())
 local Player = Players.LocalPlayer
 local plr = Player
 
@@ -755,7 +757,16 @@ end)
 
 UI.frame.MouseLeave:Connect(function()
     isHovered = false
-    task.wait(2)
+    task.spawn(function()
+        for v, i in pairs(UI.CMDS) do
+            i.descLabel.Visible = false
+        end
+    end)
+    if IsOnMobile then
+        task.wait(2)
+    else 
+        task.wait(0.5)
+    end
     if TextBox_Focused then
         repeat wait() until not TextBox_Focused
     end
@@ -768,11 +779,12 @@ end)
 local Command = {}
 Command.__index = Command
 
-function Command.new(commandName, description, btnObj)
+function Command.new(commandName, description, btnObj, dl)
     local self = setmetatable({}, Command)
     self.CommandName = commandName
     self.Description = description
     self.btnObj = btnObj
+    self.descLabel = dl
     self.Events = {}
     return self
 end
@@ -814,7 +826,7 @@ function UI.createCommand(commandName, description)
         TextWrapped = true,
         BorderSizePixel = 0,
     })
-    local newCommand = Command.new(commandName, description, commandButton)
+    local newCommand = Command.new(commandName, description, commandButton, descriptionLabel)
     table.insert(UI.CMDS, newCommand)
 
     commandButton.MouseEnter:Connect(function()
@@ -1003,19 +1015,32 @@ UI.TextBox.FocusLost:Connect(function(enterPressed)
 
 end)
 
-local loopgoto = nil
-local foodhax_enabled
-local urchindestroyerenabled
-local ivsenabled
-local orcamzoom
-local orvivi
-local orone
-local ortwo
-local pillardestroyr
-local Clip = true
-local Noclipping
-local FLYING = false
-local iyflyspeed
+loopgoto = nil
+foodhax_enabled = nil
+urchindestroyerenabled = nil
+ivsenabled = nil
+orcamzoom = nil
+orvivi = nil
+orone = nil
+ortwo = nil
+pillardestroyr = nil
+Clip = true
+Noclipping = nil
+FLYING = false
+QEfly = true
+iyflyspeed = 1
+vehicleflyspeed = 1
+velocityHandlerName = randomStr()
+gyroHandlerName = randomStr()
+
+function NOFLY()
+	FLYING = false
+	if flyKeyDown or flyKeyUp then flyKeyDown:Disconnect() flyKeyUp:Disconnect() end
+	if Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid') then
+		Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid').PlatformStand = false
+	end
+	pcall(function() workspace.CurrentCamera.CameraType = Enum.CameraType.Custom end)
+end
 function sFLY(vfly)
 	repeat wait() until Players.LocalPlayer and Players.LocalPlayer.Character and getRoot(Players.LocalPlayer.Character) and Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
 	repeat wait() until IYMouse
@@ -1100,13 +1125,87 @@ function sFLY(vfly)
 	end)
 	FLY()
 end
-function NOFLY()
-	FLYING = false
-	if flyKeyDown or flyKeyUp then flyKeyDown:Disconnect() flyKeyUp:Disconnect() end
-	if Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid') then
-		Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid').PlatformStand = false
-	end
-	pcall(function() workspace.CurrentCamera.CameraType = Enum.CameraType.Custom end)
+
+local unmobilefly = function()
+	pcall(function()
+		FLYING = false
+		local root = getRoot(plr.Character)
+		root:FindFirstChild(velocityHandlerName):Destroy()
+		root:FindFirstChild(gyroHandlerName):Destroy()
+		plr.Character:FindFirstChildWhichIsA("Humanoid").PlatformStand = false
+		mfly1:Disconnect()
+		mfly2:Disconnect()
+	end)
+end
+
+local mobilefly = function(vfly)
+	unmobilefly()
+	FLYING = true
+
+	local root = getRoot()
+	local camera = workspace.CurrentCamera
+	local v3none = Vector3.new()
+	local v3zero = Vector3.new(0, 0, 0)
+	local v3inf = Vector3.new(9e9, 9e9, 9e9)
+
+	local controlModule = require(plr.PlayerScripts:WaitForChild("PlayerModule"):WaitForChild("ControlModule"))
+	local bv = Instance.new("BodyVelocity")
+	bv.Name = velocityHandlerName
+	bv.Parent = root
+	bv.MaxForce = v3zero
+	bv.Velocity = v3zero
+
+	local bg = Instance.new("BodyGyro")
+	bg.Name = gyroHandlerName
+	bg.Parent = root
+	bg.MaxTorque = v3inf
+	bg.P = 1000
+	bg.D = 50
+
+	mfly1 = plr.CharacterAdded:Connect(function()
+		local bv = Instance.new("BodyVelocity")
+		bv.Name = velocityHandlerName
+		bv.Parent = root
+		bv.MaxForce = v3zero
+		bv.Velocity = v3zero
+
+		local bg = Instance.new("BodyGyro")
+		bg.Name = gyroHandlerName
+		bg.Parent = root
+		bg.MaxTorque = v3inf
+		bg.P = 1000
+		bg.D = 50
+	end)
+
+	mfly2 = RunService.RenderStepped:Connect(function()
+		root = getRoot()
+		camera = workspace.CurrentCamera
+		if plr.Character:FindFirstChildWhichIsA("Humanoid") and root and root:FindFirstChild(velocityHandlerName) and root:FindFirstChild(gyroHandlerName) then
+			local humanoid = plr.Character:FindFirstChildWhichIsA("Humanoid")
+			local VelocityHandler = root:FindFirstChild(velocityHandlerName)
+			local GyroHandler = root:FindFirstChild(gyroHandlerName)
+
+			VelocityHandler.MaxForce = v3inf
+			GyroHandler.MaxTorque = v3inf
+			if not vfly then humanoid.PlatformStand = true end
+			GyroHandler.CFrame = camera.CoordinateFrame
+			VelocityHandler.Velocity = v3none
+
+			local direction = controlModule:GetMoveVector()
+			if direction.X > 0 then
+				VelocityHandler.Velocity = VelocityHandler.Velocity + camera.CFrame.RightVector * (direction.X * ((vfly and vehicleflyspeed or iyflyspeed) * 50))
+			end
+			if direction.X < 0 then
+				VelocityHandler.Velocity = VelocityHandler.Velocity + camera.CFrame.RightVector * (direction.X * ((vfly and vehicleflyspeed or iyflyspeed) * 50))
+			end
+			if direction.Z > 0 then
+				VelocityHandler.Velocity = VelocityHandler.Velocity - camera.CFrame.LookVector * (direction.Z * ((vfly and vehicleflyspeed or iyflyspeed) * 50))
+			end
+			if direction.Z < 0 then
+				VelocityHandler.Velocity = VelocityHandler.Velocity - camera.CFrame.LookVector * (direction.Z * ((vfly and vehicleflyspeed or iyflyspeed) * 50))
+			end
+		end
+	end)
 end
 do
     local clearbgrid = UI.createCommand("clearbuildinggrid", "Clears building grid")
@@ -1536,11 +1635,15 @@ do
         end
     end)
 
-    local fly = UI.createCommand("fly [speed (number)]", "Fly in the air, if you are on a mobile device, please consider using IY instead.")
+    local fly = UI.createCommand("fly [speed (number)]", "Fly in the air")
     fly:createEvent("activated", function(speed)
-        NOFLY()
-        wait()
-        sFLY()
+        if not IsOnMobile then
+            NOFLY()
+            wait()
+            sFLY()
+        else
+            mobilefly()
+        end
         if speed and isNumber(speed) then
             iyflyspeed = speed
         end
