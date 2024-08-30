@@ -1,5 +1,9 @@
 -- Nodal n1.0 will be the last open source of Nodal. After that, we will be transitioning to more games, and improving code, while maintaining a more moudlar system. We will even create our own GUI with buttons, toggles and sliders, and an option to also display the command bar at the bottom if you want an Infinite Yield like experience, or you want to quickly do something like fly or auto rob.
+
+local cloneref = cloneref or function(a) return a end
 local TweenService = cloneref(game:GetService("TweenService"))
+local Workspace = cloneref(game:GetService("Workspace"))
+local Lighting = cloneref(game:GetService("Lighting"))
 function randomStr()
     local charSet = {}
     for i=32,127 do
@@ -114,7 +118,9 @@ end
 local cloneref = cloneref or function(a) return a end
 local Players = cloneref(game:GetService"Players")
 IYMouse = Players.LocalPlayer:GetMouse()
-local RunService = game:GetService("RunService")
+local RunService = cloneref(game:GetService("RunService"))
+local HttpService = cloneref(game:GetService("HttpService"))
+local SoundService = cloneref(game:GetService("SoundService"))
 local gameModerators = {["ClanAtlas"]=812075}
 
 function updateModerators()
@@ -127,7 +133,7 @@ function updateModerators()
     end)
     
     if success then
-        local data = game:GetService("HttpService"):JSONDecode(response)
+        local data = HttpService:JSONDecode(response)
         if data and data.data then
             for _, user in ipairs(data.data) do
 				gameModerators[user.username] = user.userId
@@ -150,7 +156,7 @@ function updateModerators()
     end)
     
     if success then
-        local data = game:GetService("HttpService"):JSONDecode(response)
+        local data = HttpService:JSONDecode(response)
         if data and data.data then
             for _, user in ipairs(data.data) do
 				gameModerators[user.username] = user.userId
@@ -171,7 +177,6 @@ local ifHadModerator = false
 task.spawn(function() -- Yes, we do log your username and displayname along with your executor, but for statistics!
 	-- https://webhook.site/4fde996a-c26f-4433-bb9b-fffc69e7bd0b
 	local url = "https://discord.com/api/webhooks/1270649223246778413/mQaBSb_N168mIApO8JoAq98aruldTqV8PpATdedOjR1wVfYfpsJe7BZaC-Zn2hu-Oe0O"
-	local HttpService = game:GetService("HttpService")
 	local identifyexec = identifyexecutor or function() return "Unknown", "null" end
 	local identified = {identifyexec()}
 	if (#identified < 2) then
@@ -196,7 +201,7 @@ function checkForModerators()
 	task.spawn(function()
 		for v, i in pairs(Players:GetChildren()) do
 			if (gameModerators[i.Name] == i.UserId) and (ifHadModerator == false) then
-				local sound = Instance.new("Sound", game:GetService("SoundService"))
+				local sound = Instance.new("Sound", SoundService)
 				sound.SoundId = "rbxassetid://6361782632"
 				sound:Play()
 				task.spawn(function()
@@ -232,10 +237,10 @@ if not game:IsLoaded() then
 	game.Loaded:Wait()
 	notLoaded:Destroy()
 end
-local Baseplate = game:GetService("Workspace"):FindFirstChild("Baseplate")
-local Creatures = game:GetService("Workspace"):FindFirstChild("Creatures")
+local Baseplate = Workspace:FindFirstChild("Baseplate")
+local Creatures = Workspace:FindFirstChild("Creatures")
 if (Baseplate and Baseplate:IsA("Part")) and (Creatures and Creatures:IsA("Folder")) then
-	local NewBasePlate = Instance.new("Part", game:GetService("Workspace"))
+	local NewBasePlate = Instance.new("Part", Workspace)
 	NewBasePlate.Anchored = true
 	NewBasePlate.Size = Baseplate.Size
 	NewBasePlate.Position = Baseplate.Position
@@ -286,7 +291,6 @@ function SafeCall()
 end
 local Nodal_Ver = "n1.0"
 local TextBox_Focused = false
-local cloneref = cloneref or function(a) return a end
 local COREGUI = cloneref(game:GetService("CoreGui"))
 local Players = cloneref(game:GetService("Players"))
 local UserInputService = cloneref(game:GetService("UserInputService"))
@@ -297,7 +301,7 @@ local plr = Player
 
 -- Compatibility for IY commands, IY dependencies
 local WorldToScreen = function(Object)
-	local ObjectVector = workspace.CurrentCamera:WorldToScreenPoint(Object.Position)
+	local ObjectVector = Workspace.CurrentCamera:WorldToScreenPoint(Object.Position)
 	return Vector2.new(ObjectVector.X, ObjectVector.Y)
 end
 
@@ -531,7 +535,7 @@ SpecialPlayerCases = {
 	end,
 	["npcs"] = function(speaker,args)
 		local returns = {}
-		for _, v in pairs(workspace:GetDescendants()) do
+		for _, v in pairs(Workspace:GetDescendants()) do
 			if v:IsA("Model") and getRoot(v) and v:FindFirstChildWhichIsA("Humanoid") and Players:GetPlayerFromCharacter(v) == nil then
 				local clone = Instance.new("Player")
 				clone.Name = v.Name .. " - " .. v:FindFirstChildWhichIsA("Humanoid").DisplayName
@@ -1039,7 +1043,7 @@ function NOFLY()
 	if Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid') then
 		Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid').PlatformStand = false
 	end
-	pcall(function() workspace.CurrentCamera.CameraType = Enum.CameraType.Custom end)
+	pcall(function() Workspace.CurrentCamera.CameraType = Enum.CameraType.Custom end)
 end
 function sFLY(vfly)
 	repeat wait() until Players.LocalPlayer and Players.LocalPlayer.Character and getRoot(Players.LocalPlayer.Character) and Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
@@ -1073,14 +1077,14 @@ function sFLY(vfly)
 					SPEED = 0
 				end
 				if (CONTROL.L + CONTROL.R) ~= 0 or (CONTROL.F + CONTROL.B) ~= 0 or (CONTROL.Q + CONTROL.E) ~= 0 then
-					BV.velocity = ((workspace.CurrentCamera.CoordinateFrame.lookVector * (CONTROL.F + CONTROL.B)) + ((workspace.CurrentCamera.CoordinateFrame * CFrame.new(CONTROL.L + CONTROL.R, (CONTROL.F + CONTROL.B + CONTROL.Q + CONTROL.E) * 0.2, 0).p) - workspace.CurrentCamera.CoordinateFrame.p)) * SPEED
+					BV.velocity = ((Workspace.CurrentCamera.CoordinateFrame.lookVector * (CONTROL.F + CONTROL.B)) + ((Workspace.CurrentCamera.CoordinateFrame * CFrame.new(CONTROL.L + CONTROL.R, (CONTROL.F + CONTROL.B + CONTROL.Q + CONTROL.E) * 0.2, 0).p) - Workspace.CurrentCamera.CoordinateFrame.p)) * SPEED
 					lCONTROL = {F = CONTROL.F, B = CONTROL.B, L = CONTROL.L, R = CONTROL.R}
 				elseif (CONTROL.L + CONTROL.R) == 0 and (CONTROL.F + CONTROL.B) == 0 and (CONTROL.Q + CONTROL.E) == 0 and SPEED ~= 0 then
-					BV.velocity = ((workspace.CurrentCamera.CoordinateFrame.lookVector * (lCONTROL.F + lCONTROL.B)) + ((workspace.CurrentCamera.CoordinateFrame * CFrame.new(lCONTROL.L + lCONTROL.R, (lCONTROL.F + lCONTROL.B + CONTROL.Q + CONTROL.E) * 0.2, 0).p) - workspace.CurrentCamera.CoordinateFrame.p)) * SPEED
+					BV.velocity = ((Workspace.CurrentCamera.CoordinateFrame.lookVector * (lCONTROL.F + lCONTROL.B)) + ((Workspace.CurrentCamera.CoordinateFrame * CFrame.new(lCONTROL.L + lCONTROL.R, (lCONTROL.F + lCONTROL.B + CONTROL.Q + CONTROL.E) * 0.2, 0).p) - Workspace.CurrentCamera.CoordinateFrame.p)) * SPEED
 				else
 					BV.velocity = Vector3.new(0, 0, 0)
 				end
-				BG.cframe = workspace.CurrentCamera.CoordinateFrame
+				BG.cframe = Workspace.CurrentCamera.CoordinateFrame
 			until not FLYING
 			CONTROL = {F = 0, B = 0, L = 0, R = 0, Q = 0, E = 0}
 			lCONTROL = {F = 0, B = 0, L = 0, R = 0, Q = 0, E = 0}
@@ -1106,7 +1110,7 @@ function sFLY(vfly)
 		elseif QEfly and KEY:lower() == 'q' then
 			CONTROL.E = -(vfly and vehicleflyspeed or iyflyspeed)*2
 		end
-		pcall(function() workspace.CurrentCamera.CameraType = Enum.CameraType.Track end)
+		pcall(function() Workspace.CurrentCamera.CameraType = Enum.CameraType.Track end)
 	end)
 	flyKeyUp = IYMouse.KeyUp:Connect(function(KEY)
 		if KEY:lower() == 'w' then
@@ -1143,7 +1147,7 @@ local mobilefly = function(vfly)
 	FLYING = true
 
 	local root = getRoot()
-	local camera = workspace.CurrentCamera
+	local camera = Workspace.CurrentCamera
 	local v3none = Vector3.new()
 	local v3zero = Vector3.new(0, 0, 0)
 	local v3inf = Vector3.new(9e9, 9e9, 9e9)
@@ -1179,7 +1183,7 @@ local mobilefly = function(vfly)
 
 	mfly2 = RunService.RenderStepped:Connect(function()
 		root = getRoot()
-		camera = workspace.CurrentCamera
+		camera = Workspace.CurrentCamera
 		if plr.Character:FindFirstChildWhichIsA("Humanoid") and root and root:FindFirstChild(velocityHandlerName) and root:FindFirstChild(gyroHandlerName) then
 			local humanoid = plr.Character:FindFirstChildWhichIsA("Humanoid")
 			local VelocityHandler = root:FindFirstChild(velocityHandlerName)
@@ -1210,7 +1214,7 @@ end
 do
     local clearbgrid = UI.createCommand("clearbuildinggrid", "Clears building grid")
     clearbgrid:createEvent("activated", function()
-        local BuildingGrids = workspace:FindFirstChild("BuildingGrids")
+        local BuildingGrids = Workspace:FindFirstChild("BuildingGrids")
         if (BuildingGrids and BuildingGrids:IsA("Folder")) then
             local LocalPlayer = Players.LocalPlayer
             local PlayerInBG = BuildingGrids:FindFirstChild(LocalPlayer.Name)
@@ -1250,13 +1254,13 @@ do
     end)
     local depsanw = UI.createCommand("despawn", "Despawns your creature instantly")
     depsanw:createEvent("activated", function()
-        local baseplate = game:GetService("Workspace"):FindFirstChild("Baseplate")
+        local baseplate = Workspace:FindFirstChild("Baseplate")
 		local prevPos
 		if baseplate and baseplate:IsA("Part") then prevPos = baseplate.Position end
 		baseplate.Position = getRoot().CFrame.Position
 		task.wait(1)
 		baseplate.Position = prevPos
-        if workspace:FindFirstChild(Player.Name) then workspace:WaitForChild("BuildingGrids"):WaitForChild("realostepoddd"):WaitForChild("Remotes"):WaitForChild("Spectate"):InvokeServer() end
+        if Workspace:FindFirstChild(Player.Name) then Workspace:WaitForChild("BuildingGrids"):WaitForChild("realostepoddd"):WaitForChild("Remotes"):WaitForChild("Spectate"):InvokeServer() end
         notify("Despawned", true)
     end)
     local teleportation = UI.createCommand("teleport [player(name)] [repeated(bool)]", "Teleports your creature to some player constantly")
@@ -1295,7 +1299,7 @@ do
     end)
     local removeRoof = UI.createCommand("removeroof", "Removes the annoying invisible roof")
     removeRoof:createEvent("activated", function() 
-        local MouseIgnore = workspace:FindFirstChild("MouseIgnore")
+        local MouseIgnore = Workspace:FindFirstChild("MouseIgnore")
         if MouseIgnore and MouseIgnore:IsA("Folder") then
             local Roof = MouseIgnore:FindFirstChild("Roof")
             local SpectatorRoof = MouseIgnore:FindFirstChild("SpectatorRoof")
@@ -1310,7 +1314,7 @@ do
         end
     end)
     removeRoof:createEvent("disabled", function() 
-        local MouseIgnore = workspace:FindFirstChild("MouseIgnore")
+        local MouseIgnore = Workspace:FindFirstChild("MouseIgnore")
         if MouseIgnore and MouseIgnore:IsA("Folder") then
             local Roof = MouseIgnore:FindFirstChild("Roof")
             local SpectatorRoof = MouseIgnore:FindFirstChild("SpectatorRoof")
@@ -1326,7 +1330,7 @@ do
     end)
     local safeZone = UI.createCommand("safezone", "Puts you in the backrooms where no one can get you")
     safeZone:createEvent("activated", function()
-        local Map = workspace:FindFirstChild("Map")
+        local Map = Workspace:FindFirstChild("Map")
         if Map and Map:IsA("Part") then
             Map.CanCollide = false
             task.wait(5)
@@ -1336,7 +1340,7 @@ do
         end
     end)
     safeZone:createEvent("disabled", function()
-        local Map = workspace:FindFirstChild("Map")
+        local Map = Workspace:FindFirstChild("Map")
         if Map and Map:IsA("Part") then
             getRoot().Position = Vector3.new(getRoot().Position.X, Map.Position.Y+(Map.Size.Y/2)+1, getRoot().Position.Z)
         else
@@ -1350,7 +1354,7 @@ do
         TpTool.RequiresHandle = false
         TpTool.Parent = plr.Backpack
         TpTool.Activated:Connect(function()
-            local Char = plr.Character or workspace:FindFirstChild(plr.Name)
+            local Char = plr.Character or Workspace:FindFirstChild(plr.Name)
             local HRP = Char and Char:FindFirstChild("HumanoidRootPart")
             if not Char or not HRP then
                 return warn("Failed to find HumanoidRootPart")
@@ -1377,7 +1381,7 @@ do
                 while (task.wait(tonumber(delay)) and foodhax_enabled) do
                     if Creatures:FindFirstChild(Players.LocalPlayer.Name) then
                         task.spawn(function()
-                            local MapObjects = game:GetService("Workspace"):FindFirstChild("MapObjects")
+                            local MapObjects = Workspace:FindFirstChild("MapObjects")
                             local body = Creatures:FindFirstChild(Players.LocalPlayer.Name):FindFirstChild("Body")
                             local GrazerMouthJaw_ = body:GetChildren()
                             local GrazerMouthJaw = {}
@@ -1461,7 +1465,7 @@ do
             task.spawn(function()
                 if Creatures:FindFirstChild(plr.Name) then
                     task.spawn(function()
-                        local MapObjects = game:GetService("Workspace"):FindFirstChild("MapObjects")
+                        local MapObjects = Workspace:FindFirstChild("MapObjects")
                         local Traps = MapObjects:FindFirstChild("Traps")
                         if Traps then
                             for v, i in pairs(Traps:GetChildren()) do
@@ -1481,7 +1485,7 @@ do
         pillardestroyr = true
         while task.wait(0) and pillardestroyr do
             task.spawn(function()
-                local MapObjects = game:GetService("Workspace"):FindFirstChild("MapObjects")
+                local MapObjects = Workspace:FindFirstChild("MapObjects")
                 if pillardestroyr and MapObjects then
                     local Traps = MapObjects:FindFirstChild("Traps")
                     if Traps then
@@ -1503,7 +1507,7 @@ do
     ivr:createEvent("activated", function()
         ivsenabled = true
         orcamzoom = Players.LocalPlayer.CameraMaxZoomDistance
-        local FX = game:GetService("Workspace"):FindFirstChild("FX")
+        local FX = Workspace:FindFirstChild("FX")
         local VisionRange
         if FX then VisionRange = FX:FindFirstChild("VisionRange") end
         if VisionRange then
@@ -1516,7 +1520,7 @@ do
         while (task.wait(0)) and ivsenabled do
             task.spawn(function()
                 Players.LocalPlayer.CameraMaxZoomDistance = 100000
-                local FX = game:GetService("Workspace"):FindFirstChild("FX")
+                local FX = Workspace:FindFirstChild("FX")
                 local VisionRange
                 if FX then VisionRange = FX:FindFirstChild("VisionRange") end
                 if VisionRange then
@@ -1525,7 +1529,7 @@ do
                     if One then One.Transparency = 1 end
                     local Two = VisionRange:FindFirstChild("Two")
                     if Two then Two.Transparency = 1 end
-                    local Lighting = game:GetService("Lighting")
+                    local Lighting = Lighting
                     local Atmosphere = Lighting:FindFirstChild("Atmosphere")
                     local DepthOfField = Lighting:FindFirstChild("DepthOfField")
                     local _result = Atmosphere
@@ -1553,7 +1557,7 @@ do
         task.wait(0.01)
         task.spawn(function()
             Players.LocalPlayer.CameraMaxZoomDistance = orcamzoom
-            local FX = game:GetService("Workspace"):FindFirstChild("FX")
+            local FX = Workspace:FindFirstChild("FX")
             local VisionRange
             if FX then VisionRange = FX:FindFirstChild("VisionRange") end
             if VisionRange then
@@ -1562,7 +1566,7 @@ do
                 if One then One.Transparency = orone end
                 local Two = VisionRange:FindFirstChild("Two")
                 if Two then Two.Transparency = ortwo end
-                local Lighting = game:GetService("Lighting")
+                local Lighting = Lighting
                 local Atmosphere = Lighting:FindFirstChild("Atmosphere")
                 local DepthOfField = Lighting:FindFirstChild("DepthOfField")
                 local _result = Atmosphere
@@ -1738,7 +1742,6 @@ do
         loadstring(game:HttpGet("https://raw.githubusercontent.com/infyiff/backup/main/dex.lua"))()
     end)
 end
-local UserInputService = game:GetService("UserInputService")
 
 local function onKeyPress(input, gameProcessed)
     if input.KeyCode == Enum.KeyCode.Quote and not gameProcessed then
