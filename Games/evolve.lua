@@ -112,49 +112,51 @@ end
 local activePopups = {}
 
 local function notify(text, success)
-    local soundID = "rbxassetid://10066931761"
-    local clickSound = Instance.new("Sound")
-    clickSound.SoundId = soundID
-
-    clickSound.Parent = UI.ScreenGui
-    clickSound:Play()
     task.spawn(function()
-        task.wait(1)
-        clickSound:Destroy()
-    end)
+        local soundID = "rbxassetid://10066931761"
+        local clickSound = Instance.new("Sound")
+        clickSound.SoundId = soundID
 
-    task.spawn(function()
-        local popup = createPopup(text, success)
-        if not popup then 
-            warn("Nodal".." failed to create a popup.") 
-            warn(text.." good popup (red/green)? : "..tostring(success)) 
-            return 
-        end
-        table.insert(activePopups, 1, popup)
-    
-        for i, p in pairs(activePopups) do
-            if p then
-                task.spawn(function()
-                    local targetPosition = UDim2.new(1, -220, 1, -60 - (i - 1) * 50)
-                    local tweenInfo = TweenInfo.new(0.3, Enum.EasingStyle.Quart, Enum.EasingDirection.Out)
-                    local tween = TweenService:Create(p, tweenInfo, {Position = targetPosition})
-                    tween:Play()
-                end)
-            end
-        end
-    
-        task.wait(2)
-    
-        local finalPosition = UDim2.new(1, 20, 1, -60)
-        local tweenInfo = TweenInfo.new(0.3, Enum.EasingStyle.Quart, Enum.EasingDirection.Out)
-        local tween = TweenService:Create(popup, tweenInfo, {Position = finalPosition})
-        
-        tween.Completed:Connect(function()
-            popup:Destroy()
-            table.remove(activePopups)
+        clickSound.Parent = UI.ScreenGui
+        clickSound:Play()
+        task.spawn(function()
+            task.wait(1)
+            clickSound:Destroy()
         end)
+
+        task.spawn(function()
+            local popup = createPopup(text, success)
+            if not popup then 
+                warn("Nodal".." failed to create a popup.") 
+                warn(text.." good popup (red/green)? : "..tostring(success)) 
+                return 
+            end
+            table.insert(activePopups, 1, popup)
         
-        tween:Play()
+            for i, p in pairs(activePopups) do
+                if p then
+                    task.spawn(function()
+                        local targetPosition = UDim2.new(1, -220, 1, -60 - (i - 1) * 50)
+                        local tweenInfo = TweenInfo.new(0.3, Enum.EasingStyle.Quart, Enum.EasingDirection.Out)
+                        local tween = TweenService:Create(p, tweenInfo, {Position = targetPosition})
+                        tween:Play()
+                    end)
+                end
+            end
+        
+            task.wait(2)
+        
+            local finalPosition = UDim2.new(1, 20, 1, -60)
+            local tweenInfo = TweenInfo.new(0.3, Enum.EasingStyle.Quart, Enum.EasingDirection.Out)
+            local tween = TweenService:Create(popup, tweenInfo, {Position = finalPosition})
+            
+            tween.Completed:Connect(function()
+                popup:Destroy()
+                table.remove(activePopups)
+            end)
+            
+            tween:Play()
+        end)
     end)
 end
 
