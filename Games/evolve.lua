@@ -4,6 +4,7 @@
     We will even create our own GUI with buttons, toggles and sliders, and an option to also display the command bar at the bottom 
     if you want an Infinite Yield like experience, or you want to quickly do something like fly or auto rob.
     [WILL RELEASE AT A LATER DATE]
+lol
 ]]
 -- Dependencies
 function randomStr()
