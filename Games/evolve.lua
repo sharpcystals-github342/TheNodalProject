@@ -1801,11 +1801,8 @@ end)
 plr.DevEnableMouseLock = true
 execCmd("antikick", "activated", {}, false)
 filterAndDisplayCommands("")
-Connection = RunService.Heartbeat:Connect(function()
     if not UI.ScreenGui then return end
-    if UI.ScreenGui.Parent == nil then Connection:Disconnect() end
     UI.ScreenGui.Name = randomStr()
     for v, i in pairs(UI.ScreenGui:GetDescendants()) do
         i.Name = randomStr()
     end
-end)
