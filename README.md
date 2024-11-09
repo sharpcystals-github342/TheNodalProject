@@ -5,8 +5,7 @@ Loadstring for Evolve
 loadstring(game:HttpGet("https://raw.githubusercontent.com/sharpcystals-github342/TheNodalProject/main/Games/evolve.lua"))()
 ```
 
-rahhhgh macsploiit so bugggy and crassshy
-
 To do: Create an actual UI library instead of using Infinite Yield command like but centered
+- completing in Shesha project
 
-**We are still training our script. It may not listen to everything you tell it to do sometimes**
+- Shesha project will be the successor of Nodal. It will release with a team developing on it, makes things faster and more expandable to more games.
