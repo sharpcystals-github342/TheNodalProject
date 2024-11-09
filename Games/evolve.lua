@@ -4,7 +4,6 @@
     We will even create our own GUI with buttons, toggles and sliders, and an option to also display the command bar at the bottom 
     if you want an Infinite Yield like experience, or you want to quickly do something like fly or auto rob.
     [WILL RELEASE AT A LATER DATE]
-lol
 ]]
 -- Dependencies
 function randomStr()
@@ -169,49 +168,55 @@ function updateModerators()
 	local groupId = 16879177
 	local roleId = 94138722
 	local url = "https://groups.roblox.com/v1/groups/" .. groupId .. "/roles/" .. roleId .. "/users?limit=100"
-    local success, response = pcall(function()
-        return game:HttpGet(url)
-    end)
-    
-    if success then
-        local data = HttpService:JSONDecode(response)
-        if data and data.data then
-            for _, user in ipairs(data.data) do
-				gameModerators[user.username] = user.userId
-                --print("User ID: " .. user.userId .. ", Username: " .. user.username)
-            end
-            if data.nextPageCursor then
-                getMembers(url .. "&cursor=" .. data.nextPageCursor)
+    function getMembers(url)
+        local success, response = pcall(function()
+            return game:HttpGet(url)
+        end)
+        
+        if success then
+            local data = HttpService:JSONDecode(response)
+            if data and data.data then
+                for _, user in ipairs(data.data) do
+                    gameModerators[user.username] = user.userId
+                    --print("User ID: " .. user.userId .. ", Username: " .. user.username)
+                end
+                if data.nextPageCursor then
+                    getMembers(url .. "&cursor=" .. data.nextPageCursor)
+                end
+            else
+                print("No members found for this role.")
             end
         else
-            print("No members found for this role.")
+            warn("Failed to get members: " .. tostring(response))
         end
-    else
-        warn("Failed to get members: " .. tostring(response))
     end
+    getMembers(url)
 	groupId = 16879177
 	roleId = 108264656
 	url = "https://groups.roblox.com/v1/groups/" .. groupId .. "/roles/" .. roleId .. "/users?limit=100"
-    success, response = pcall(function()
-        return game:HttpGet(url)
-    end)
-    
-    if success then
-        local data = HttpService:JSONDecode(response)
-        if data and data.data then
-            for _, user in ipairs(data.data) do
-				gameModerators[user.username] = user.userId
-                --print("User ID: " .. user.userId .. ", Username: " .. user.username)
-            end
-            if data.nextPageCursor then
-                getMembers(url .. "&cursor=" .. data.nextPageCursor)
+    function getMembers(url)
+        local success, response = pcall(function()
+            return game:HttpGet(url)
+        end)
+        
+        if success then
+            local data = HttpService:JSONDecode(response)
+            if data and data.data then
+                for _, user in ipairs(data.data) do
+                    gameModerators[user.username] = user.userId
+                    --print("User ID: " .. user.userId .. ", Username: " .. user.username)
+                end
+                if data.nextPageCursor then
+                    getMembers(url .. "&cursor=" .. data.nextPageCursor)
+                end
+            else
+                print("No members found for this role.")
             end
         else
-            print("No members found for this role.")
+            warn("Failed to get members: " .. tostring(response))
         end
-    else
-        warn("Failed to get members: " .. tostring(response))
     end
+    getMembers(url)
 end
 updateModerators()
 local ifHadModerator = false
@@ -1771,6 +1776,26 @@ do
     fuckcharacter:createEvent("activated", function()
         plr.Character:FindFirstChildOfClass("Humanoid"):ChangeState(Enum.HumanoidStateType.Dead)
     end)
+    local oldconsole = UI.createCommand("console", "Create old consooole")
+    oldconsole:createEvent("activated", function() 
+        local _, str = pcall(function()
+            return game:HttpGet("https://raw.githubusercontent.com/infyiff/backup/main/console.lua", true)
+        end)
+    
+        local s, e = loadstring(str)
+        if typeof(s) ~= "function" then
+            return
+        end
+    
+        local success, message = pcall(s)
+        if (not success) then
+            if printconsole then
+                printconsole(message)
+            elseif printoutput then
+                printoutput(message)
+            end
+        end
+    end)
 end
 
 UserInputService.InputBegan:Connect(function(input, gameProcessed)
@@ -1802,8 +1827,11 @@ end)
 plr.DevEnableMouseLock = true
 execCmd("antikick", "activated", {}, false)
 filterAndDisplayCommands("")
+Connection = RunService.Heartbeat:Connect(function()
     if not UI.ScreenGui then return end
+    if UI.ScreenGui.Parent == nil then Connection:Disconnect() end
     UI.ScreenGui.Name = randomStr()
     for v, i in pairs(UI.ScreenGui:GetDescendants()) do
         i.Name = randomStr()
     end
+end)
