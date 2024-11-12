@@ -1291,7 +1291,7 @@ do
 		baseplate.Position = getRoot().CFrame.Position
 		task.wait(1)
 		baseplate.Position = prevPos
-        if Workspace:FindFirstChild(Player.Name) then Workspace:WaitForChild("BuildingGrids"):WaitForChild("realostepoddd"):WaitForChild("Remotes"):WaitForChild("Spectate"):InvokeServer() end
+        if Workspace:FindFirstChild(Player.Name) then Workspace:WaitForChild("BuildingGrids"):WaitForChild(Player.Name):WaitForChild("Remotes"):WaitForChild("Spectate"):InvokeServer() end
         notify("Despawned", true)
     end)
     local teleportation = UI.createCommand("teleport [player(name)] [repeated(bool)]", "Teleports your creature to some player constantly")
