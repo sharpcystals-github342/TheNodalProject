@@ -8,6 +8,6 @@ end)
 ```
 
 To do: Create an actual UI library instead of using Infinite Yield command like but centered
-- completing in Shesha project *using Depso's ImGui
+- completing in Project Genome *using Depso's ImGui
 
 - Shesha project will be the successor of Nodal. It will release with a team developing on it, makes things faster and more expandable to more games.
